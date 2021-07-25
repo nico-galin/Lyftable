@@ -57,3 +57,10 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Authentication
+google-services.json
+GoogleService-Info.plist'
+
+#Other
+.VSCodeCounter/
