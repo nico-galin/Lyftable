@@ -6,9 +6,9 @@ import styles from './SplitCard.style';
 import { msToHM, formatSetsReps } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 
-export default ({split, scheduled, key}) => {
+export default ({ split, scheduled }) => {
   return (
-    <TouchableOpacity style={styles.container} key={key}>
+    <TouchableOpacity style={styles.container} >
         <View style={styles.dataContainer}>
           <View style={styles.heading}>
             <Text style={styles.name}>{split.name}</Text>

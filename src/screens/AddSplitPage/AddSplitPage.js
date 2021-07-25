@@ -33,7 +33,7 @@ export const AddSplitPage = ({ route }) => {
             <View>
               <SearchBar value={splitSearchText} placeholder={"Search Verified Splits..."} onChangeText={setSplitSearchText}/>
               {filteredSplits.length > 0 ? filteredSplits.slice(0, 3).map(([id, split], ind) => (
-                <View key={ind}><SplitCard key={ind} split={split} /></View>
+                <View key={ind}><SplitCard split={split} /></View>
               )): 
                 <Text style={styles.centeredText}>No Results</Text>
               }
