@@ -12,14 +12,18 @@ import { useNavigation } from '@react-navigation/native';
 import CodeBanner from '../../components/CodeBanner/CodeBanner';
 import { useAppContext } from '../../contexts/AppContext';
 
-export default ({ route }) => {
-  let [split, setSplit] = useState(route.params.data);
+export const SplitPage = ({ route }) => {
   const context = useAppContext();
   const navigation = useNavigation();
+  let [split, setSplit] = useState(route.params.data);
+  let [inCollection, setInCollection] = useState(true);
   useEffect(() => {
-    setSplit(context.getSplit(split.id));
-    const willFocusSubscription = navigation.addListener('focus', () => {
+    const initializeData = () => {
       setSplit(context.getSplit(split.id));
+      setInCollection(context.splitInCollection(split.id));
+    }
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      initializeData();
     });
     return willFocusSubscription;
   }, []);
@@ -58,7 +62,7 @@ export default ({ route }) => {
           <View style={styles.sectionInfo}>
             <Text style={styles.sectionHeader}>Split</Text>
             {split.exercises.map((exercise, ind) => (
-              <View style={styles.subsectionContainer}>
+              <View key={ind} style={styles.subsectionContainer}>
                 <Text style={styles.sectionSubheader}>{exercise.movement}</Text>
                 <Text>{msToHM(exercise.time_limit)} {formatSetsReps(exercise.set_count, exercise.repetitions)}</Text>
                 <Text>{msToHM(exercise.rest_time)} rest between sets</Text>
@@ -80,6 +84,7 @@ export default ({ route }) => {
           <View style={styles.gap} />
           <ActionButton text={'Start Workout'} height={'large'}color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
         </View>
+        {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />}
         <Text style={styles.description}>Note: If you make changes to a split made by someone else, you will be unsubscribed from their split</Text>
       </ScrollView>
       <CodeBanner label={'Split Share Code'} code={'ABCDEFGHIJK'} data={{}} />

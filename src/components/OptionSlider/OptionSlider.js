@@ -12,7 +12,7 @@ export default ({options=[], defaultIndex = 0, onChange = () => {}}) => {
   return (
     <View style={styles.container}>
       {options.map((option, ind) => (
-        <TouchableOpacity style={ind === selected ? styles.selected : styles.unselected} onPress={() => handlePress(ind)}>
+        <TouchableOpacity key={"Option" + ind} style={ind === selected ? styles.selected : styles.unselected} onPress={() => handlePress(ind)}>
           <Text style={ind === selected ? styles.textSelected : styles.textUnselected}>{option}</Text>
         </TouchableOpacity>
       ))}

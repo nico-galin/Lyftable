@@ -14,8 +14,9 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { AppContext } from '../../contexts/AppContext';
 let _ = require("lodash");
 
-export default ({ route }) => {
-  const inCollection = route && route.params && route.params.inCollection;
+export const EditSplitPage = ({ route }) => {
+  const context = useContext(AppContext);
+  const navigation = useNavigation();
   const existingSplit = route && route.params && route.params.data;
   const split = existingSplit ? route.params.data : getSplitTemplate();
   const [estimatedTime, setEstimatedTime] = useState(split.estimated_time);
@@ -23,8 +24,7 @@ export default ({ route }) => {
   const [showOnProfile, setShowOnProfile] = useState(split.public);
   const [description, setDescription] = useState(split.description);
   const [exercises, setExercises] = useState([...split.exercises]);
-  const context = useContext(AppContext);
-  const navigation = useNavigation();
+  const inCollection = context.splitInCollection(split.id);
   const handleName = (val) => {
     setName(val);
   }
@@ -65,7 +65,7 @@ export default ({ route }) => {
     newSplit.description = description;
     newSplit.exercises = exercises;
     newSplit.estimatedTime = estimatedTime;
-    if (Object.keys(context.userData.splits).includes(split.id)) {
+    if (inCollection) {
       context.replaceUserSplit(split.id, newSplit);
       navigation.navigate("SplitPage", { data: newSplit});
     } else if (existingSplit && _.isEqual(newSplit, split)) {
@@ -90,10 +90,10 @@ export default ({ route }) => {
         </InputWrapper>
         <InputWrapper label={'Exercises'}>
           {exercises.map((ex, ind) => (
-            <Card ind={ind} data={ex.movement} topData={msToHM(ex.rest_time)} bottomData={formatSetsReps(ex.set_count, ex.repetitions)} moveable={true} onDelete={() => handleDeleteExercise(ind)}/>
+            <View key={'Exercise' + ind}><Card data={ex.movement} topData={msToHM(ex.rest_time)} bottomData={formatSetsReps(ex.set_count, ex.repetitions)} moveable={true} onDelete={() => handleDeleteExercise(ind)}/></View>
           ))}
           <View style={styles.addExerciseBtnContainer}>
-            <ActionButton text={'Add Exercise'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} onPress={openNewExerciseModal}/>
+            <ActionButton text={'Add Exercise'} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} onPress={openNewExerciseModal}/>
           </View>
         </InputWrapper>
         <InputWrapper label={'Estimated Time'}>

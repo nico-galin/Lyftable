@@ -12,7 +12,7 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 
-export default ({ route }) => {
+export const AddSplitPage = ({ route }) => {
   const [splitSearchText, setSplitSearchText] = useState("");
   const [splitCode, setSplitCode] = useState("");
   const context = useAppContext();
@@ -44,7 +44,7 @@ export default ({ route }) => {
             <View>
               <SearchBar value={splitSearchText} placeholder={"Search Verified Splits..."} onChangeText={setSplitSearchText}/>
               {filteredSplits.length > 0 ? filteredSplits.slice(0, 3).map(([id, split], ind) => (
-                <SplitCard key={ind} split={split} />
+                <View key={ind}><SplitCard key={ind} split={split} /></View>
               )): 
                 <Text style={styles.centeredText}>No Results</Text>
               }

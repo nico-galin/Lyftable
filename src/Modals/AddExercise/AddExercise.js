@@ -104,7 +104,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
               <View style={styles.movementContainer}>
                 {Object.keys(filteredMovements).length > 0 ?
                   Object.entries(filteredMovements).slice(0, 3).map(([id, m], ind) => (
-                    <Card ind={ind} data={m.name} bottomData={m.alt_name ? m.alt_name : null} onPress={() => setSelectedMovement(id)}/>
+                    <View key={'Movement' + ind}><Card data={m.name} bottomData={m.alt_name ? m.alt_name : null} onPress={() => setSelectedMovement(id)}/></View>
                   ))
                 :
                   <Text style={styles.centeredText}>No Results</Text>
@@ -125,7 +125,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
             <View style={styles.rep}><Counter formattedValue={repetitions[0] + ' reps'} initialValue={repetitions[0]} increment={1} min={1} onChange={handleChangeAllReps}/></View>
           :
             repetitions.map((set, ind) => (
-              <View style={styles.rep}><Counter formattedValue={set + ' reps'} initialValue={set} increment={1} min={1} onChange={(val) => handleChangeIndividualRep(ind, val)}/></View>
+              <View key={ind} style={styles.rep}><Counter formattedValue={set + ' reps'} initialValue={set} increment={1} min={1} onChange={(val) => handleChangeIndividualRep(ind, val)}/></View>
             ))
           }
         </InputWrapper>

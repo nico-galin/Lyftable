@@ -4,16 +4,16 @@ import Header from '../../components/Header/Header';
 import { systemStyles } from '../../assets/styles';
 import { useAuth } from '../../contexts/AuthContext';
 
-export const Account = () => {
+export const AccountPage = ({ route }) => {
   const auth = useAuth();
   const signOut = () => {
     auth.signOut();
   };
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={'Account'} />
+      <Header title={'Account'} rightButtonName={"logout"} rightButtonOnPress={signOut} rightButtonSize={22}/>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Button title="Sign Out" onPress={signOut} />
+        
       </ScrollView>
     </View>
   );

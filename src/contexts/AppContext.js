@@ -266,6 +266,10 @@ const AppProvider = ({children}) => {
     }
   }
 
+  const splitInCollection = (id) => {
+    return userData.splits[id] != null;
+  }
+
   return (
     <AppContext.Provider value={{
       userData,
@@ -287,6 +291,7 @@ const AppProvider = ({children}) => {
       getUserName,
       getUserProfilePhoto,
       getSplit,
+      splitInCollection
     }}>
       {children}
     </AppContext.Provider>

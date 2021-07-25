@@ -101,7 +101,7 @@ export const Start = () => {
         <InputWrapper label={'All Splits'}>
             <SearchBar value={splitSearch} onChangeText={onSplitSearch} onBlur={() => onSplitSearch("")} onButtonPress={handleAddSplit} iconName={'plus'}/>
           {workoutsFiltered.length > 0 ? workoutsFiltered.map((workout, ind) => (
-            <SplitCard key={ind} split={workout.split} />
+            <View key={ind}><SplitCard key={ind} split={workout.split} /></View>
           ))
           :
           <Text style={styles.noSplitsText}>No Results</Text>

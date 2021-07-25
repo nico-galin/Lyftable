@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {Home} from '../screens/Home/Home';
-import {Charts} from '../screens/Charts/Charts';
-import {Start} from '../screens/Start/Start';
-import {Friends} from '../screens/Friends/Friends';
-import {Account} from '../screens/Account/Account';
+import { HomeStack } from '../routes/HomeStack';
+import { AccountStack } from '../routes/AccountStack';
+import { FriendsStack } from '../routes/FriendsStack';
+import { Charts } from '../screens/Charts/Charts';
+import { Start } from '../screens/Start/Start';
+import {Account} from '../screens/AccountPage/AccountPage';
 import { AddFriends } from '../modals/AddFriends/AddFriends';
 import { AddExercise } from '../modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
@@ -48,11 +49,11 @@ export const AppStack = () => {
         <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
         <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
         <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>}>
-          <Tabs.Screen name="Home" component={Home} />
+          <Tabs.Screen name="Home" component={HomeStack} />
           <Tabs.Screen name="Charts" component={Charts} />
           <Tabs.Screen name="Start" component={Start} />
-          <Tabs.Screen name="Friends" component={Friends} />
-          <Tabs.Screen name="Account" component={Account} />
+          <Tabs.Screen name="Friends" component={FriendsStack} />
+          <Tabs.Screen name="Account" component={AccountStack} />
         </Tabs.Navigator>
     </View>
   );

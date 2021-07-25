@@ -14,7 +14,7 @@ export default StyleSheet.create({
     selected: {
       flex: 1,
       padding: 8,
-      backgroundColor: theme.PRIMARY_COLOR,
+      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
       borderRadius: 12
     },
     unselected: {
