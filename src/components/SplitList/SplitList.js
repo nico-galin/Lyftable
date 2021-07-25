@@ -1,14 +1,13 @@
 import React from 'react';
-import {Button, Text, TouchableOpacity, View, Image} from 'react-native';
+import { Text, TouchableOpacity, View, Image } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { msToHM } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 
 import styles from './SplitList.style';
-import { systemStyles } from '../../assets/styles';
 import { useNavigation } from '@react-navigation/native';
 
-export default ({data = []}) => {
+export default ({data = {}}) => {
   const navigation = useNavigation();
   const generateSubscriberRow = (subs) => {
     let pfpSubs = subs.filter(sub => sub.profile_photo)
@@ -22,25 +21,28 @@ export default ({data = []}) => {
             <Image style={styles.subscriber} source={{uri: sub.profile_photo}} />
           </View>
         ))}
+        {subs.length - pfpSubs.length > 0 &&
           <View style={styles.subscriberWrapper}>
             <View style={styles.extraSubscribers}>
               <Text style={styles.extraSubscribersText}>+{Math.min(99, subs.length - pfpSubs.length)}</Text>
             </View>
           </View>
+        }
       </View>
     )
   }
+
   return (
     <View style={styles.container}>
-      {data.length <= 0 ?
+      {Object.keys(data).length <= 0 ?
         <Text style={styles.noSplitsText}>You don't have any splits yet!</Text>
       :
         <View>
-          {data.map((split, ind) => (
+          {Object.entries(data).map(([id, split], ind) => (
             <View key={ind}>
-              <TouchableOpacity style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split })}>
+              <TouchableOpacity style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
                 <View style={styles.description}>
-                  <Text style={styles.title}>{split.name}</Text>
+                  <Text style={styles.title}>{split ? split.name : ""}</Text>
                   <Text style={styles.exerciseLength}>{split.exercises.length} Exercises</Text>
                 </View>
                 <View style={styles.action}>

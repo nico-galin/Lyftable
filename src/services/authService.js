@@ -35,7 +35,6 @@ const signInWithGoogle = async () => {
     auth().signInWithCredential(googleCredential);
 
     const currentUser = await GoogleSignin.getCurrentUser();
-    console.log("user", currentUser)
     return {
       method: "google",
       user: currentUser,

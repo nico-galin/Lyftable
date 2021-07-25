@@ -6,6 +6,7 @@ import SectionLabel from '../../components/SectionLabel/SectionLabel';
 import SplitList from '../../components/SplitList/SplitList';
 import SplitPage from '../SplitPage/SplitPage';
 import EditSplitPage from '../EditSplitPage/EditSplitPage';
+import AddSplitPage from '../AddSplitPage/AddSplit';
 import styles from './Home.style';
 import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
@@ -13,6 +14,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
+import { useAppContext } from '../../contexts/AppContext';
 
 const sampleSplitData = [
   {
@@ -422,11 +424,13 @@ export const Home = ({ route }) => {
         <Stack.Screen name="HomePage" component={HomePage}/>
         <Stack.Screen name="SplitPage" component={SplitPage}/>
         <Stack.Screen name="EditSplit" component={EditSplitPage}/>
+        <Stack.Screen name="AddSplit" component={AddSplitPage}/>
       </Stack.Navigator>
   );
 };
 
 const HomePage = (props) => {
+  const splits = useAppContext().userData.splits;
   const navigation = useNavigation();
   return (
     <View style={systemStyles.pageContainer}>
@@ -437,8 +441,8 @@ const HomePage = (props) => {
           <Calendar />
         </View>
         <View style={systemStyles.pageSection}>
-          <SectionLabel label={'Your Splits'} buttonLabel={'Add Split'} buttonOnPress={() => {}}/>
-          <SplitList data={sampleSplitData} />
+          <SectionLabel label={'Split Collection'} buttonLabel={'Add Split'} buttonOnPress={() => navigation.navigate('AddSplit')}/>
+          <SplitList data={splits} />
         </View>
       </ScrollView>
     </View>

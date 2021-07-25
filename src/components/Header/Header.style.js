@@ -7,6 +7,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingBottom: 8,
+        paddingHorizontal: 30
     },
     title: {
         fontSize: theme.FONT_SIZE_HEADER,
@@ -18,6 +19,15 @@ export default StyleSheet.create({
         top: 0,
         bottom: 0,
         left: 0,
+        marginBottom: 8,
+        justifyContent: 'center',
+        marginVertical: "auto",
+    },
+    rightBtn: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
         marginBottom: 8,
         justifyContent: 'center',
         marginVertical: "auto",

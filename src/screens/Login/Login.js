@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator, Button, Text, TextInput, View} from 'react-native';
 
 import styles from './Login.style';
-import {useAuth} from '../../contexts/Auth';
+import {useAuth} from '../../contexts/AuthContext';
 
 export const Login = () => {
   const [loading, isLoading] = useState(false);
@@ -40,7 +40,6 @@ export const Login = () => {
       isLoading(false);
     }
   };
-
 
   return (
     <View style={styles.container}>

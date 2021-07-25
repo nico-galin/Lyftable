@@ -1,3 +1,7 @@
+let hashlib = require('hashlib');
+import 'react-native-get-random-values';
+import { v4 as uuid } from 'uuid';
+
 const msToDigital = (ms) => {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / 1000 / 60) % 60);
@@ -36,4 +40,29 @@ const formatSetsReps = (sets, repArray) => {
   }
   return `${sets} sets x ${reps} reps`
 }
-export { msToDigital, msToHM, msToHMS, msToM_RAW, formatSetsReps }
+
+const getTimeStamp = () => {
+  return new Date().toISOString();
+}
+
+const getSplitTemplate = () => {
+  return {
+    public: true,
+    creator: {
+      name: null,
+      id: null,
+      profile_photo: null
+    },
+    name: null,
+    description: null,
+    exercises: [],
+    estimated_time: 1000 * 60 * 60,
+    subscribers: []
+  }
+}
+
+const generateUniqueId = () => {
+  return uuid();
+}
+
+export { msToDigital, msToHM, msToHMS, msToM_RAW, formatSetsReps, getTimeStamp, getSplitTemplate, generateUniqueId }

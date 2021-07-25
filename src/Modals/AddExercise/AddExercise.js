@@ -14,6 +14,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import Counter from '../../components/Counter/Counter';
 import { msToHM, msToHMS } from '../../services/utilities';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
+import { useAppContext } from '../../contexts/AppContext';
 
 const verifiedMovements = {
   "00a0-sjd09asdj09asd": {
@@ -40,7 +41,7 @@ const verifiedMovements = {
   }
 }
 
-export const AddExercise = ({isVisible, setVisibility, callback}) => {
+export const AddExercise = ({ isVisible, setVisibility }) => {
   const [movementSearchText, setMovementSearchText] = useState("");
   const [selectedMovement, setSelectedMovement] = useState("");
   const [timeLimit, setTimeLimit] = useState(600000);
@@ -48,10 +49,11 @@ export const AddExercise = ({isVisible, setVisibility, callback}) => {
   const [restTime, setRestTime] = useState(60000);
   const [equalReps, setEqualReps] = useState(true);
   const [repetitions, setRepetitions] = useState([10, 10, 10]);
+  const context = useAppContext();
 
   const completeForm = () => {
     setVisibility(false);
-    callback({
+    context.modalCallback({
       movement: verifiedMovements[selectedMovement].name,
       time_limit: timeLimit,
       set_count: setCount,
@@ -80,7 +82,7 @@ export const AddExercise = ({isVisible, setVisibility, callback}) => {
     }
   }
 
-  handleChangeAllReps = (val) => {
+  const handleChangeAllReps = (val) => {
     const newRepetitions = [...repetitions];
     newRepetitions.fill(val);
     setRepetitions(newRepetitions);

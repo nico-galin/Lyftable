@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Text, View} from 'react-native';
 
 import styles from './Loading.style';
-import {useAuth} from '../../contexts/Auth';
+import {useAuth} from '../../contexts/AuthContext';
 
 export const Loading = () => {
   const auth = useAuth();

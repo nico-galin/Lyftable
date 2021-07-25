@@ -7,10 +7,10 @@ export default StyleSheet.create({
     },
     noSplitsText: {
       textAlign: 'center',
-      paddingVertical: 15,
+      paddingVertical: 30,
       paddingHorizontal: 5,
       fontSize: theme.FONT_SIZE_SMALL,
-      color: theme.SUBTITLE_COLOR
+      color: theme.PRIMARY_COLOR
     },
     split: {
       display: 'flex',

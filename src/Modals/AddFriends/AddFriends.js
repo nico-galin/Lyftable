@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import Modal from 'react-native-modal';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import styles from './AddFriends.style'
-import { systemStyles } from '../../assets/styles';
-import Header from '../../components/Header/Header';
 import InputWrapper from '../../components/InputWrapper/InputWrapper';
 import ModalContainer from '../../components/ModalContainer/ModalContainer';
 import SearchBar from '../../components/SearchBar/SearchBar';

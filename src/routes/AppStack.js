@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home} from '../screens/Home/Home';
 import {Charts} from '../screens/Charts/Charts';
@@ -8,38 +8,45 @@ import {Account} from '../screens/Account/Account';
 import { AddFriends } from '../Modals/AddFriends/AddFriends';
 import { AddExercise } from '../Modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
-import { View, Text, StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import theme from '../assets/theme.style';
-import { AppContext } from '../services/appContext';
+import { useAppContext } from '../contexts/AppContext';
+
 
 export const AppStack = () => {
   const [addFriendModalVisible, setAddFriendModalVisible] = useState(false);
   const [addExerciseModalVisible, setAddExerciseModalVisible] = useState(false);
-  const [modalCallback, setModalCallback] = useState(() => {});
   const Tabs = createBottomTabNavigator();
+  const context = useAppContext();
 
-  const openModal = (name, callback = () => {}) => {
-    switch(name) { 
-      case 'AddExercise':
-        setAddExerciseModalVisible(true);
-        break;
-      case 'AddFriends':
-        setAddFriendModalVisible(true);
-        break; 
-    }
-    setModalCallback(() => callback);
-  }
+  useEffect(() => {
+    const openModal = (name, callback = () => {}) => {
+      switch(name) {
+        case 'AddExercise':
+          setAddExerciseModalVisible(true);
+          break;
+        case 'AddFriends':
+          setAddFriendModalVisible(true);
+          break;
+        default:
+          console.log("Invalid Modal Name: " + name);
+          return;
+      }
+      context.setModalCallback(() => callback);
+    };
+    context.setOpenModal(() => openModal);
+  }, [])
 
   return (
-    <AppContext.Provider value={{openModal: openModal}} style={{flex: 1}}>
+    <View style={{flex: 1}}>
         <StatusBar
           animated={false}
           barStyle={'dark-content'}
           backgroundColor={theme.BACKGROUND_COLOR}
           hidden={false} 
         />
-        <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} callback={modalCallback}/>
-        <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} callback={modalCallback}/>
+        <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
+        <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
         <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>}>
           <Tabs.Screen name="Home" component={Home} />
           <Tabs.Screen name="Charts" component={Charts} />
@@ -47,6 +54,6 @@ export const AppStack = () => {
           <Tabs.Screen name="Friends" component={Friends} />
           <Tabs.Screen name="Account" component={Account} />
         </Tabs.Navigator>
-    </AppContext.Provider>
+    </View>
   );
 };

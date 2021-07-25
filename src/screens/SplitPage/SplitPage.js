@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {ScrollView, Text, View, Image} from 'react-native';
 import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -11,10 +11,19 @@ import { msToHM, formatSetsReps } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 import CodeBanner from '../../components/CodeBanner/CodeBanner';
+import { useAppContext } from '../../contexts/AppContext';
 
 export default ({ route }) => {
-  const split = route.params.data;
+  let [split, setSplit] = useState(route.params.data);
+  const context = useAppContext();
   const navigation = useNavigation();
+  useEffect(() => {
+    setSplit(context.getSplit(split.id));
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      setSplit(context.getSplit(split.id));
+    });
+    return willFocusSubscription;
+  }, []);
   let subscriberList = "";
   const publicSubscribers = split.subscribers.filter(sub => sub.id != null);
   publicSubscribers.slice(0, 5).forEach((sub, ind) => {
@@ -26,9 +35,14 @@ export default ({ route }) => {
     subscriberList += `, and ${Math.max(publicSubscribers.length - 5, 0) + split.subscribers.length - publicSubscribers.length} others`;
   }
 
+  const handleDelete = () => {
+    context.removeUserSplit(split.id);
+    navigation.goBack();
+  }
+
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={split.name} backButton={true}/>
+      <Header title={split.name} backButton={true} rightButtonName={"delete"} rightButtonOnPress={handleDelete}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.description}>{split.description}</Text>
         <View style={styles.sectionContainer}>
@@ -63,7 +77,7 @@ export default ({ route }) => {
           </View>
         </View>
         <View style={[styles.sectionContainer, styles.buttonRow]}>
-          <ActionButton onPress={() => navigation.navigate('EditSplit', {data: split})} text={'Edit'} height={'large'} width={'small'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton onPress={() => navigation.navigate('EditSplit', { data: split })} text={'Edit'} height={'large'} width={'small'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
           <View style={styles.gap} />
           <ActionButton text={'Start Workout'} height={'large'}color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
         </View>

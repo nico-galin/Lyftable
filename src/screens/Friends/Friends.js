@@ -6,7 +6,7 @@ import { systemStyles } from '../../assets/styles';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CodeBanner from '../../components/CodeBanner/CodeBanner';
-import { AppContext } from '../../services/appContext';
+import { AppContext } from '../../contexts/AppContext';
 
 export const Friends = ({route}) => {
   const [tab, setTab] = useState("Feed");
