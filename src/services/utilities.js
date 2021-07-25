@@ -31,6 +31,10 @@ const msToM_RAW = (ms) => {
   return ms/1000/60;
 }
 
+const mToMS = (m) => {
+  return m * 60 * 1000;
+}
+
 const formatSetsReps = (sets, repArray) => {
   let reps = ""
   if (repArray.every(e => e===repArray[0])) {
@@ -65,4 +69,4 @@ const generateUniqueId = () => {
   return uuid();
 }
 
-export { msToDigital, msToHM, msToHMS, msToM_RAW, formatSetsReps, getTimeStamp, getSplitTemplate, generateUniqueId }
+export { msToDigital, msToHM, msToHMS, mToMS, msToM_RAW, formatSetsReps, getTimeStamp, getSplitTemplate, generateUniqueId }

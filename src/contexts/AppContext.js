@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { parseISO, addMinutes } from 'date-fns';
+import { parseISO, addMinutes, format } from 'date-fns';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { firebase as firebaseAuth } from '@react-native-firebase/auth';
-import { useContext } from 'react';
-import { getTimeStamp, generateUniqueId } from '../services/utilities';
+import { getTimeStamp, generateUniqueId, mToMS } from '../services/utilities';
 import { isWithinInterval } from 'date-fns/esm';
 
+const syncInterval = mToMS(10);
 const AppContext = React.createContext({});
 
 const AppProvider = ({children}) => {
@@ -165,7 +165,7 @@ const AppProvider = ({children}) => {
         userDataObject = Object.assign({}, userData);
       }
       const lastSync = parseISO(userDataObject.lastCloudSync);
-      if (!force && userDataObject.lastCloudSync && isWithinInterval(new Date(), {start: lastSync, end: addMinutes(lastSync, 60)})) {
+      if (!force && userDataObject.lastCloudSync && isWithinInterval(new Date(), {start: lastSync, end: addMinutes(lastSync, 30)})) {
         resolve(userDataObject);
         return;
       }
@@ -209,7 +209,6 @@ const AppProvider = ({children}) => {
 
   const replaceUserSplit = (id, newSplit) => {
     const newUserData = Object.assign({}, userData);
-    console.log("newUserData: ", newUserData);
     newUserData.splits[id] = newSplit;
     setUserData(newUserData);
     saveUserDataLocally(newUserData);

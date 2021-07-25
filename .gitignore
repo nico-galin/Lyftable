@@ -58,9 +58,10 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# Authentication
+# Firebase
 google-services.json
-GoogleService-Info.plist'
+GoogleService-Info.plist
+firebase-debug.log
 
 #Other
 .VSCodeCounter/
