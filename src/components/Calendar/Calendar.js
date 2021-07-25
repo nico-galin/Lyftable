@@ -5,8 +5,10 @@ import Icon from 'react-native-vector-icons/Feather';
 import styles from './Calendar.style';
 import theme from '../../assets/theme.style';
 import ActionButton from '../ActionButton/ActionButton';
+import { useNavigation } from '@react-navigation/native';
 
 export default () => {
+  const navigation = useNavigation();
   let dateList = [];
   const [monthDiff, setMonthDiff] = useState(0);
   const today = new Date();
@@ -101,7 +103,7 @@ export default () => {
           </View>
         </View>
         <View style={styles.buttonSection}>
-          <ActionButton text={'Add Workouts'} color={theme.BACKGROUND_COLOR} textColor={theme.SPECIAL_FOREGROUND_COLOR_DARK} />
+          <ActionButton text={'Add Workouts'} color={theme.BACKGROUND_COLOR} textColor={theme.SPECIAL_FOREGROUND_COLOR_DARK} onPress={() => navigation.navigate("ScheduleWorkouts")}/>
         </View>
       </View>
     </View>

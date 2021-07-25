@@ -1,20 +1,25 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import styles from './CodeBanner.style';
 import theme from '../../assets/theme.style';
 
 export default ({label, code, data}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.info}>
+      <TouchableOpacity style={styles.info} onPress={() => Clipboard.setString(code)}>
         <Text style={styles.label}>{label}</Text>
-        <Text style={styles.code}>{code}</Text>
-      </View>
-      <View style={styles.prompt}>
+        <View style={styles.codeContainer}>
+          <Text style={styles.code}>{code.slice(0, 15)}...</Text>
+          <MatIcon name={"content-copy"} size={13} color={theme.BACKGROUND_COLOR} />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.prompt}>
         <Text style={styles.promptText}>tap to open qr</Text>
-        <Icon name={'qrcode'} size={50} color={theme.BACKGROUND_COLOR}/>
-      </View>
+        <AntIcon name={'qrcode'} size={40} color={theme.BACKGROUND_COLOR}/>
+      </TouchableOpacity>
     </View>
   );
 };

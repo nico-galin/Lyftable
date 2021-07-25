@@ -9,6 +9,7 @@ import ActionButton from '../../components/ActionButton/ActionButton';
 import InputWrapper from '../../components/InputWrapper/InputWrapper';
 import SplitCard from '../../components/SplitCard/SplitCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import { useNavigation } from '@react-navigation/native';
 
 const sampleWorkouts = [
   {
@@ -74,6 +75,7 @@ const workoutFilterFunction = (filter, workout) => {
 }
 
 export const Start = () => {
+  const navigation = useNavigation();
   const [splitSearch, onSplitSearch] = useState("");
   const workoutsToday = sampleWorkouts.filter(workout => isSameDay(new Date(), parseISO(workout.scheduled)))
   const workoutsFiltered = sampleWorkouts.filter(w => workoutFilterFunction(splitSearch, w));
@@ -87,14 +89,14 @@ export const Start = () => {
       <Header title={'Start a Workout'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[styles.buttonRow, systemStyles.pageSection]}>
-          <ActionButton text={'Schedule Workouts'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton text={'Schedule Workouts'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} onPress={() => navigation.navigate('ScheduleWorkouts')}/>
           <View style={styles.gap} />
           <ActionButton text={'Custom Workout'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
         </View>
         { workoutsToday.length > 0 &&
           <InputWrapper label={'Scheduled'}>
-            {workoutsToday.map(workout => (
-              <SplitCard split={workout.split} scheduled={workout.scheduled} />
+            {workoutsToday.map((workout, ind) => (
+              <View key={ind}><SplitCard split={workout.split} scheduled={workout.scheduled} /></View>
             ))}
           </InputWrapper>
         }

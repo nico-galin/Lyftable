@@ -3,6 +3,7 @@ import { HomePage } from '../screens/HomePage/HomePage';
 import { SplitPage } from '../screens/SplitPage/SplitPage';
 import { EditSplitPage } from '../screens/EditSplitPage/EditSplitPage';
 import { AddSplitPage } from '../screens/AddSplitPage/AddSplitPage';
+import { ScheduleWorkoutsPage} from '../screens/ScheduleWorkoutsPage/ScheduleWorkoutsPage'
 import { createStackNavigator } from '@react-navigation/stack';
 
 export const HomeStack = ({ route }) => {
@@ -29,6 +30,7 @@ export const HomeStack = ({ route }) => {
         <Stack.Screen name="SplitPage" component={SplitPage}/>
         <Stack.Screen name="EditSplit" component={EditSplitPage}/>
         <Stack.Screen name="AddSplit" component={AddSplitPage}/>
+        <Stack.Screen name="ScheduleWorkouts" component={ScheduleWorkoutsPage}/>
       </Stack.Navigator>
   );
 };

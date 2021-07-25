@@ -21,7 +21,7 @@ export const FriendsList = ({ route }) => {
         <SearchBar value={searchText} onChangeText={handleSearch} onBlur={() => handleSearch('')} onButtonPress={() => context.openModal("AddFriends")} iconName={'plus'}/>
         <Text style={styles.friendCount}>{Object.keys(context.userData.friends).length} Friends</Text>
       </ScrollView>
-      <CodeBanner label={'Your Friend Code'} code={'ABCDEFGHIJK'} data={{}} />
+      <CodeBanner label={'Your Friend Code'} code={'ABCDEFGHIJKASDASDASDASDASDSAD'} data={{}} />
     </View>
   );
 };

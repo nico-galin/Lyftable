@@ -49,6 +49,14 @@ const getTimeStamp = () => {
   return new Date().toISOString();
 }
 
+const getWeekday = (ind, format = "dd") => {
+  if (format === "d") {
+    return ["S", "M", "T", "W", "T", "F", "S"][ind];
+  } else {
+    return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Ssaturdays"][ind];
+  }
+}
+
 const getSplitTemplate = () => {
   return {
     public: true,
@@ -69,4 +77,32 @@ const generateUniqueId = () => {
   return uuid();
 }
 
-export { msToDigital, msToHM, msToHMS, mToMS, msToM_RAW, formatSetsReps, getTimeStamp, getSplitTemplate, generateUniqueId }
+const filterSplitsByString = (splitList, str) => {
+  console.log("orig:", splitList)
+  const filterSplit = (filter, split) => {
+    if (split.name.toLowerCase().includes(filter)) {
+      return true;
+    }
+    for (let i=0, l=split.exercises.length; i < l; i++) {
+      if (split.exercises[i].movement.toLowerCase().includes(filter)) {
+        return true;
+      }
+    }
+    return false
+  }
+  return Object.entries(splitList).filter(([id, split]) => filterSplit(str.toLowerCase(), split));
+}
+
+export {
+  msToDigital,
+  msToHM,
+  msToHMS,
+  mToMS,
+  msToM_RAW,
+  getWeekday,
+  formatSetsReps,
+  getTimeStamp,
+  getSplitTemplate,
+  generateUniqueId,
+  filterSplitsByString
+}

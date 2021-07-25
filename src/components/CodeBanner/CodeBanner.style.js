@@ -10,15 +10,20 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
         marginHorizontal: -15,
-        padding: 18
+        padding: 15
     },
     label: {
       color: theme.BACKGROUND_COLOR
     },
+    codeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
     code: {
       color: theme.BACKGROUND_COLOR,
-      fontSize: theme.FONT_SIZE_LARGE,
-      fontWeight: 'bold'
+      fontSize: theme.FONT_SIZE_MEDIUM,
+      fontWeight: 'bold',
+      marginRight: 5,
     },
     prompt: {
       display: 'flex',

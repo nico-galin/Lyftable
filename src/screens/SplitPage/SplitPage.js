@@ -45,7 +45,11 @@ export const SplitPage = ({ route }) => {
 
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={split.name} backButton={true} rightButtonName={"delete"} rightButtonOnPress={handleDelete}/>
+      {inCollection ?
+        <Header title={split.name} backButton={true} rightButtonName={"delete"} rightButtonOnPress={handleDelete}/>
+      :
+        <Header title={split.name} backButton={true} />
+      }
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.description}>{split.description}</Text>
         <View style={styles.sectionContainer}>

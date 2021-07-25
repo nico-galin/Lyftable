@@ -11,6 +11,7 @@ import SplitCard from '../../components/SplitCard/SplitCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import { filterSplitsByString } from '../../services/utilities';
 
 export const AddSplitPage = ({ route }) => {
   const [splitSearchText, setSplitSearchText] = useState("");
@@ -22,19 +23,7 @@ export const AddSplitPage = ({ route }) => {
 
   }
 
-  const filterSplit = (filter, split) => {
-    const sFilter = filter.toLowerCase();
-    if (split.name.toLowerCase().includes(sFilter)) {
-      return true;
-    }
-    for (let i=0, l=split.exercises.length; i < l; i++) {
-      if (split.exercises[i].movement.toLowerCase().includes(sFilter)) {
-        return true;
-      }
-    }
-    return false
-  }
-  const filteredSplits = Object.entries(context.verifiedSplits).filter(([id, split]) => filterSplit(splitSearchText, split));
+  const filteredSplits = filterSplitsByString(context.verifiedSplits, splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={"Add Split"} backButton={true}/>
