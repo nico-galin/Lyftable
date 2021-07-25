@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "452551347631",
+    "project_id": "lyftable-2e7c4",
+    "storage_bucket": "lyftable-2e7c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452551347631:android:82be27cb1594e35156735a",
+        "android_client_info": {
+          "package_name": "com.nicogalin.lyftable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452551347631-o6qrspj28ipfpug4qdqlu8b1rv2mfnoe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nicogalin.lyftable",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "452551347631-16citeoeq2getju0cqdjngmk5dfiruvs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Pff1lfpbVzACawl3MEo9jTQEqDrUKjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452551347631-16citeoeq2getju0cqdjngmk5dfiruvs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
