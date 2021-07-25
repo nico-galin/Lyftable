@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
-import {ScrollView, View, Text, TouchableOpacity} from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Header from '../../components/Header/Header';
-import styles from './Friends.style';
 import { systemStyles } from '../../assets/styles';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import SearchBar from '../../components/SearchBar/SearchBar';

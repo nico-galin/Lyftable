@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 

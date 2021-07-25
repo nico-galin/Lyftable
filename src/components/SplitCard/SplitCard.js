@@ -1,10 +1,8 @@
 import React from 'react';
-import {Button, Text, View, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/Foundation';
-
 import styles from './SplitCard.style';
-import { systemStyles } from '../../assets/styles';
 import { msToHM, formatSetsReps } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 

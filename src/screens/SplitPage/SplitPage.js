@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {ScrollView, Text, View, Image} from 'react-native';
+import { ScrollView, Text, View, Image } from 'react-native';
 import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
 import styles from './SplitPage.style';
 import Header from '../../components/Header/Header';
 import ActionButton from '../../components/ActionButton/ActionButton';

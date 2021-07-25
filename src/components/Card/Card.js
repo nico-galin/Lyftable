@@ -1,11 +1,7 @@
 import React from 'react';
-import {Button, Text, View, TouchableHighlight, TouchableOpacity} from 'react-native';
-import { format, parseISO } from 'date-fns';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import styles from './Card.style';
-import { systemStyles } from '../../assets/styles';
-import { msToHM, formatSetsReps } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 
 export default ({onPress, onDelete, data, topData, bottomData, moveable = false, ind = 0}) => {

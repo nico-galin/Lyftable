@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Button, Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './OptionSlider.style';
 

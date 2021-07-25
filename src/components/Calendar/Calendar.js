@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { startOfWeek, startOfMonth, addDays, format, isSameDay, isAfter, addMonths, isSameYear } from 'date-fns';
-import {Button, Text, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import { Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-
 import styles from './Calendar.style';
-import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
 import ActionButton from '../ActionButton/ActionButton';
 

@@ -1,8 +1,7 @@
 import React from 'react';
-import {TextInput, View, Text, TouchableOpacity} from 'react-native';
+import { TextInput, View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-
 import styles from './SearchBar.style';
 import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';

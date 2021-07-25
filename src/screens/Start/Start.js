@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import {ScrollView, View, Text} from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { isSameDay, parseISO } from 'date-fns';
-
 import styles from './Start.style';
 import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';

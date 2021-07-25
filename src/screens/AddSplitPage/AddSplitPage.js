@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import styles from './AddSplit.style';
+import styles from './AddSplitPage.style';
 import { systemStyles } from '../../assets/styles';
 import Header from '../../components/Header/Header';
 import ActionButton from '../../components/ActionButton/ActionButton';

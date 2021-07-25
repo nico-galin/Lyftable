@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Button, Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../assets/theme.style';
 import styles from './Counter.style';

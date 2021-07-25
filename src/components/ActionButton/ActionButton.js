@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import theme from '../../assets/theme.style';
-
 import styles from './ActionButton.style';
 
 export default ({height = 'small',

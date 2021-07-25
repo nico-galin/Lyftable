@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from 'react-native-modal';
 import { View, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import styles from './ModalContainer.style'

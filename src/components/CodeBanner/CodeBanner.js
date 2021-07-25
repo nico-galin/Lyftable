@@ -1,9 +1,7 @@
 import React from 'react';
-import {Button, Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-
 import styles from './CodeBanner.style';
-import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
 
 export default ({label, code, data}) => {

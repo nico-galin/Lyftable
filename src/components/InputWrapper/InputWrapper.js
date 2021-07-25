@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View, ScrollView} from 'react-native';
+import { Text, View } from 'react-native';
 
 import styles from './InputWrapper.style';
 

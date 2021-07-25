@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
-import {ActivityIndicator, Button, Text, TextInput, View} from 'react-native';
-
+import React, { useState } from 'react';
+import { ActivityIndicator, Button, Text, TextInput, View } from 'react-native';
 import styles from './Login.style';
-import {useAuth} from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const Login = () => {
   const [loading, isLoading] = useState(false);

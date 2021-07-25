@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, Text, View, TouchableWithoutFeedback} from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';

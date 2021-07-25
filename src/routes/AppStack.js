@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {Home} from '../screens/Home/Home';
 import {Charts} from '../screens/Charts/Charts';
 import {Start} from '../screens/Start/Start';
 import {Friends} from '../screens/Friends/Friends';
 import {Account} from '../screens/Account/Account';
-import { AddFriends } from '../Modals/AddFriends/AddFriends';
-import { AddExercise } from '../Modals/AddExercise/AddExercise';
+import { AddFriends } from '../modals/AddFriends/AddFriends';
+import { AddExercise } from '../modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
 import { View, StatusBar } from 'react-native';
 import theme from '../assets/theme.style';

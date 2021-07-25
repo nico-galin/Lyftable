@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Header from '../../components/Header/Header';
 import styles from './Charts.style';
 import { systemStyles } from '../../assets/styles';
