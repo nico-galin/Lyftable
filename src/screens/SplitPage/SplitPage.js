@@ -6,7 +6,7 @@ import styles from './SplitPage.style';
 import Header from '../../components/Header/Header';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import { systemStyles } from '../../assets/styles';
-import { msToHM, formatSetsReps } from '../../services/utilities';
+import { msToHM, formatSetsReps, generateSplitShareCode } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 import CodeBanner from '../../components/CodeBanner/CodeBanner';
@@ -97,7 +97,7 @@ export const SplitPage = ({ route }) => {
         {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} />}
         <Text style={styles.description}>Note: If you make changes to a split made by someone else, you will be unsubscribed from their split</Text>
       </ScrollView>
-      <CodeBanner label={'Split Share Code'} code={context.generateSplitShareCode(split.id, split.creator.id)} data={{}} />
+      <CodeBanner label={'Split Share Code'} code={generateSplitShareCode(split.id, split.creator.id)} data={{}} />
     </View>
   )
 };

@@ -32,7 +32,7 @@ export const FriendsList = ({ route }) => {
         { filteredFriends }
         <Text style={styles.friendCount}>{Object.keys(friends).length} Friends</Text>
       </ScrollView>
-      <CodeBanner label={'Your Friend Code'} code={'ABCDEFGHIJKASDASDASDASDASDSAD'} data={{}} />
+      <CodeBanner label={'Your Friend Code'} code={context.userMetadata.id} data={{}} />
     </View>
   );
 };

@@ -18,18 +18,18 @@ export const AddSplitPage = ({ route }) => {
   const [splitCode, setSplitCode] = useState("");
   const context = useAppContext();
   const navigation = useNavigation();
-
+  const verifiedSplits = context.verifiedSplits;
   const handleSubmitSplitCode = () => {
 
   }
-
-  const filteredSplits = filterSplitsByString(context.verifiedSplits, splitSearchText);
+  console.log("VER", verifiedSplits)
+  const filteredSplits = filterSplitsByString(verifiedSplits, splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={"Add Split"} backButton={true}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <InputWrapper label={"Verified Splits"}>
-          {Object.keys(context.verifiedSplits).length > 0 ?
+          {Object.keys(verifiedSplits).length > 0 ?
             <View>
               <SearchBar value={splitSearchText} placeholder={"Search Verified Splits..."} onChangeText={setSplitSearchText}/>
               {filteredSplits.length > 0 ? filteredSplits.slice(0, 3).map(([id, split], ind) => (

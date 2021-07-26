@@ -1,5 +1,6 @@
-let hashlib = require('hashlib');
 import 'react-native-get-random-values';
+import { firebase as firebaseFunc } from '@react-native-firebase/functions';
+import { Buffer } from "buffer";
 import { v4 as uuid } from 'uuid';
 
 const msToDigital = (ms) => {
@@ -170,13 +171,19 @@ const validator = {
   },
 }
 
-const encoder = {
-  encodeSplit: (split) => {
-    return Buffer.from(JSON.stringify(split), 'utf-8').toString("base64");
-  },
-  decodeSplit: (encodedData) => {
-    return Buffer.from(encodedData, 'base64').toString('utf-8');
-  }
+const getSplitFromShareCode = async (shareCode) => {
+  const decoded = JSON.parse(Buffer.from(shareCode, 'base64').toString('utf-8'));
+  const split = await firebaseFunc.functions().httpsCallable("getSplitFromUser")(decoded);
+  return split;
+}
+
+const getVerifiedSplits = async() => {
+  const res = await firebaseFunc.functions().httpsCallable("getVerifiedSplits")();
+  return res.data;
+}
+
+const generateSplitShareCode = (id, userId) => {
+  return Buffer.from(JSON.stringify({ id: id, userId: userId }), "utf-8").toString("base64");
 }
 
 export {
@@ -191,5 +198,8 @@ export {
   getSplitTemplate,
   generateUniqueId,
   filterSplitsByString,
+  getSplitFromShareCode,
+  getVerifiedSplits,
+  generateSplitShareCode,
   validator,
 }

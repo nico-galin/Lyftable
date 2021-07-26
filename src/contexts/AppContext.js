@@ -3,9 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { parseISO, addMinutes, startOfWeek, addWeeks, addDays, isAfter } from 'date-fns';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { firebase as firebaseAuth } from '@react-native-firebase/auth';
-import { getTimeStamp, generateUniqueId, mToMS } from '../services/utilities';
-import { isWithinInterval } from 'date-fns/esm';
-import { Buffer } from "buffer";
+import { getTimeStamp, generateUniqueId, getVerifiedSplits } from '../services/utilities';
 
 const AppContext = React.createContext({});
 
@@ -23,68 +21,13 @@ const AppProvider = ({children}) => {
   const [resetModal, setResetModal] = useState(() => {});
   const [verifiedSplits, setVerifiedSplits] = useState({});
   const [verifiedExercises, setVerifiedExercises] = useState({});
-  useEffect(() => {
+  useEffect(async() => {
     //Every time the App is opened, this provider is rendered
     //and call de loadStorage function.
     firebaseFunc.functions().useFunctionsEmulator('http://localhost:5001');
     initializeUserData();
-    setVerifiedSplits([
-      {
-        public: false,
-        id: "11212asdaskd09askd90asjd90asjddasdk0-asd",
-        creator: {
-          name: "Lyftable",
-          id: "11212asdaskd09askd90asjd90asjddasdk0-asd",
-          profile_photo: "https://picsum.photos/200/200"
-        },
-        uses: 0,
-        name: "Push Day",
-        description: "Gnarly workout for those days you really just want to feel the pain.",
-        exercises: [
-          {
-            movement: "Chest Press",
-            time_limit: 12312312,
-            set_count: 4,
-            repetitions: [10, 10, 10, 10],
-            rest_time: 60000
-          },
-          {
-            movement: "Pectoral Flye",
-            time_limit: 12312312,
-            set_count: 4,
-            repetitions: [10, 10, 10, 10],
-            rest_time: 60000
-          },
-        ],
-        estimated_time: 100000200,
-        subscribers: [
-          {
-            id: "12131231231232131231",
-            name: "John Doe",
-            profile_photo: "https://picsum.photos/200/200"
-          },
-          {
-            name: "Jane Doe",
-            id: "12131231231232131231",
-            profile_photo: "https://picsum.photos/200/200"
-          },
-          {
-          },
-          {
-          },
-          {
-            name: "Don Moyington",
-            id: "12131231231232131231",
-            profile_photo: "https://picsum.photos/200/200"
-          },
-          {
-            name: "Graham Moyington",
-            id: "12131231231232131231",
-            profile_photo: "https://picsum.photos/200/200"
-          }
-        ]
-      }
-    ])
+    const vs = await getVerifiedSplits();
+    setVerifiedSplits(vs);
   }, []);
 
   async function loadUserDataFromLocal() {
@@ -304,27 +247,6 @@ const AppProvider = ({children}) => {
     return userSplits[id] != null;
   }
 
-  const generateSplitShareCode = (id, userId) => {
-    return Buffer.from(JSON.stringify({ id: id, userId: userId }), "utf-8").toString("base64");
-  }
-
-  const getSplitFromShareCode = async (shareCode) => {
-    const res = await firebaseFunc.functions().httpsCallable("getVerifiedSplits")();
-    console.log(res);
-
-   /* return new Promise((resolve, reject) => {
-      const decoded = JSON.parse(Buffer.from(shareCode, 'base64').toString('utf-8'));
-      firebaseFunc.functions().httpsCallable("getSplitFromUser")(decoded)
-        .then(res => {
-          resolve(res);
-        })
-        .catch(e => {
-          console.log("[Error getting split from sharecode]", e);
-        })
-    });
-*/
-  }
-
   return (
     <AppContext.Provider value={{
       userSplits,
@@ -336,9 +258,6 @@ const AppProvider = ({children}) => {
       openModal, setOpenModal,
       modalCallback, setModalCallback,
       resetModal, setResetModal,
-      saveUserDataLocally,
-      syncUserDataToCloud,
-      initializeUserData,
       addUserSplit,
       replaceUserSplit,
       removeUserSplit,
@@ -347,8 +266,6 @@ const AppProvider = ({children}) => {
       replaceUserWorkout,
       removeUserWorkout,
       splitInCollection,
-      generateSplitShareCode,
-      getSplitFromShareCode
     }}>
       {children}
     </AppContext.Provider>
