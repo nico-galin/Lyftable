@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
 import styles from './ActionButton.style';
 
@@ -22,7 +23,7 @@ export default ({height = 'small',
         icon
       }
       {icon &&
-        <View style={styles.spacer} />
+        <View style={systemStyles.formSpacer} />
       }
       <Text style={[styles.buttonText, {color: textColor}]}>{text}</Text>
     </TouchableOpacity>

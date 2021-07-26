@@ -14,6 +14,18 @@ export default StyleSheet.create({
       borderRadius: 15,
       padding: 14
     },
+    invalidOutline: {
+      borderColor: theme.RED,
+      borderWidth: 2,
+    },
+    invalidLabel: {
+      color: theme.RED,
+      fontWeight: 'bold'
+    },
+    invalidReason: {
+      color: theme.RED,
+      fontWeight: 'normal'
+    },
     label: {
       position: 'absolute',
       backgroundColor: theme.BACKGROUND_COLOR,

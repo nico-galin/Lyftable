@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { parseISO, addMinutes, format } from 'date-fns';
+import { parseISO, addMinutes, startOfWeek, addWeeks, addDays, isAfter } from 'date-fns';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { firebase as firebaseAuth } from '@react-native-firebase/auth';
 import { getTimeStamp, generateUniqueId, mToMS } from '../services/utilities';
 import { isWithinInterval } from 'date-fns/esm';
+import { Buffer } from "buffer";
 
 const syncInterval = mToMS(10);
 const AppContext = React.createContext({});
@@ -13,6 +14,7 @@ const AppProvider = ({children}) => {
   const [userData, setUserData] = useState({});
   const [modalCallback, setModalCallback] = useState(() => {});
   const [openModal, setOpenModal] = useState(() => {});
+  const [resetModal, setResetModal] = useState(() => {});
   const [verifiedSplits, setVerifiedSplits] = useState({});
   const [verifiedExercises, setVerifiedExercises] = useState({});
   useEffect(() => {
@@ -25,7 +27,7 @@ const AppProvider = ({children}) => {
         public: false,
         id: "11212asdaskd09askd90asjd90asjddasdk0-asd",
         creator: {
-          name: "Nico Galin",
+          name: "Lyftable",
           id: "11212asdaskd09askd90asjd90asjddasdk0-asd",
           profile_photo: "https://picsum.photos/200/200"
         },
@@ -104,17 +106,20 @@ const AppProvider = ({children}) => {
     try {
       const localObject = await loadUserDataFromLocal();
       if (localObject) {
-        // Local object exists
+        // Local data exists
+        console.log("[Init] Found Local Data");
         setUserData(localObject);
         syncUserDataToCloud(localObject);
       } else {
-        // No local object exists
+        // No local data exists
         const cloudObject = await getUserFromServer(firebaseAuth.auth().currentUser.uid);
         if (cloudObject) {
-          // No local object exists, but a cloud object exists
+          // No local data exists, but cloud data exists
+          console.log("[Init] Grabbing Data From Cloud");
           setUserData(cloudObject);
         } else {
-          // Neither a local or cloud object exist
+          // Neither local nor cloud data exist
+          console.log("[Init] Generating New Local Data");
           const authObject = firebaseAuth.auth().currentUser;
           const newUser = {
             id: authObject.uid,
@@ -225,8 +230,47 @@ const AppProvider = ({children}) => {
     const newUserData = Object.assign({}, userData);
     const newId = generateUniqueId();
     workout.id = newId;
+    workout.completed = false;
+    workout.elapsed_time = 0;
+    workout.pauses = 0;
+    workout.start_time = null;
+    workout.end_time = null;
     if (!newUserData.workouts) newUserData.workouts = {};
     newUserData.workouts[newId] = workout;
+    setUserData(newUserData);
+    saveUserDataLocally(newUserData);
+  }
+  /**
+   * 
+   * @param {Object} templateWorkout 
+   * @param {Number} repetitions 
+   * @param {Array} selectedDays [0, 0, 0, 0, 0, 0, 0] Array of length 7 with 1 for selected or 0 for unselected
+   */
+  const addUserWorkoutsBATCH = (templateWorkout, repetitions, selectedDays) => {
+    const newUserData = Object.assign({}, userData);
+    for (let i = 0; i < repetitions; i++) {
+      let templateDay = parseISO(templateWorkout.scheduled);
+      const currentSunday = startOfWeek(addWeeks(templateDay, i));
+      const thisWeek = selectedDays.map((el, ind) => {
+        const curDay = addDays(currentSunday, ind);
+        if (el === 1 && isAfter(curDay, addDays(templateDay, -1))) {
+          return curDay;
+        }
+        return 0;
+      });
+      thisWeek.filter(date => date != 0).forEach(date => {
+        let newWorkout = Object.assign({}, templateWorkout);
+        let newId = generateUniqueId();
+        newWorkout.id = newId;
+        newWorkout.scheduled = date.toISOString();
+        newWorkout.completed = false;
+        newWorkout.elapsed_time = 0;
+        newWorkout.pauses = 0;
+        newWorkout.start_time = null;
+        newWorkout.end_time = null;
+        newUserData.workouts[newId] = workout;
+      });
+    }
     setUserData(newUserData);
     saveUserDataLocally(newUserData);
   }
@@ -266,8 +310,44 @@ const AppProvider = ({children}) => {
     }
   }
 
+  const getUserSplits = () => {
+    const splits = userData.splits;
+    if (splits) return splits;
+    return {};
+  }
+
+  const getUserWorkouts = () => {
+    const workouts = userData.workouts;
+    if (workouts) return workouts;
+    return {};
+  }
+
+  const getUserFriends = () => {
+    const friends = userData.friends;
+    if (friends) return friends;
+    return {};
+  }
+
   const splitInCollection = (id) => {
     return userData.splits[id] != null;
+  }
+
+  const generateSplitShareCode = (id, userId) => {
+    return Buffer.from(JSON.stringify({ id: id, userId: userId }), "utf-8").toString("base64");
+  }
+
+  const getSplitFromShareCode = (shareCode) => {
+    return new Promise((resolve, reject) => {
+      const decoded = JSON.parse(Buffer.from(shareCode, 'base64').toString('utf-8'));
+      firebaseFunc.functions().httpsCallable("getSplitFromUser")(decoded)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(e => {
+          console.log("[Error getting split from sharecode]", e);
+        })
+    });
+
   }
 
   return (
@@ -277,6 +357,7 @@ const AppProvider = ({children}) => {
       verifiedExercises,
       openModal, setOpenModal,
       modalCallback, setModalCallback,
+      resetModal, setResetModal,
       saveUserDataLocally,
       clearUserData,
       syncUserDataToCloud,
@@ -285,13 +366,19 @@ const AppProvider = ({children}) => {
       replaceUserSplit,
       removeUserSplit,
       addUserWorkout,
+      addUserWorkoutsBATCH,
       replaceUserWorkout,
       removeUserWorkout,
       getUserId,
       getUserName,
       getUserProfilePhoto,
       getSplit,
-      splitInCollection
+      getUserSplits,
+      getUserWorkouts,
+      getUserFriends,
+      splitInCollection,
+      generateSplitShareCode,
+      getSplitFromShareCode
     }}>
       {children}
     </AppContext.Provider>
@@ -306,4 +393,4 @@ const useAppContext = () => {
   return context;
 }
 
-export { AppContext, AppProvider, useAppContext};
+export { AppContext, AppProvider, useAppContext };

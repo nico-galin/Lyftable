@@ -24,7 +24,4 @@ export default StyleSheet.create({
   wideButton: {
     paddingHorizontal: 20,
   },
-  spacer: {
-    width: 10,
-  }
 });

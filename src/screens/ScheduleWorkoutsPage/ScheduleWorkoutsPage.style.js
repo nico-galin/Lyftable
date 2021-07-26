@@ -5,12 +5,6 @@ export default StyleSheet.create({
     container: {
 
     },
-    spacer: {
-      height: 10,
-    },
-    bottomSpacer: {
-      height: 100,
-    },
     daySelectorContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between'

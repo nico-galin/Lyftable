@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import styles from './AddExercise.style'
 import { systemStyles } from '../../assets/styles';
@@ -47,6 +47,18 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   const [equalReps, setEqualReps] = useState(true);
   const [repetitions, setRepetitions] = useState([10, 10, 10]);
   const context = useAppContext();
+
+  useEffect(() => {
+    context.setResetModal(() => () => {
+      setMovementSearchText("");
+      setSelectedMovement("");
+      setTimeLimit(600000);
+      setSetCount(3);
+      setRestTime(60000);
+      setEqualReps(true);
+      setRepetitions([10, 10, 10]);
+    });
+  }, []);
 
   const completeForm = () => {
     setVisibility(false);

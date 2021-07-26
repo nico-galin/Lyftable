@@ -18,12 +18,9 @@ export const SplitPage = ({ route }) => {
   let [split, setSplit] = useState(route.params.data);
   let [inCollection, setInCollection] = useState(true);
   useEffect(() => {
-    const initializeData = () => {
+    const willFocusSubscription = navigation.addListener('focus', () => {
       setSplit(context.getSplit(split.id));
       setInCollection(context.splitInCollection(split.id));
-    }
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      initializeData();
     });
     return willFocusSubscription;
   }, []);
@@ -61,6 +58,15 @@ export const SplitPage = ({ route }) => {
         </View>
         <View style={styles.sectionContainer}>
           <View style={styles.sectionDefiner}>
+            <MatIcon name={'timer'} size={26} color={theme.BACKGROUND_COLOR}/>
+          </View>
+          <View style={styles.sectionInfo}>
+            <Text style={styles.sectionHeader}>Estimated Time</Text>
+            <Text style={styles.sectionSubheader}>{msToHM(split.estimated_time, "HM")}</Text>
+          </View>
+        </View>
+        <View style={styles.sectionContainer}>
+          <View style={styles.sectionDefiner}>
             <MatComIcon name={'dumbbell'} size={25} color={theme.BACKGROUND_COLOR}/>
           </View>
           <View style={styles.sectionInfo}>
@@ -76,7 +82,7 @@ export const SplitPage = ({ route }) => {
         </View>
         <View style={styles.sectionContainer}>
           <View style={styles.sectionDefiner}>
-            <MatIcon name={'people-alt'} size={25} color={theme.BACKGROUND_COLOR}/>
+            <MatIcon name={'people-alt'} size={23} color={theme.BACKGROUND_COLOR}/>
           </View>
           <View style={styles.sectionInfo}>
             <Text style={styles.sectionHeader}>Subscribers</Text>
@@ -84,14 +90,14 @@ export const SplitPage = ({ route }) => {
           </View>
         </View>
         <View style={[styles.sectionContainer, styles.buttonRow]}>
-          <ActionButton onPress={() => navigation.navigate('EditSplit', { data: split })} text={'Edit'} height={'large'} width={'small'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton onPress={() => navigation.navigate('EditSplit', { data: split })} text={'Edit'} height={'large'} width={'small'} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} />
           <View style={styles.gap} />
           <ActionButton text={'Start Workout'} height={'large'}color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
         </View>
-        {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />}
+        {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} />}
         <Text style={styles.description}>Note: If you make changes to a split made by someone else, you will be unsubscribed from their split</Text>
       </ScrollView>
-      <CodeBanner label={'Split Share Code'} code={'ABCDEFGHIJK'} data={{}} />
+      <CodeBanner label={'Split Share Code'} code={context.generateSplitShareCode(split.id, split.creator.id)} data={{}} />
     </View>
   )
 };

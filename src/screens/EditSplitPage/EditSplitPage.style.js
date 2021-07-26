@@ -22,10 +22,4 @@ export default StyleSheet.create({
     addExerciseBtnContainer: {
       justifyContent: 'flex-end'
     },
-    spacer: {
-      height: 10,
-    },
-    bottomSpacer: {
-      height: 100,
-    }
 });

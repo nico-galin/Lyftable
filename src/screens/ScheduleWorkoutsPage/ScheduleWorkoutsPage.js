@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
-import {ScrollView, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import React, { useState } from 'react';
+import DatePicker from 'react-native-date-picker'
+import {ScrollView, Text, View, TouchableWithoutFeedback} from 'react-native';
 import styles from './ScheduleWorkoutsPage.style';
 import { systemStyles } from '../../assets/styles';
 import Header from '../../components/Header/Header';
@@ -7,9 +8,9 @@ import ActionButton from '../../components/ActionButton/ActionButton';
 import InputWrapper from '../../components/InputWrapper/InputWrapper';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import Counter from '../../components/Counter/Counter';
-import { filterSplitsByString, formatSetsReps, getSplitTemplate, msToHM, getWeekday } from '../../services/utilities';
+import { filterSplitsByString, getWeekday, validator } from '../../services/utilities';
 import theme from '../../assets/theme.style';
-import { useNavigation, StackActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import SplitCard from '../../components/SplitCard/SplitCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
@@ -19,10 +20,15 @@ export const ScheduleWorkoutsPage = ({ route }) => {
   const context = useAppContext();
   const navigation = useNavigation();
   const [splitSearchText, setSplitSearchText] = useState("");
-  const [selectedSplit, setSelectedSplit] = useState(null);
+  const [selectedSplit, setSelectedSplit] = useState({});
+  const [date, setDate] = useState(new Date());
   const [repeating, setRepeating] = useState(false);
   const [weekCounter, setWeekCounter] = useState(4);
   const [selectedDays, setSelectedDays] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [validation, setValidation] = useState({
+    selectedSplit: [true, null],
+    selectedDays: [true, null]
+  });
 
   const handleRepeating = (val) => {
     if (val === "Yes") {
@@ -33,7 +39,22 @@ export const ScheduleWorkoutsPage = ({ route }) => {
   }
 
   const handleSubmit = () => {
-
+    const newValidation = {
+      selectedSplit: validator.validateSplit(selectedSplit),
+      selectedDays: validator.validateSelectedDays(repeating, selectedDays)
+    }
+    setValidation(newValidation);
+    if (!validator.allValid(newValidation)) return;
+    let workout = {
+      split: Object.assign({}, selectedSplit),
+      scheduled: date.toISOString(),
+    }
+    if (repeating) {
+      context.addUserWorkoutsBATCH(workout, weekCounter, selectedDays);
+    } else {
+      context.addUserWorkout(workout);
+    }
+    navigation.goBack();
   }
 
   const toggleDay = (ind) => {
@@ -42,42 +63,46 @@ export const ScheduleWorkoutsPage = ({ route }) => {
     setSelectedDays(newSelectedDays);
   }
 
-  const filteredSplits = filterSplitsByString(context.userData.splits, splitSearchText);
+  const filteredSplits = filterSplitsByString(context.getUserSplits(), splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={"Schedule Workouts"} backButton={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <InputWrapper label={'Split'}>
-          { selectedSplit ?
-            <SplitCard split={selectedSplit} onDelete={() => setSelectedSplit(null)}/>
+        <InputWrapper label={'Split'} valid={validation.selectedSplit}>
+          { Object.keys(selectedSplit).length > 0 ?
+            <SplitCard split={selectedSplit} onDelete={() => setSelectedSplit({})}/>
           :
             <View>
               <SearchBar value={splitSearchText} placeholder={"Search Splits..."} onChangeText={setSplitSearchText}/>
               {filteredSplits.map(([id, split], ind) => (
                 <View key={ind}>
-                  <SplitCard split={split} onPress={() => setSelectedSplit(split)}/>
-                  {ind != filteredSplits.length - 1 && <View style={styles.spacer}/>}
+                  <SplitCard split={split} onPress={() => setSelectedSplit(split)} onInfo={() => {}}/>
+                  {ind != filteredSplits.length - 1 && <View style={systemStyles.formSpacer}/>}
                 </View>
               ))}
             </View>
           }
         </InputWrapper>
         <InputWrapper label={"Starting Date"}>
-
+          <DatePicker 
+            date={date}
+            onDateChange={setDate}
+            androidVariant={"iosClone"}
+            minuteInterval={5}
+            mode={"datetime"}
+            fadeToColor={theme.BACKGROUND_COLOR}
+          />
         </InputWrapper>
-        <InputWrapper label={"Starting Time"}>
-
-        </InputWrapper>
-        <InputWrapper label={'Repeating?'}>
+        <InputWrapper label={'Repeating?'} valid={validation.selectedDays}>
           <OptionSlider options={["No", "Yes"]} defaultIndex={0} onChange={handleRepeating}/>
           {repeating && 
             <View>
-              <View style={styles.spacer}/>
+              <View style={systemStyles.formSpacer}/>
               <Counter formattedValue={`for ${weekCounter} weeks`} initialValue={weekCounter} min={1} increment={1} onChange={setWeekCounter}/>
-              <View style={styles.spacer}/>
+              <View style={systemStyles.formSpacer}/>
               <View style={styles.daySelectorContainer}>
                 {selectedDays.map((val, ind) => (
-                    <TouchableWithoutFeedback onPress={() => toggleDay(ind)}>
+                    <TouchableWithoutFeedback key={ind} onPress={() => toggleDay(ind)}>
                       <View style={[ styles.dayBtn, val === 1 ? styles.dayBtnActive : null]}>
                         <Text style={styles.dayBtnText}>{getWeekday(ind, "d")}</Text>
                       </View>
@@ -87,9 +112,9 @@ export const ScheduleWorkoutsPage = ({ route }) => {
             </View>
           }
         </InputWrapper>
-        <View style={styles.spacer}/>
+        <View style={systemStyles.formSpacer}/>
         <ActionButton onPress={handleSubmit} text={'Done'} height={'large'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
-        <View style={styles.bottomSpacer}/>
+        <View style={systemStyles.bottomSpacer}/>
       </ScrollView>
     </View>
   )

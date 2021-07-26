@@ -3,10 +3,15 @@ import Modal from 'react-native-modal';
 import { View, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import styles from './ModalContainer.style'
 import Header from '../Header/Header';
+import { useAppContext } from '../../contexts/AppContext';
 
 
 export default ({isVisible, setVisibility, children, header}) => {
-  const closeModal = () => setVisibility(false);
+  const context = useAppContext();
+  const closeModal = () => {
+    setVisibility(false);
+    context.resetModal();
+  }
   return (
     <Modal
       isVisible={isVisible}

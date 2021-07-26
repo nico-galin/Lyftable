@@ -13,6 +13,9 @@ const systemStyles = StyleSheet.create({
   bottomSpacer: {
     height: 50,
   },
+  formSpacer: {
+    height: 10,
+  },
   row: {
     display: 'flex',
     flexDirection: 'row',

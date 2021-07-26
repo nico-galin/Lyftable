@@ -1,14 +1,15 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { format, parseISO } from 'date-fns';
-import Icon from 'react-native-vector-icons/Foundation';
+import FoundationIcon from 'react-native-vector-icons/Foundation';
+import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './SplitCard.style';
 import { msToHM, formatSetsReps } from '../../services/utilities';
 import theme from '../../assets/theme.style';
 
-export default ({ split, scheduled }) => {
+export default ({ split, scheduled, onPress, onDelete, onInfo }) => {
   return (
-    <TouchableOpacity style={styles.container} >
+    <TouchableOpacity style={styles.container} onPress={onPress}>
         <View style={styles.dataContainer}>
           <View style={styles.heading}>
             <Text style={styles.name}>{split.name}</Text>
@@ -16,17 +17,24 @@ export default ({ split, scheduled }) => {
             {scheduled && <Text style={styles.scheduledTime}>{format(parseISO(scheduled), 'h:mm aaa')}</Text>}
           </View>
           <View style={styles.summary}>
-            {split.exercises.map(exercise => (
-              <View style={styles.summaryRow}>
+            {split.exercises.map((exercise, ind) => (
+              <View key={ind} style={styles.summaryRow}>
                 <Text style={styles.exercise}>{exercise.movement}</Text>
                 <Text style={styles.reps}>{formatSetsReps(exercise.set_count, exercise.repetitions)}</Text>
               </View>
             ))}
           </View>
         </View>
-        <TouchableOpacity style={styles.infoBtn}>
-          <Icon name={'info'} size={25} color={theme.PLACEHOLDER_COLOR}/>
-        </TouchableOpacity>
+        { onInfo &&
+          <TouchableOpacity style={styles.infoBtn} onPress={onInfo}>
+            <FoundationIcon name={'info'} size={25} color={theme.PLACEHOLDER_COLOR}/>
+          </TouchableOpacity>
+        }
+        { onDelete && !onInfo &&
+          <TouchableOpacity style={styles.infoBtn} onPress={onDelete}>
+            <MatComIcon name={'delete'} size={25} color={theme.PLACEHOLDER_COLOR}/>
+          </TouchableOpacity>
+        }
     </TouchableOpacity>
   );
 };

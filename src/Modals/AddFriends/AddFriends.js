@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import styles from './AddFriends.style'
 import InputWrapper from '../../components/InputWrapper/InputWrapper';
@@ -8,10 +8,20 @@ import theme from '../../assets/theme.style';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import { useAppContext } from '../../contexts/AppContext';
 
 export const AddFriends = ({isVisible, setVisibility}) => {
   const [friendCodeText, setFriendCodeText] = useState("");
   const [userSearchText, setUserSearchText] = useState("");
+  const context = useAppContext();
+
+  useEffect(() => {
+    context.setResetModal(() => () => {
+      setFriendCodeText("");
+      setUserSearchText("");
+    });
+  }, []);
+
   const handleSubmitFriendCode = () => {
 
   }

@@ -56,7 +56,7 @@ export const AddSplitPage = ({ route }) => {
         <InputWrapper label={"Custom Split"}>
             <ActionButton text={"Create Custom Split"} height={"large"} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} onPress={() => navigation.navigate("EditSplit")}/>
         </InputWrapper>
-        <View style={styles.bottomSpacer}/>
+        <View style={systemStyles.bottomSpacer}/>
       </ScrollView>
     </View>
   )

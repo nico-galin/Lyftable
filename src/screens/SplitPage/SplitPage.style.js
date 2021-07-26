@@ -8,15 +8,18 @@ export default StyleSheet.create({
     sectionContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 10
+      marginBottom: 10,
+      borderRadius: 10,
+      backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR
     },
     subsectionContainer: {
-      marginTop: 10
+      marginTop: 10,
     },
     sectionDefiner: {
       width: 50,
       height: '100%',
-      borderRadius: 12,
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
       marginRight: 10,
       backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
       alignItems: 'center',
@@ -44,7 +47,7 @@ export default StyleSheet.create({
       textAlign: 'center'
     },
     creatorImage: {
-      height: 50,
+      height: '100%',
     },
     buttonRow: {
       display: 'flex',

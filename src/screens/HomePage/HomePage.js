@@ -12,7 +12,7 @@ import { useAppContext } from '../../contexts/AppContext';
 import { msToHM } from '../../services/utilities';
 
 export const HomePage = ({ }) => {
-  let splits = useAppContext().userData.splits;
+  let splits = useAppContext().getUserSplits();
   if (!splits) splits = {};
   const navigation = useNavigation();
   const generateSubscriberRow = (subs) => {
