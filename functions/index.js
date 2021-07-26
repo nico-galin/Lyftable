@@ -8,22 +8,31 @@ const verifyAuth = (context) => {
   }
 }
 exports.getUser = functions.https.onCall((data, context) => {
-  verifyAuth(context);
-  const userData = userCollection.doc(data.id);
-  if(data.id === context.auth.token.uid) {
-    return userData;
-  } else {
-    return userData ? {
-      id: userData.id,
-      name: userData.anonymous ? null : userData.name,
-      splits: splits.filter(s => s.public)
-    } : null;
-  }
+  return new Promise((resolve, reject) => {
+    verifyAuth(context);
+    userCollection.doc(data.id).get().then(doc => {
+      if (doc.exists) {
+        const userData = doc.data();
+        if(data.id === context.auth.token.uid) {
+          resolve(userData)
+        } else {
+          return userData ? {
+            id: userData.id,
+            name: userData.anonymous ? null : userData.name,
+            splits: splits.filter(s => s.public)
+          } : null;
+        }
+      } else {
+        resolve(null);
+      }
+    })
+  });
 });
 
 exports.syncUserToCloud = functions.https.onCall((data, context) => {
   verifyAuth(context);
   if (!data || !data.user || !data.user.id || !data.user.name) {
+    console.log(data);
     throw new functions.https.HttpsError("malformatted", "New user requires proper format!");
   }
   userCollection.doc(context.auth.uid).set(data.user);
