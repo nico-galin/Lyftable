@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { parseISO, addMinutes, startOfWeek, addWeeks, addDays, isAfter } from 'date-fns';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { firebase as firebaseAuth } from '@react-native-firebase/auth';
-import { getTimeStamp, generateUniqueId, getVerifiedSplits } from '../services/utilities';
+import { getTimeStamp, generateUniqueId, getVerifiedSplits, getVerifiedMovements } from '../services/utilities';
 
 const AppContext = React.createContext({});
 
@@ -20,14 +20,14 @@ const AppProvider = ({children}) => {
   const [openModal, setOpenModal] = useState(() => {});
   const [resetModal, setResetModal] = useState(() => {});
   const [verifiedSplits, setVerifiedSplits] = useState({});
-  const [verifiedExercises, setVerifiedExercises] = useState({});
+  const [verifiedMovements, setVerifiedMovements] = useState({});
   useEffect(async() => {
     //Every time the App is opened, this provider is rendered
     //and call de loadStorage function.
     firebaseFunc.functions().useFunctionsEmulator('http://localhost:5001');
     initializeUserData();
-    const vs = await getVerifiedSplits();
-    setVerifiedSplits(vs);
+    initializeVerifiedSplits();
+    initializeVerifiedMovements();
   }, []);
 
   async function loadUserDataFromLocal() {
@@ -49,6 +49,46 @@ const AppProvider = ({children}) => {
           resolve(null);
         });
     });
+  }
+
+  const initializeVerifiedSplits = async() => {
+    try {
+      let vSplits = await getVerifiedSplits();
+      if (vSplits) {
+        // Cloud data accessible
+        await AsyncStorage.setItem(
+          '@LyftableVerifiedSplits',
+          JSON.stringify(vSplits)
+        );
+      } else {
+        // Cloud data inaccessible
+        vSplits = await AsyncStorage.getItem('@LyftableVerifiedSplits');
+        if (!vSplits) vSplits = [];
+      }
+      setVerifiedSplits(vSplits);
+    } catch (e) {
+      console.log("[Error initializing Verified Splits]", e);
+    }
+  }
+
+  const initializeVerifiedMovements = async() => {
+    try {
+      let vMovements = await getVerifiedMovements();
+      if (vMovements) {
+        // Cloud data accessible
+        await AsyncStorage.setItem(
+          '@LyftableVerifiedMovements',
+          JSON.stringify(vMovements)
+        );
+      } else {
+        // Cloud data inaccessible
+        vMovements = await AsyncStorage.getItem('@LyftableVerifiedMovements');
+        if (!vMovements) vMovements = [];
+      }
+      setVerifiedMovements(vMovements);
+    } catch (e) {
+      console.log("[Error initializing Verified Movments]", e);
+    }
   }
 
   const initializeUserData = async() => { 
@@ -254,7 +294,7 @@ const AppProvider = ({children}) => {
       userFriends,
       userMetadata,
       verifiedSplits,
-      verifiedExercises,
+      verifiedMovements,
       openModal, setOpenModal,
       modalCallback, setModalCallback,
       resetModal, setResetModal,

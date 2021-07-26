@@ -22,7 +22,6 @@ export const AddSplitPage = ({ route }) => {
   const handleSubmitSplitCode = () => {
 
   }
-  console.log("VER", verifiedSplits)
   const filteredSplits = filterSplitsByString(verifiedSplits, splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>

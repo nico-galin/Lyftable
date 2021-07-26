@@ -182,6 +182,12 @@ const getVerifiedSplits = async() => {
   return res.data;
 }
 
+const getVerifiedMovements = async() => {
+  const res = await firebaseFunc.functions().httpsCallable("getVerifiedMovements")();
+  return res.data;
+}
+
+
 const generateSplitShareCode = (id, userId) => {
   return Buffer.from(JSON.stringify({ id: id, userId: userId }), "utf-8").toString("base64");
 }
@@ -200,6 +206,7 @@ export {
   filterSplitsByString,
   getSplitFromShareCode,
   getVerifiedSplits,
+  getVerifiedMovements,
   generateSplitShareCode,
   validator,
 }

@@ -13,31 +13,6 @@ import { msToHM, msToHMS } from '../../services/utilities';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import { useAppContext } from '../../contexts/AppContext';
 
-const verifiedMovements = {
-  "00a0-sjd09asdj09asd": {
-    name: "Leg Press"
-  },
-  "00a0-sjdjjtytyntynyt9asd": {
-    name: "Chest Press"
-  },
-  "00a0-sjdsfdsdf09asd": {
-    name: "Pectoral Flye"
-  },
-  "00a0-sjd09assdfdsfsdsd": {
-    name: "Leg Extension"
-  },
-  "00a0-sjd09asdj09ad": {
-    name: "Military Press",
-    alt_name: "Shoulder Press"
-  },
-  "00a0-sjdatyntynasd": {
-    name: "Tricep Pushdown"
-  },
-  "00a0-sjd0sdsfsdf9asdj09asd": {
-    name: "Tricep Pushdown (Cable)"
-  }
-}
-
 export const AddExercise = ({ isVisible, setVisibility }) => {
   const [movementSearchText, setMovementSearchText] = useState("");
   const [selectedMovement, setSelectedMovement] = useState("");
@@ -47,7 +22,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   const [equalReps, setEqualReps] = useState(true);
   const [repetitions, setRepetitions] = useState([10, 10, 10]);
   const context = useAppContext();
-
+  const verifiedMovements = context.verifiedMovements;
   useEffect(() => {
     context.setResetModal(() => () => {
       setMovementSearchText("");
