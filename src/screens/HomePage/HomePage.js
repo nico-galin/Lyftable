@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import Header from '../../components/Header/Header';
 import Calendar from '../../components/Calendar/Calendar';
@@ -12,7 +12,14 @@ import { useAppContext } from '../../contexts/AppContext';
 import { msToHM } from '../../services/utilities';
 
 export const HomePage = ({ }) => {
-  let splits = useAppContext().getUserSplits();
+  let context = useAppContext();
+  let [splits, setSplits] = useState(context.getUserSplits());
+  useEffect(() => {
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      setSplits(context.getUserSplits());
+    });
+    return willFocusSubscription;
+  }, []);
   if (!splits) splits = {};
   const navigation = useNavigation();
   const generateSubscriberRow = (subs) => {
