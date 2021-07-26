@@ -13,13 +13,7 @@ import { msToHM } from '../../services/utilities';
 
 export const HomePage = ({ }) => {
   let context = useAppContext();
-  let [splits, setSplits] = useState(context.getUserSplits());
-  useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      setSplits(context.getUserSplits());
-    });
-    return willFocusSubscription;
-  }, []);
+  let splits = context.userSplits;
   if (!splits) splits = {};
   const navigation = useNavigation();
   const generateSubscriberRow = (subs) => {

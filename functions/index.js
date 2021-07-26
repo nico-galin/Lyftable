@@ -2,11 +2,18 @@ const functions = require("firebase-functions");
 const firestore = require("@google-cloud/firestore");
 const db = new firestore();
 const userCollection = db.collection("users");
+const verifiedSplitCollection = db.collection("verifiedSplits");
 const verifyAuth = (context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError("unauthenticated", "Endpoint requires authentication!");
   }
 }
+
+exports.getVerifiedSplits = functions.https.onCall(async (data, context) => {
+    const snapshot = await verifiedSplitCollection.get();
+    return snapshot.docs.map(doc => doc.data());
+});
+
 exports.getUser = functions.https.onCall((data, context) => {
   return new Promise((resolve, reject) => {
     verifyAuth(context);

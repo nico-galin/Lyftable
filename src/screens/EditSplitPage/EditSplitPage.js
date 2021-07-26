@@ -35,7 +35,7 @@ export const EditSplitPage = ({ route }) => {
     setName(val);
   }
   const handleDescription = (val) => {
-    setDescription(val.trim());
+    setDescription(val);
   }
   const handleEstTime = (val) => {
     setEstimatedTime(val);
@@ -71,16 +71,16 @@ export const EditSplitPage = ({ route }) => {
     const newSplit = Object.assign({}, split);
     newSplit.public = showOnProfile;
     newSplit.creator = {
-      id: context.getUserId(),
-      name: context.getUserName(),
-      profile_photo: context.getUserProfilePhoto()
+      id: context.userMetadata.id,
+      name: context.userMetadata.name,
+      profile_photo: context.userMetadata.profile_photo
     }
     newSplit.name = name.trim();
     newSplit.description = description.trim();
     newSplit.exercises = exercises;
     newSplit.estimatedTime = estimatedTime;
     if (inCollection) {
-      context.replaceUserSplit(split.id, newSplit);
+      context.replaceUserSplit(newSplit);
       navigation.navigate("SplitPage", { data: newSplit});
     } else if (existingSplit && _.isEqual(newSplit, split)) {
       context.addUserSplit(split);

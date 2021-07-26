@@ -12,13 +12,7 @@ export const FriendsList = ({ route }) => {
   const context = useAppContext();
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState("");
-  const [friends, setFriends] = useState({});
-  useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      setFriends(context.getUserFriends());
-    });
-    return willFocusSubscription;
-  }, []);
+  const friends = context.userFriends;
 
   const handleSearch = (val) => {
     setSearchText(val);
@@ -36,7 +30,7 @@ export const FriendsList = ({ route }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <SearchBar value={searchText} onChangeText={handleSearch} onBlur={() => handleSearch('')} onButtonPress={() => context.openModal("AddFriends")} iconName={'plus'}/>
         { filteredFriends }
-        <Text style={styles.friendCount}>{Object.keys(context.userData.friends).length} Friends</Text>
+        <Text style={styles.friendCount}>{Object.keys(friends).length} Friends</Text>
       </ScrollView>
       <CodeBanner label={'Your Friend Code'} code={'ABCDEFGHIJKASDASDASDASDASDSAD'} data={{}} />
     </View>

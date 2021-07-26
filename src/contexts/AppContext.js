@@ -7,11 +7,17 @@ import { getTimeStamp, generateUniqueId, mToMS } from '../services/utilities';
 import { isWithinInterval } from 'date-fns/esm';
 import { Buffer } from "buffer";
 
-const syncInterval = mToMS(10);
 const AppContext = React.createContext({});
 
+const clearLocalUserData = async() => {
+  await AsyncStorage.removeItem('@LyftableUserData');
+}
+
 const AppProvider = ({children}) => {
-  const [userData, setUserData] = useState({});
+  const [userSplits, setUserSplits] = useState({});
+  const [userWorkouts, setUserWorkouts] = useState({});
+  const [userFriends, setUserFriends] = useState({});
+  const [userMetadata, setUserMetadata] = useState({});
   const [modalCallback, setModalCallback] = useState(() => {});
   const [openModal, setOpenModal] = useState(() => {});
   const [resetModal, setResetModal] = useState(() => {});
@@ -92,9 +98,9 @@ const AppProvider = ({children}) => {
 
   const getUserFromServer = (id) => {
     return new Promise((resolve, reject) => {
-      const userObj = firebaseFunc.functions().httpsCallable('getUser')({id: firebaseAuth.auth().currentUser.uid})
+      firebaseFunc.functions().httpsCallable('getUser')({id: id})
         .then((res) => {
-          resolve(userObj);
+          resolve(res.data);
         }).catch(e => {
           console.log("[Error fetching user from server]", e);
           resolve(null);
@@ -104,24 +110,23 @@ const AppProvider = ({children}) => {
 
   const initializeUserData = async() => { 
     try {
-      const localObject = await loadUserDataFromLocal();
-      if (localObject) {
+      let userObject = await loadUserDataFromLocal();
+      if (userObject) {
         // Local data exists
         console.log("[Init] Found Local Data");
-        setUserData(localObject);
-        syncUserDataToCloud(localObject);
+        syncUserDataToCloud(userObject);
       } else {
         // No local data exists
-        const cloudObject = await getUserFromServer(firebaseAuth.auth().currentUser.uid);
-        if (cloudObject) {
+        userObject = await getUserFromServer(firebaseAuth.auth().currentUser.uid);
+        if (userObject) {
           // No local data exists, but cloud data exists
           console.log("[Init] Grabbing Data From Cloud");
-          setUserData(cloudObject);
+          saveUserDataLocally(userObject);
         } else {
           // Neither local nor cloud data exist
           console.log("[Init] Generating New Local Data");
           const authObject = firebaseAuth.auth().currentUser;
-          const newUser = {
+          userObject = {
             id: authObject.uid,
             anonymous: false,
             name: authObject.displayName,
@@ -131,114 +136,112 @@ const AppProvider = ({children}) => {
             splits: {},
             workouts: {},
           }
-          setUserData(newUser);
-          saveUserDataLocally(newUser);
-          syncUserDataToCloud(newUser);
+          saveUserDataLocally(userObject);
+          syncUserDataToCloud(userObject);
         }
       }
+      setUserSplits(userObject.splits);
+      setUserWorkouts(userObject.workouts);
+      setUserFriends(userObject.friends);
+      setUserMetadata({
+        id: userObject.id,
+        anonymous: userObject.anonymous,
+        name: userObject.name,
+        email: userObject.email,
+        profile_photo: userObject.profile_photo,
+        lastCloudSync: userObject.lastCloudSync,
+        lastLocalSync: userObject.lastLocalSync,
+      })
     } catch (e) {
       console.log("[Error initializing user data]", e);
     }
   }
   
-  const saveUserDataLocally = async(manualUserObjectOverride) => {
+  const saveUserDataLocally = async (overrideData) => {
     try {
+      const userData = Object.assign({
+        ...userMetadata,
+        splits: userSplits,
+        workouts: userWorkouts,
+        friends: userFriends,
+      }, overrideData)
       const timestamp = getTimeStamp();
-      let userDataObject;
-      if (manualUserObjectOverride) {
-        userDataObject = manualUserObjectOverride;
-      } else {
-        userDataObject = userData;
-      }
+      userData.lastLocalSync = timestamp;
+      setUserMetadata((userMetadata) => ({...userMetadata, lastLocalSync: timestamp}));
       await AsyncStorage.setItem(
         '@LyftableUserData',
-        JSON.stringify(userDataObject)
+        JSON.stringify(userData)
       );
-      setLastLocalSync(timestamp);
     } catch (e) {
       console.log("[Error saving user data locally]", e);
     }
   }
 
-  const syncUserDataToCloud = (manualUserObjectOverride, force = false) => {
-    return new Promise((resolve, reject) => {
+
+  const syncUserDataToCloud = async (overrideData) => {
+    try {
+      const userData = Object.assign({
+        ...userMetadata,
+        splits: userSplits,
+        workouts: userWorkouts,
+        friends: userFriends,
+      }, overrideData)
       const timestamp = getTimeStamp();
-      let userDataObject;
-      if (manualUserObjectOverride) {
-        userDataObject = manualUserObjectOverride;
-      } else {
-        userDataObject = Object.assign({}, userData);
+      userData.lastCloudSync = timestamp;
+      const res = await firebaseFunc.functions().httpsCallable('syncUserToCloud')({user: userData})
+        saveUserDataLocally(userData);
+        setUserMetadata((userMetadata) => ({...userMetadata, lastLocalSync: timestamp}));
+      } catch (e) {
+        console.log("[Error saving user data to cloud]", e);
       }
-      const lastSync = parseISO(userDataObject.lastCloudSync);
-      if (!force && userDataObject.lastCloudSync && isWithinInterval(new Date(), {start: lastSync, end: addMinutes(lastSync, 30)})) {
-        resolve(userDataObject);
-        return;
-      }
-      userDataObject.lastCloudSync = timestamp;
-      firebaseFunc.functions().httpsCallable('syncUserToCloud')({user: userDataObject})
-        .then(res => {
-          setLastCloudSync(timestamp);
-          saveUserDataLocally(userDataObject);
-          resolve(res);
-        })
-        .catch(e => {
-          console.log("[Error saving user data to cloud]", e);
-        }) 
-    });
-  }
-  
-  const setLastCloudSync = (ISOString) => {
-    const newUserData = Object.assign({}, userData);
-    newUserData.lastCloudSync = ISOString;
-    setUserData(newUserData);
-  }
-
-  const setLastLocalSync = (ISOString) => {
-    const newUserData = Object.assign({}, userData);
-    newUserData.lastLocalSync = ISOString;
-    setUserData(newUserData);
-  }
-
-  const clearUserData = async() => {
-    await AsyncStorage.removeItem('@LyftableUserData');
   }
 
   const addUserSplit = (split) => {
-    const newUserData = Object.assign({}, userData);
-    const newId = generateUniqueId();
-    if (!newUserData.splits) newUserData.splits = {};
-    newUserData.splits[newId] = Object.assign(split, { id: newId});
-    setUserData(newUserData);
-    saveUserDataLocally(newUserData);
+    const newUserSplits = JSON.parse(JSON.stringify(userSplits));
+    if (!newUserSplits) newUserSplits = {};
+    if (!split.id) {
+      split.id = generateUniqueId();
+    }
+    newUserSplits[split.id] = split;
+    setUserSplits(newUserSplits);
+    saveUserDataLocally({ splits: newUserSplits});
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
-  const replaceUserSplit = (id, newSplit) => {
-    const newUserData = Object.assign({}, userData);
-    newUserData.splits[id] = newSplit;
-    setUserData(newUserData);
-    saveUserDataLocally(newUserData);
+  const replaceUserSplit = (newSplit) => {
+    const newUserSplits = JSON.parse(JSON.stringify(userSplits));
+    if (!newUserSplits) newUserSplits = {};
+    if (!newSplit.id) {
+      console.log("Trying to replace a split with no id");
+      return;
+    }
+    newUserSplits[newSplit.id] = newSplit;
+    setUserSplits(newUserSplits);
+    saveUserDataLocally({ splits: newUserSplits});
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
   const removeUserSplit = (id) => {
-    const newUserData = Object.assign({}, userData);
-    delete newUserData.splits[id];
-    setUserData(newUserData);
-    saveUserDataLocally(newUserData);
+    const newUserSplits = JSON.parse(JSON.stringify(userSplits));
+    delete newUserSplits[id];
+    setUserSplits(newUserSplits);
+    saveUserDataLocally({ splits: newUserSplits});
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
   const addUserWorkout = (workout) => {
-    const newUserData = Object.assign({}, userData);
-    const newId = generateUniqueId();
-    workout.id = newId;
+    const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
+    workout.id = generateUniqueId();
     workout.completed = false;
     workout.elapsed_time = 0;
     workout.pauses = 0;
     workout.start_time = null;
     workout.end_time = null;
-    if (!newUserData.workouts) newUserData.workouts = {};
-    newUserData.workouts[newId] = workout;
-    setUserData(newUserData);
+    if (!newUserWorkouts) newUserWorkouts = {};
+    newUserWorkouts[workout.id] = workout;
+    setUserWorkouts(newUserWorkouts);
     saveUserDataLocally(newUserData);
+    syncUserDataToCloud({ splits: newUserSplits});
   }
   /**
    * 
@@ -247,7 +250,7 @@ const AppProvider = ({children}) => {
    * @param {Array} selectedDays [0, 0, 0, 0, 0, 0, 0] Array of length 7 with 1 for selected or 0 for unselected
    */
   const addUserWorkoutsBATCH = (templateWorkout, repetitions, selectedDays) => {
-    const newUserData = Object.assign({}, userData);
+    const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
     for (let i = 0; i < repetitions; i++) {
       let templateDay = parseISO(templateWorkout.scheduled);
       const currentSunday = startOfWeek(addWeeks(templateDay, i));
@@ -260,84 +263,56 @@ const AppProvider = ({children}) => {
       });
       thisWeek.filter(date => date != 0).forEach(date => {
         let newWorkout = Object.assign({}, templateWorkout);
-        let newId = generateUniqueId();
-        newWorkout.id = newId;
+        newWorkout.id = generateUniqueId();
         newWorkout.scheduled = date.toISOString();
         newWorkout.completed = false;
         newWorkout.elapsed_time = 0;
         newWorkout.pauses = 0;
         newWorkout.start_time = null;
         newWorkout.end_time = null;
-        newUserData.workouts[newId] = workout;
+        newUserWorkouts[newWorkout.id] = workout;
       });
     }
-    setUserData(newUserData);
+    setUserWorkouts(newUserWorkouts);
     saveUserDataLocally(newUserData);
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
-  const replaceUserWorkout = (id, newWorkout) => {
-    const newUserData = Object.assign({}, userData);
-    newUserData.workouts[id] = newWorkout;
-    setUserData(newUserData);
-    saveUserDataLocally(newUserData);
+  const replaceUserWorkout = (workout) => {
+    const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
+    if (!newUserWorkouts) newUserSplits = {};
+    if (!workout.id) {
+      console.log("Trying to replace a split with no id");
+      return;
+    }
+    newUserWorkouts[workout.id] = workout;
+    setUserWorkouts(newUserWorkouts);
+    saveUserDataLocally({ splits: newUserSplits});
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
   const removeUserWorkout = (id) => {
-    const newUserData = Object.assign({}, userData);
-    delete newUserData.workouts[id];
-    setUserData(newUserData);
-    saveUserDataLocally(newUserData);
-  }
-
-  const getUserId = () => {
-    return userData.id;
-  }
-
-  const getUserName = () => {
-    return userData.name;
-  }
-
-  const getUserProfilePhoto = () => {
-    return userData.profile_photo;
-  }
-
-  const getSplit = (id, creatorId) => {
-    const personal = userData.splits[id];
-    if (personal != null) {
-      return personal;
-    } else {
-      return null;
-    }
-  }
-
-  const getUserSplits = () => {
-    const splits = userData.splits;
-    if (splits) return splits;
-    return {};
-  }
-
-  const getUserWorkouts = () => {
-    const workouts = userData.workouts;
-    if (workouts) return workouts;
-    return {};
-  }
-
-  const getUserFriends = () => {
-    const friends = userData.friends;
-    if (friends) return friends;
-    return {};
+    const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
+    delete newUserWorkouts[id];
+    setUserWorkouts(newUserWorkouts);
+    saveUserDataLocally({ splits: newUserSplits});
+    syncUserDataToCloud({ splits: newUserSplits});
   }
 
   const splitInCollection = (id) => {
-    return userData.splits[id] != null;
+    if (!userSplits) return false;
+    return userSplits[id] != null;
   }
 
   const generateSplitShareCode = (id, userId) => {
     return Buffer.from(JSON.stringify({ id: id, userId: userId }), "utf-8").toString("base64");
   }
 
-  const getSplitFromShareCode = (shareCode) => {
-    return new Promise((resolve, reject) => {
+  const getSplitFromShareCode = async (shareCode) => {
+    const res = await firebaseFunc.functions().httpsCallable("getVerifiedSplits")();
+    console.log(res);
+
+   /* return new Promise((resolve, reject) => {
       const decoded = JSON.parse(Buffer.from(shareCode, 'base64').toString('utf-8'));
       firebaseFunc.functions().httpsCallable("getSplitFromUser")(decoded)
         .then(res => {
@@ -347,19 +322,21 @@ const AppProvider = ({children}) => {
           console.log("[Error getting split from sharecode]", e);
         })
     });
-
+*/
   }
 
   return (
     <AppContext.Provider value={{
-      userData,
+      userSplits,
+      userWorkouts,
+      userFriends,
+      userMetadata,
       verifiedSplits,
       verifiedExercises,
       openModal, setOpenModal,
       modalCallback, setModalCallback,
       resetModal, setResetModal,
       saveUserDataLocally,
-      clearUserData,
       syncUserDataToCloud,
       initializeUserData,
       addUserSplit,
@@ -369,13 +346,6 @@ const AppProvider = ({children}) => {
       addUserWorkoutsBATCH,
       replaceUserWorkout,
       removeUserWorkout,
-      getUserId,
-      getUserName,
-      getUserProfilePhoto,
-      getSplit,
-      getUserSplits,
-      getUserWorkouts,
-      getUserFriends,
       splitInCollection,
       generateSplitShareCode,
       getSplitFromShareCode

@@ -19,7 +19,7 @@ export const SplitPage = ({ route }) => {
   let [inCollection, setInCollection] = useState(true);
   useEffect(() => {
     const willFocusSubscription = navigation.addListener('focus', () => {
-      setSplit(context.getSplit(split.id));
+      setSplit(context.userSplits[split.id]);
       setInCollection(context.splitInCollection(split.id));
     });
     return willFocusSubscription;

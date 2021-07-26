@@ -16,18 +16,9 @@ import { filterSplitsByString } from '../../services/utilities';
 export const Start = () => {
   const navigation = useNavigation();
   const context = useAppContext();
-  const [workouts, setWorkouts] = useState({});
-  const [splits, setSplits] = useState({});
+  const workouts = context.userWorkouts;
+  const splits = context.userSplits;
   const [splitSearch, onSplitSearch] = useState("");
-
-  useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      setWorkouts(context.getUserWorkouts());
-      setSplits(context.getUserSplits());
-    });
-    return willFocusSubscription;
-  }, []);
-
   const workoutsToday = Object.entries(workouts).filter(([id, workout]) => isSameDay(new Date(), parseISO(workout.scheduled)))
   const splitsFiltered = filterSplitsByString(splits, splitSearch);
 

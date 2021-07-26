@@ -5,7 +5,6 @@ import { AccountStack } from '../routes/AccountStack';
 import { FriendsStack } from '../routes/FriendsStack';
 import { Charts } from '../screens/Charts/Charts';
 import { Start } from '../screens/Start/Start';
-import {Account} from '../screens/AccountPage/AccountPage';
 import { AddFriends } from '../modals/AddFriends/AddFriends';
 import { AddExercise } from '../modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';

@@ -19,6 +19,7 @@ let _ = require("lodash");
 export const ScheduleWorkoutsPage = ({ route }) => {
   const context = useAppContext();
   const navigation = useNavigation();
+  const splits = context.userSplits;
   const [splitSearchText, setSplitSearchText] = useState("");
   const [selectedSplit, setSelectedSplit] = useState({});
   const [date, setDate] = useState(new Date());
@@ -63,7 +64,7 @@ export const ScheduleWorkoutsPage = ({ route }) => {
     setSelectedDays(newSelectedDays);
   }
 
-  const filteredSplits = filterSplitsByString(context.getUserSplits(), splitSearchText);
+  const filteredSplits = filterSplitsByString(splits, splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={"Schedule Workouts"} backButton={true} />
