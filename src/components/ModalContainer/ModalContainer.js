@@ -5,7 +5,6 @@ import styles from './ModalContainer.style'
 import Header from '../Header/Header';
 import { useAppContext } from '../../contexts/AppContext';
 
-
 export default ({isVisible, setVisibility, children, header}) => {
   const context = useAppContext();
   const closeModal = () => {

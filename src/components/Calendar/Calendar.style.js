@@ -7,7 +7,7 @@ export default StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 15,
-        backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK
+        backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT
     },
     monthCarousel: {
         display: 'flex',
@@ -156,7 +156,7 @@ export default StyleSheet.create({
         paddingVertical: 5
     },
     buttonText: {
-        color: theme.SPECIAL_FOREGROUND_COLOR_DARK,
+        color: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
         fontWeight: 'bold',
         fontSize: theme.FONT_SIZE_SMALL,
         textAlign: 'center'

@@ -19,9 +19,9 @@ export default StyleSheet.create({
     },
     button: {
         backgroundColor: theme.SECONDARY_COLOR,
-        borderRadius: 6,
+        borderRadius: 8,
         paddingHorizontal: 25,
-        paddingVertical: 3
+        paddingVertical: 4
     },
     buttonText: {
         color: theme.BACKGROUND_COLOR,

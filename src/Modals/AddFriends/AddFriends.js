@@ -53,13 +53,13 @@ export const AddFriends = ({isVisible, setVisibility}) => {
   return (
     <ModalContainer isVisible={isVisible} setVisibility={setVisibility} header={"Add Friends"}>
         <InputWrapper label={'Friend Code'}>
-          <SearchBar value={friendCodeText} placeholder={'Enter Friend Code...'} onChangeText={setFriendCodeText} onBlur={() => setFriendCodeText("")} onButtonPress={handleSubmitFriendCode} buttonContent={'Go'} buttonColor={theme.SPECIAL_FOREGROUND_COLOR_DARK}/>
+          <SearchBar value={friendCodeText} placeholder={'Enter Friend Code...'} onChangeText={setFriendCodeText} onBlur={() => setFriendCodeText("")} onButtonPress={handleSubmitFriendCode} buttonContent={'Go'} buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}/>
           <ActionButton text={'Scan Friend QR Code'} color={theme.SECONDARY_COLOR} icon={
             <AntIcon name={'qrcode'} size={25} color={theme.BACKGROUND_COLOR}/>
           }/>
         </InputWrapper>
         <InputWrapper label={'Search Users'}>
-          <SearchBar value={userSearchText} placeholder={'Search Users...'} onChangeText={setUserSearchText} onBlur={() => setUserSearchText("")} onButtonPress={handleSubmitUserSearch} buttonContent={'Go'} buttonColor={theme.SPECIAL_FOREGROUND_COLOR_DARK}/>
+          <SearchBar value={userSearchText} placeholder={'Search Users...'} onChangeText={setUserSearchText} onBlur={() => setUserSearchText("")} onButtonPress={handleSubmitUserSearch} buttonContent={'Go'} buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}/>
           {suggestedUsers.map((user, ind) => (
             <View key={ind}>
               {userCard(user)}

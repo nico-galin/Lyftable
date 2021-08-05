@@ -18,7 +18,7 @@ export default StyleSheet.create({
     paddingLeft: 10,
   },
   title: {
-    fontSize: theme.FONT_SIZE_LARGE,
+    fontSize: theme.FONT_SIZE_MEDIUM,
     fontWeight: 'bold'
   },
   exerciseLength: {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -48,25 +49,30 @@ export default function CustomTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             key={index}
           >
-            <View style={styles.buttonStyle}>
-              {route.name === "Home" && 
-                <FoundationIcon name={'home'} size={25} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-              }
-              {route.name === "Charts" &&
-                <MaterialIcon name={'bar-chart'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-              }
-              {route.name === "Start" &&
-                <View style={[styles.startButton, isFocused ? styles.startButtonActive : styles.startButtonInactive]}>
-                  <FeatherIcon name={'plus'} size={22} color={theme.BACKGROUND_COLOR}/>
-                </View>
-              }
-              {route.name === "Friends" &&
-                <MaterialIcon name={'people'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-              }
-              {route.name === "Account" &&
-                <MaterialIcon name={'person'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-              }
-            </View>
+            {route.name === "Start" ?
+              <LinearGradient
+                colors={isFocused ? [theme.SECONDARY_COLOR, theme.SECONDARY_COLOR_LIGHT] : [theme.SPECIAL_FOREGROUND_COLOR_LIGHT, theme.SPECIAL_FOREGROUND_COLOR_LIGHT]}
+                style={[styles.startButton, styles.startButtonInactive]}
+                start={{x: 0, y: 0}} end={{x: 1, y: 1}}
+              >
+                <FeatherIcon name={'plus'} size={22} color={theme.BACKGROUND_COLOR}/>
+              </LinearGradient>
+            :
+              <View style={styles.buttonStyle}>
+                {route.name === "Home" && 
+                  <FoundationIcon name={'home'} size={25} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
+                }
+                {route.name === "Charts" &&
+                  <MaterialIcon name={'bar-chart'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
+                }
+                {route.name === "Friends" &&
+                  <MaterialIcon name={'people'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
+                }
+                {route.name === "Account" &&
+                  <MaterialIcon name={'person'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
+                }
+              </View>
+            }
           </TouchableWithoutFeedback>
         );
       })}

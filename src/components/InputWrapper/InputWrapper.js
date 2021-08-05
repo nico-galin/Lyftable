@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import styles from './InputWrapper.style';
 
-export default ({ label = "", children, valid = [true, null] }) => {
+export default ({ label = "", secondaryLabel = "", children, valid = [true, null] }) => {
   return (
     <View style={styles.container}>
       <View style={[styles.outline, !valid[0] ? styles.invalidOutline : null]}>
@@ -11,6 +11,11 @@ export default ({ label = "", children, valid = [true, null] }) => {
           {label}
           {!valid[0] && <Text style={styles.invalidReason}> ({valid[1]})</Text>}
         </Text>
+        {secondaryLabel ?
+          <Text style={[styles.secondaryLabel, !valid[0] ? styles.invalidSecondaryLabel : null]}>
+            {secondaryLabel}
+          </Text>
+        : null}
         {children}
       </View>
     </View>

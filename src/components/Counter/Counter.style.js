@@ -10,7 +10,7 @@ export default StyleSheet.create({
     wrapper: {
       width: 180,
       position: 'relative',
-      borderRadius: 10,
+      borderRadius: 8,
       borderColor: theme.SUBTITLE_COLOR,
       borderWidth: 1,
       flexDirection: 'row'

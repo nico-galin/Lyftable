@@ -9,17 +9,17 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: theme.FOREGROUND_COLOR,
-        borderRadius: 12
+        borderRadius: 8
     },
     selected: {
       flex: 1,
-      padding: 8,
-      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
-      borderRadius: 12
+      padding: 6,
+      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
+      borderRadius: 8
     },
     unselected: {
       flex: 1,
-      padding: 8
+      padding: 6
     },
     textSelected: {
       textAlign: 'center',

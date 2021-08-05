@@ -4,15 +4,10 @@ import { Buffer } from "buffer";
 import { v4 as uuid } from 'uuid';
 
 const msToDigital = (ms) => {
-  const seconds = Math.floor((ms / 1000) % 60);
-  const minutes = Math.floor((ms / 1000 / 60) % 60);
+  const seconds = Math.floor((ms / 1000) % 60).toString().padStart(2, '0');
+  const minutes = Math.floor((ms / 1000 / 60) % 60).toString().padStart(2, '0');
   const hours = Math.floor((ms  / 1000 / 3600 ) % 24);
-  const digital = [
-    pad(hours.toString(), 2),
-    pad(minutes.toString(), 2),
-    pad(seconds.toString(), 2),
-  ].join(':');
-  return digital;
+  return `${hours ? hours + ":" : ""}${minutes}:${seconds}`
 }
 
 const msToHMS = (ms) => {

@@ -7,10 +7,24 @@ import styles from './Header.style';
 import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 
-export default ({title = "Title", backButton = false, rightButtonName, rightButtonOnPress, rightButtonSize = 25}) => {
+export default ({
+  title = "Title", backButton = false,
+  leftButtonText, leftButtonName, leftButtonOnPress, leftButtonSize = 25, leftButtonColor = theme.PRIMARY_COLOR, 
+  rightButtonText, rightButtonName, rightButtonOnPress, rightButtonSize = 25, rightButtonColor = theme.PRIMARY_COLOR
+}) => {
   const navigation = backButton ? useNavigation() : null;
-  const icon = <MatIcon name={rightButtonName} size={rightButtonSize} color={theme.PRIMARY_COLOR}/>;
-  if (!icon) icon = <MatComIcon name={rightButtonName} size={rightButtonSize} color={theme.PRIMARY_COLOR}/>
+  let leftIcon, rightIcon;
+  if (MatIcon.hasIcon(leftButtonName)) {
+    leftIcon = <MatIcon name={leftButtonName} size={leftButtonSize} color={leftButtonColor}/>;
+  } else {
+    leftIcon = <MatComIcon name={leftButtonName} size={leftButtonSize} color={leftButtonColor}/>;
+  }
+  if (MatIcon.hasIcon(leftButtonName)) {
+    rightIcon = <MatIcon name={rightButtonName} size={rightButtonSize} color={rightButtonColor}/>;
+  } else {
+    rightIcon = <MatComIcon name={rightButtonName} size={rightButtonSize} color={rightButtonColor}/>;
+  }
+
   return (
     <View style={styles.container}>
       {backButton && 
@@ -18,10 +32,25 @@ export default ({title = "Title", backButton = false, rightButtonName, rightButt
           <FeatherIcon name={'chevron-left'} size={25} color={theme.PRIMARY_COLOR}/>
         </TouchableOpacity>
       }
+      {leftButtonName && leftButtonOnPress ?
+        <TouchableOpacity style={styles.leftBtn} onPress={leftButtonOnPress}>
+          {leftIcon}
+        </TouchableOpacity>
+      : null}
+      {leftButtonText && leftButtonOnPress ? 
+        <TouchableOpacity style={[styles.leftBtn, {backgroundColor: leftButtonColor}]} onPress={leftButtonOnPress}>
+          <Text style={styles.otherBtnText}>{leftButtonText}</Text>
+        </TouchableOpacity>
+      : null}
       <Text style={styles.title}>{title}</Text>
-      {rightButtonName && rightButtonOnPress ? 
+      {rightButtonName && rightButtonOnPress ?
         <TouchableOpacity style={styles.rightBtn} onPress={rightButtonOnPress}>
-          {icon}
+          {rightIcon}
+        </TouchableOpacity>
+      : null}
+      {rightButtonText && rightButtonOnPress ? 
+        <TouchableOpacity style={[styles.rightBtn, {backgroundColor: rightButtonColor}]} onPress={rightButtonOnPress}>
+          <Text style={styles.otherBtnText}>{rightButtonText}</Text>
         </TouchableOpacity>
       : null}
     </View>

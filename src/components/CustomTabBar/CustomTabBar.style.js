@@ -3,6 +3,7 @@ import theme from '../../assets/theme.style';
 
 export default StyleSheet.create({
     container: {
+      position: "relative",
       flexDirection: 'row',
       backgroundColor: theme.FOREGROUND_COLOR,
       height:65,
@@ -11,8 +12,8 @@ export default StyleSheet.create({
       alignItems:"center"
     },
     startButton: {
-      height: 42,
-      width: 42,
+      height: 40,
+      width: 40,
       borderRadius: 21,
       justifyContent: 'center',
       alignItems: 'center',
@@ -26,11 +27,11 @@ export default StyleSheet.create({
       backgroundColor: theme.SECONDARY_COLOR
     },
     startButtonInactive: {
-      backgroundColor: theme.PRIMARY_COLOR
+      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT
     },
     buttonStyle: {
       flex: 1,
       alignItems:"center",
       paddingVertical: 15
-    }
+    },
 });

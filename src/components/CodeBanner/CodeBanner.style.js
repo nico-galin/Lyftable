@@ -8,7 +8,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
+        backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
         marginHorizontal: -15,
         padding: 15
     },

@@ -47,13 +47,13 @@ export const AddSplitPage = ({ route }) => {
             onChangeText={setSplitCode}
             onButtonPress={handleSubmitSplitCode}
             buttonContent={'Go'}
-            buttonColor={theme.SPECIAL_FOREGROUND_COLOR_DARK}/>
+            buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}/>
           <ActionButton text={'Scan Split QR Code'} color={theme.SECONDARY_COLOR} icon={
             <AntIcon name={'qrcode'} size={25} color={theme.BACKGROUND_COLOR}/>
           }/>
         </InputWrapper>
         <InputWrapper label={"Custom Split"}>
-            <ActionButton text={"Create Custom Split"} height={"large"} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} onPress={() => navigation.navigate("EditSplit")}/>
+            <ActionButton text={"Create Custom Split"} height={"large"} color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} onPress={() => navigation.navigate("EditSplit")}/>
         </InputWrapper>
         <View style={systemStyles.bottomSpacer}/>
       </ScrollView>

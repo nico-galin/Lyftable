@@ -107,7 +107,7 @@ export const EditSplitPage = ({ route }) => {
             <View key={'Exercise' + ind}><Card data={ex.movement} topData={msToHM(ex.rest_time)} bottomData={formatSetsReps(ex.set_count, ex.repetitions)} moveable={true} onDelete={() => handleDeleteExercise(ind)}/></View>
           ))}
           <View style={styles.addExerciseBtnContainer}>
-            <ActionButton text={'Add Exercise'} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} onPress={openNewExerciseModal}/>
+            <ActionButton text={'Add Exercise'} color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} textColor={theme.BACKGROUND_COLOR} onPress={openNewExerciseModal}/>
           </View>
         </InputWrapper>
         <InputWrapper label={'Estimated Time'} valid={validation.estimated_time}>

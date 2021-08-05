@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { startOfWeek, startOfMonth, addDays, format, isSameDay, isAfter, addMonths, isSameYear } from 'date-fns';
 import { Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import styles from './Calendar.style';
 import theme from '../../assets/theme.style';
@@ -41,7 +42,7 @@ export default () => {
 
   const dateMappingArray = [0, 7, 14, 21, 28, 35];
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={[theme.SPECIAL_FOREGROUND_COLOR_LIGHT, theme.SPECIAL_FOREGROUND_COLOR_DARK]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={styles.container}>
       <View style={styles.monthCarousel}>
           <TouchableWithoutFeedback onPress={() => setMonthDiff(monthDiff - 1)}>
             <View style={styles.monthCarouselLeftBtn}>
@@ -106,6 +107,6 @@ export default () => {
           <ActionButton text={'Add Workouts'} color={theme.BACKGROUND_COLOR} textColor={theme.SPECIAL_FOREGROUND_COLOR_DARK} onPress={() => navigation.navigate("ScheduleWorkouts")}/>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };

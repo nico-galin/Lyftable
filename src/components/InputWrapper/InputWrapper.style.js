@@ -11,16 +11,19 @@ export default StyleSheet.create({
       marginTop: 15,
       borderWidth: 1,
       borderColor: theme.SUBTITLE_COLOR,
-      borderRadius: 15,
+      borderRadius: 12,
       padding: 14
     },
     invalidOutline: {
       borderColor: theme.RED,
-      borderWidth: 2,
+      borderWidth: 1,
     },
     invalidLabel: {
       color: theme.RED,
       fontWeight: 'bold'
+    },
+    invalidSecondaryLabel: {
+      color: theme.RED,
     },
     invalidReason: {
       color: theme.RED,
@@ -33,5 +36,13 @@ export default StyleSheet.create({
       paddingHorizontal: 10,
       top: -12,
       left: 20,
+    },
+    secondaryLabel: {
+      position: 'absolute',
+      backgroundColor: theme.BACKGROUND_COLOR,
+      color: theme.SUBTITLE_COLOR,
+      paddingHorizontal: 10,
+      top: -12,
+      right: 20,
     }
 });

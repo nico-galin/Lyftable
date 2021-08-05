@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { HomeStack } from '../routes/HomeStack';
 import { AccountStack } from '../routes/AccountStack';
 import { FriendsStack } from '../routes/FriendsStack';
 import { Charts } from '../screens/Charts/Charts';
 import { Start } from '../screens/Start/Start';
+import { ActiveWorkout } from '../screens/ActiveWorkout/ActiveWorkout';
 import { AddFriends } from '../modals/AddFriends/AddFriends';
 import { AddExercise } from '../modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
@@ -12,11 +14,10 @@ import { View, StatusBar } from 'react-native';
 import theme from '../assets/theme.style';
 import { useAppContext } from '../contexts/AppContext';
 
-
 export const AppStack = () => {
   const [addFriendModalVisible, setAddFriendModalVisible] = useState(false);
   const [addExerciseModalVisible, setAddExerciseModalVisible] = useState(false);
-  const Tabs = createBottomTabNavigator();
+  const Stack = createStackNavigator();
   const context = useAppContext();
 
   useEffect(() => {
@@ -47,13 +48,39 @@ export const AppStack = () => {
         />
         <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
         <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
-        <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>}>
-          <Tabs.Screen name="Home" component={HomeStack} />
-          <Tabs.Screen name="Charts" component={Charts} />
-          <Tabs.Screen name="Start" component={Start} />
-          <Tabs.Screen name="Friends" component={FriendsStack} />
-          <Tabs.Screen name="Account" component={AccountStack} />
-        </Tabs.Navigator>
+        <Stack.Navigator initialRouteName={"Main"} screenOptions={{
+          headerShown: false,
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateX: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [layouts.screen.width, 0],
+                    }),
+                  },
+                ],
+              },
+            };
+          },
+        }}>
+          <Stack.Screen name={"Main"} component={MainNavigator}/>
+          <Stack.Screen name={"ActiveWorkout"} component={ActiveWorkout}/>
+        </Stack.Navigator>
     </View>
   );
 };
+
+const MainNavigator = () => {
+  const Tabs = createBottomTabNavigator();
+  return (
+    <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>} >
+      <Tabs.Screen name="Home" component={HomeStack} />
+      <Tabs.Screen name="Charts" component={Charts} />
+      <Tabs.Screen name="Start" component={Start} />
+      <Tabs.Screen name="Friends" component={FriendsStack} />
+      <Tabs.Screen name="Account" component={AccountStack} />
+    </Tabs.Navigator>
+  )
+}

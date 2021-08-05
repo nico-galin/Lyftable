@@ -18,7 +18,7 @@ export default StyleSheet.create({
       alignItems: 'center',
     },
     dayBtnActive: {
-      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
+      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
     },
     dayBtnText: {
       fontWeight: "bold",

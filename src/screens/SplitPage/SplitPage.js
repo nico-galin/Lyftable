@@ -90,11 +90,11 @@ export const SplitPage = ({ route }) => {
           </View>
         </View>
         <View style={[styles.sectionContainer, styles.buttonRow]}>
-          <ActionButton onPress={() => navigation.navigate('EditSplit', { data: split })} text={'Edit'} height={'large'} width={'small'} color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton onPress={() => navigation.navigate('EditSplit', { data: split })} text={'Edit'} width={'small'} color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} textColor={theme.BACKGROUND_COLOR} />
           <View style={styles.gap} />
-          <ActionButton text={'Start Workout'} height={'large'}color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton text={'Start Workout'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} onPress={() => navigation.navigate("ActiveWorkout", { data: {split}})}/>
         </View>
-        {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.SPECIAL_FOREGROUND_COLOR_DARK} textColor={theme.BACKGROUND_COLOR} />}
+        {!inCollection && <ActionButton text={'Add To Collection'} height={'large'}color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} textColor={theme.BACKGROUND_COLOR} />}
         <Text style={styles.description}>Note: If you make changes to a split made by someone else, you will be unsubscribed from their split</Text>
       </ScrollView>
       <CodeBanner label={'Split Share Code'} code={generateSplitShareCode(split.id, split.creator.id)} data={{}} />

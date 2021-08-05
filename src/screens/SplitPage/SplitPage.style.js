@@ -21,7 +21,7 @@ export default StyleSheet.create({
       borderTopLeftRadius: 10,
       borderBottomLeftRadius: 10,
       marginRight: 10,
-      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_DARK,
+      backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
       alignItems: 'center',
       paddingVertical: 15
     },
