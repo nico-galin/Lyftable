@@ -8,7 +8,7 @@ import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 
 export default ({
-  title = "Title", backButton = false,
+  title = "Title", subtitle, backButton = false,
   leftButtonText, leftButtonName, leftButtonOnPress, leftButtonSize = 25, leftButtonColor = theme.PRIMARY_COLOR, 
   rightButtonText, rightButtonName, rightButtonOnPress, rightButtonSize = 25, rightButtonColor = theme.PRIMARY_COLOR
 }) => {
@@ -42,7 +42,10 @@ export default ({
           <Text style={styles.otherBtnText}>{leftButtonText}</Text>
         </TouchableOpacity>
       : null}
-      <Text style={styles.title}>{title}</Text>
+      <View>
+        <Text style={styles.title}>{title}</Text>
+        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text>: null}
+      </View>
       {rightButtonName && rightButtonOnPress ?
         <TouchableOpacity style={styles.rightBtn} onPress={rightButtonOnPress}>
           {rightIcon}

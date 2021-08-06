@@ -15,6 +15,9 @@ export default StyleSheet.create({
         fontWeight: "bold",
         color: theme.PRIMARY_COLOR
     },
+    subtitle: {
+        textAlign: "center",
+    },
     backBtn: {
         position: 'absolute',
         top: 0,
@@ -27,8 +30,6 @@ export default StyleSheet.create({
     rightBtn: {
         position: 'absolute',
         borderRadius: 8,
-        top: 0,
-        bottom: 0,
         right: 0,
         marginBottom: 8,
         justifyContent: 'center',
@@ -49,5 +50,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: theme.FONT_SIZE_TINY,
         marginHorizontal: 15,
+        paddingVertical: 8,
+        paddingHorizontal: 10
     }
 });

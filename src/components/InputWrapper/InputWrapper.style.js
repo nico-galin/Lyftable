@@ -4,11 +4,11 @@ import theme from '../../assets/theme.style';
 export default StyleSheet.create({
     container: {
       marginBottom: 6,
-      width: '100%'
+      width: '100%',
     },
     outline: {
       position: 'relative',
-      marginTop: 15,
+      marginTop: 10,
       borderWidth: 1,
       borderColor: theme.SUBTITLE_COLOR,
       borderRadius: 12,
