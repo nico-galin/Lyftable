@@ -16,6 +16,7 @@ import { View, StatusBar } from 'react-native';
 import theme from '../assets/theme.style';
 import { useAppContext } from '../contexts/AppContext';
 import { useNavigation } from '@react-navigation/native';
+import changeNavigationBarColor, { showNavigationBar } from "react-native-navigation-bar-color";
 import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
 
 export const AppStack = () => {
@@ -25,6 +26,8 @@ export const AppStack = () => {
   const { setModalCallback, setOpenModal } = useAppContext();
   const { activeWorkoutID } = useActiveWorkoutContext();
   useEffect(() => {
+    changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
+    StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
     const openModal = (name, callback = () => {}) => {
       switch(name) {
         case 'AddExercise':
@@ -43,34 +46,28 @@ export const AppStack = () => {
   }, [])
   return (
     <View style={{flex: 1}}>
-        <StatusBar
-          animated={false}
-          barStyle={'dark-content'}
-          backgroundColor={theme.BACKGROUND_COLOR}
-          hidden={false}
-        />
-        <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
-        <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
-        <Stack.Navigator initialRouteName={activeWorkoutID ? "ActiveWorkout" : "Main"} screenOptions={{
-          headerShown: false,
-          cardStyleInterpolator: ({ current, layouts }) => {
-            return {
-              cardStyle: {
-                transform: [
-                  {
-                    translateX: current.progress.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [layouts.screen.width, 0],
-                    }),
-                  },
-                ],
-              },
-            };
-          },
-        }}>
-          <Stack.Screen name={"Main"} component={MainNavigator}/>
-          <Stack.Screen name={"ActiveWorkout"} component={ActiveWorkout}/>
-        </Stack.Navigator>
+      <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
+      <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
+      <Stack.Navigator initialRouteName={activeWorkoutID ? "ActiveWorkout" : "Main"} screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: ({ current, layouts }) => {
+          return {
+            cardStyle: {
+              transform: [
+                {
+                  translateX: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [layouts.screen.width, 0],
+                  }),
+                },
+              ],
+            },
+          };
+        },
+      }}>
+        <Stack.Screen name={"Main"} component={MainNavigator}/>
+        <Stack.Screen name={"ActiveWorkout"} component={ActiveWorkout}/>
+      </Stack.Navigator>
     </View>
   );
 };

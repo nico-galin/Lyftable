@@ -184,7 +184,7 @@ android {
 }
 
 dependencies {
-    
+    implementation project(':react-native-navigation-bar-color')
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:28.2.1')
 
