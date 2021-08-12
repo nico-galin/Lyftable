@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import { View, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { View, TouchableWithoutFeedback, ScrollView, StatusBar } from 'react-native';
 import styles from './ModalContainer.style'
 import Header from '../Header/Header';
 import { useAppContext } from '../../contexts/AppContext';
@@ -13,6 +13,7 @@ export default ({isVisible, setVisibility, children, header}) => {
   }
   return (
     <Modal
+      statusBarTranslucent
       isVisible={isVisible}
       onBackdropPress={closeModal}
       onBackButtonPress={closeModal}

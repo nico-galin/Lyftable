@@ -8,8 +8,9 @@ import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 
 export default ({
-  title = "", subtitle, backButton = false,
-  maxTitleLength = 14,
+  title = "", subtitle,
+  maxTitleLength, maxSubtitleLength,
+  backButton = false,
   leftButtonText, leftButtonName, leftButtonOnPress, leftButtonSize = 25, leftButtonColor = theme.PRIMARY_COLOR, 
   rightButtonText, rightButtonName, rightButtonOnPress, rightButtonSize = 25, rightButtonColor = theme.PRIMARY_COLOR
 }) => {
@@ -44,8 +45,8 @@ export default ({
         </TouchableOpacity>
       : null}
       <View>
-        <Text style={styles.title}>{title.length < maxTitleLength ? title : title.substring(0, maxTitleLength) + "..."}</Text>
-        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text>: null}
+        <Text style={styles.title}>{!maxTitleLength || title.length < maxTitleLength ? title : title.substring(0, maxTitleLength) + "..."}</Text>
+        {subtitle ? <Text style={styles.subtitle}>{!maxSubtitleLength || subtitle.length < maxSubtitleLength ? subtitle : subtitle.substring(0, maxSubtitleLength) + "..."}</Text>: null}
       </View>
       {rightButtonName && rightButtonOnPress ?
         <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.rightBtn} onPress={rightButtonOnPress}>

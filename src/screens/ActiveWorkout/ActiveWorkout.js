@@ -418,6 +418,7 @@ const ActiveWorkoutPage = ({ route }) => {
       <View style={systemStyles.pageContainer}>
         <Header title={splitMetadata.name}
           subtitle = {msToDigital(mainTimer)}
+          maxTitleLength= {15}
           leftButtonName={"dots-horizontal"} leftButtonOnPress={handleInfo} leftButtonColor={theme.SUBTITLE_COLOR}
           rightButtonText={"Finish"} rightButtonOnPress={handleFinish} rightButtonColor={theme.SECONDARY_COLOR}
         />

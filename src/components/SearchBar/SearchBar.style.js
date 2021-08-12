@@ -14,7 +14,7 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: theme.FOREGROUND_COLOR,
-        borderRadius: 12,
+        borderRadius: 10,
         paddingRight: 5,
 
     },

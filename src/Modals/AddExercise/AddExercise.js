@@ -9,7 +9,7 @@ import theme from '../../assets/theme.style';
 import Card from '../../components/Card/Card';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import Counter from '../../components/Counter/Counter';
-import { msToHM, msToHMS } from '../../services/utilities';
+import { msToHM, msToHMS, validator } from '../../services/utilities';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import { useAppContext } from '../../contexts/AppContext';
 
@@ -22,6 +22,10 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   const [equalReps, setEqualReps] = useState(true);
   const [repetitions, setRepetitions] = useState([10, 10, 10]);
   const { verifiedMovements, setResetModal, modalCallback } = useAppContext();
+  const [validation, setValidation] = useState({
+    exercise: [true, null],
+  });
+
   const reset = () => {
     setMovementSearchText("");
     setSelectedMovement("");
@@ -37,6 +41,11 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   }, []);
 
   const completeForm = () => {
+    const newValidation = {
+      exercise: selectedMovement ? [true, null] : [false, "Required"]
+    }
+    setValidation(newValidation);
+    if (!validator.allValid(newValidation)) return;
     setVisibility(false);
     modalCallback({
       movement: verifiedMovements[selectedMovement].name,
@@ -84,7 +93,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   ));
   return (
     <ModalContainer isVisible={isVisible} setVisibility={setVisibility} header={'Add Exercise'}>
-        <InputWrapper label={'Movement'}>
+        <InputWrapper label={'Movement'} valid={validation.exercise}>
           { selectedMovement ?
             <Card data={verifiedMovements[selectedMovement].name} bottomData={verifiedMovements[selectedMovement].alt_name} onDelete={() => setSelectedMovement("")}/>
           :
