@@ -15,12 +15,10 @@ import { filterSplitsByString } from '../../services/utilities';
 
 export const Start = () => {
   const navigation = useNavigation();
-  const context = useAppContext();
-  const workouts = context.userWorkouts;
-  const splits = context.userSplits;
+  const { userWorkouts, userSplits } = useAppContext();
   const [splitSearch, onSplitSearch] = useState("");
-  const workoutsToday = Object.entries(workouts).filter(([id, workout]) => isSameDay(new Date(), parseISO(workout.scheduled)))
-  const splitsFiltered = filterSplitsByString(splits, splitSearch);
+  const workoutsToday = Object.entries(userWorkouts).filter(([id, workout]) => isSameDay(new Date(), parseISO(workout.scheduled)))
+  const splitsFiltered = filterSplitsByString(userSplits, splitSearch);
 
   const handleAddSplit = () => {
 

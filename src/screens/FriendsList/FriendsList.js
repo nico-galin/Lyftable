@@ -9,16 +9,15 @@ import styles from './FriendsList.style';
 import { useNavigation } from '@react-navigation/native';
 
 export const FriendsList = ({ route }) => {
-  const context = useAppContext();
+  const { userFriends, userMetadata, openModal } = useAppContext();
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState("");
-  const friends = context.userFriends;
 
   const handleSearch = (val) => {
     setSearchText(val);
   }
 
-  const filteredFriends = Object.entries(friends).filter(([id, friend]) => friend.name.toLowerCase().includes(searchText.toLowerCase())).map(([id, friend], ind) => (
+  const filteredFriends = Object.entries(userFriends).filter(([id, friend]) => friend.name.toLowerCase().includes(searchText.toLowerCase())).map(([id, friend], ind) => (
     <View key={ind}>
       <Text>{friend.name}</Text>
     </View>
@@ -28,11 +27,11 @@ export const FriendsList = ({ route }) => {
     <View style={systemStyles.pageContainer}>
       <Header backButton={true} title={'Friends List'} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <SearchBar value={searchText} onChangeText={handleSearch} onBlur={() => handleSearch('')} onButtonPress={() => context.openModal("AddFriends")} iconName={'plus'}/>
+        <SearchBar value={searchText} onChangeText={handleSearch} onBlur={() => handleSearch('')} onButtonPress={() => openModal("AddFriends")} iconName={'plus'}/>
         { filteredFriends }
-        <Text style={styles.friendCount}>{Object.keys(friends).length} Friends</Text>
+        <Text style={styles.friendCount}>{Object.keys(userFriends).length} Friends</Text>
       </ScrollView>
-      <CodeBanner label={'Your Friend Code'} code={context.userMetadata.id} data={{}} />
+      <CodeBanner label={'Your Friend Code'} code={userMetadata.id} data={{}} />
     </View>
   );
 };

@@ -15,11 +15,11 @@ import { useAppContext } from '../../contexts/AppContext';
 let _ = require("lodash");
 
 export const EditSplitPage = ({ route }) => {
-  const context = useAppContext();
+  const { splitInCollection, openModal, userMetadata, replaceUserSplit, addUserSplit } = useAppContext();
   const navigation = useNavigation();
   const existingSplit = route && route.params && route.params.data;
   const split = existingSplit ? route.params.data : getSplitTemplate();
-  const inCollection = context.splitInCollection(split.id);
+  const inCollection = splitInCollection(split.id);
   const [estimatedTime, setEstimatedTime] = useState(split.estimated_time);
   const [name, setName] = useState(split.name ? split.name : "");
   const [showOnProfile, setShowOnProfile] = useState(split.public);
@@ -56,7 +56,7 @@ export const EditSplitPage = ({ route }) => {
   }
 
   const openNewExerciseModal = () => {
-    context.openModal("AddExercise", handleAddExercise);
+    openModal("AddExercise", handleAddExercise);
   }
 
   const handleSubmit = () => {
@@ -71,20 +71,20 @@ export const EditSplitPage = ({ route }) => {
     const newSplit = Object.assign({}, split);
     newSplit.public = showOnProfile;
     newSplit.creator = {
-      id: context.userMetadata.id,
-      name: context.userMetadata.name,
-      profile_photo: context.userMetadata.profile_photo
+      id: userMetadata.id,
+      name: userMetadata.name,
+      profile_photo: userMetadata.profile_photo
     }
     newSplit.name = name.trim();
     newSplit.description = description.trim();
     newSplit.exercises = exercises;
     newSplit.estimatedTime = estimatedTime;
     if (inCollection) {
-      context.replaceUserSplit(newSplit);
+      replaceUserSplit(newSplit);
     } else if (existingSplit && _.isEqual(newSplit, split)) {
-      context.addUserSplit(split);
+      addUserSplit(split);
     } else {
-      context.addUserSplit(newSplit);
+      addUserSplit(newSplit);
       navigation.dispatch(StackActions.popToTop());
     }
     navigation.navigate("SplitPage", { data: newSplit});

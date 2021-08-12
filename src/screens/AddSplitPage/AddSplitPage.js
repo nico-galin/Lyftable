@@ -16,9 +16,8 @@ import { filterSplitsByString } from '../../services/utilities';
 export const AddSplitPage = ({ route }) => {
   const [splitSearchText, setSplitSearchText] = useState("");
   const [splitCode, setSplitCode] = useState("");
-  const context = useAppContext();
+  const { verifiedSplits } = useAppContext();
   const navigation = useNavigation();
-  const verifiedSplits = context.verifiedSplits;
   const handleSubmitSplitCode = () => {
 
   }

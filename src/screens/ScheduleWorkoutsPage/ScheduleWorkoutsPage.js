@@ -17,9 +17,9 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 let _ = require("lodash");
 
 export const ScheduleWorkoutsPage = ({ route }) => {
-  const context = useAppContext();
+  const { userSplits, addUserWorkout, addUserWorkoutsBATCH } = useAppContext();
   const navigation = useNavigation();
-  const splits = context.userSplits;
+  const splits = userSplits;
   const [splitSearchText, setSplitSearchText] = useState("");
   const [selectedSplit, setSelectedSplit] = useState({});
   const [date, setDate] = useState(new Date());
@@ -51,9 +51,9 @@ export const ScheduleWorkoutsPage = ({ route }) => {
       scheduled: date.toISOString(),
     }
     if (repeating) {
-      context.addUserWorkoutsBATCH(workout, weekCounter, selectedDays);
+      addUserWorkoutsBATCH(workout, weekCounter, selectedDays);
     } else {
-      context.addUserWorkout(workout);
+      addUserWorkout(workout);
     }
     navigation.goBack();
   }
