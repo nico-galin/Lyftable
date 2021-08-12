@@ -7,7 +7,7 @@ import styles from './ActionButton.style';
 export default ({height = 'small',
   width,
   text,
-  color,
+  color = theme.SECONDARY_COLOR,
   textColor = theme.BACKGROUND_COLOR,
   onPress = () => {},
   icon = null

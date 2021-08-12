@@ -1,5 +1,7 @@
+"use strict";
 import React, { useEffect, useState, useRef } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
+import { differenceInMilliseconds, parseISO } from 'date-fns';
 import { styles, swipeListStyles } from './ActiveWorkout.style';
 import Header from '../../components/Header/Header';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -17,14 +19,13 @@ import { useActiveWorkoutContext } from '../../contexts/ActiveWorkoutContext';
 import { Loading } from '../Loading/Loading';
 
 const ActiveWorkoutPage = ({ route }) => {
-  const { userWorkouts, addUserWorkout, replaceUserWorkout,  } = useAppContext();
+  const { userWorkouts, addUserWorkout, replaceUserWorkout, openModal } = useAppContext();
   const { activeWorkoutID, activateWorkout, deactivateWorkout } = useActiveWorkoutContext();
   const navigation = useNavigation();
   const [workoutMetadata, setWorkoutMetadata] = useState({});
   const [splitMetadata, setSplitMetadata] = useState({});
   const [exercises, setExercises] = useState([]);
   const [mainTimer, setMainTimer] = useState(0);
-  const [syncInterval, setSyncInterval] = useState();
   const [exerciseTimers, setExerciseTimers] = useState(exercises.map(ex => {
     if (ex.elapsed_time) return ex.elapsed_time;
     return 0;
@@ -92,7 +93,8 @@ const ActiveWorkoutPage = ({ route }) => {
     try {
       if (activeWorkoutID) {
         const activeWorkout = userWorkouts[activeWorkoutID];
-        // There is an actrive workout currently
+        const timeDifference = differenceInMilliseconds(new Date(), parseISO(activeWorkout.start_time));
+        // There is an active workout currently
         setWorkoutMetadata({
           id: activeWorkout.id,
           start_time: activeWorkout.start_time,
@@ -112,7 +114,7 @@ const ActiveWorkoutPage = ({ route }) => {
             activateExercise(ind);
           }
         })
-        setMainTimer(activeWorkout.elapsed_time);
+        setMainTimer(timeDifference);
       } else {
         const newWorkoutMetadata = {
           id: route.params && route.params.data && route.params.data.id != null ? route.params.data.id : generateUniqueId(),
@@ -270,6 +272,27 @@ const ActiveWorkoutPage = ({ route }) => {
     deactivateExercise(ind, true);
   }
 
+  const handleAddExercise = () => {
+    openModal("AddExercise", (ex) => {
+      setExercises(prevExercises => {
+        const newExercises = JSON.parse(JSON.stringify(prevExercises));
+        newExercises.push({
+          ...ex,
+          weights: ex.weights != null ? ex.weights : new Array(ex.repetitions.length),
+          previous_weights: ex.previous_weights != null ? ex.previous_weights : new Array(ex.repetitions.length) /* [INCOMPLETE] Need to set prev weights*/,
+          previous_repetitions: ex.previous_repetitions != null ? ex.previous_repetitions : new Array(ex.repetitions.length) /* [INCOMPLETE] Need to set prev reps*/,
+          completion_times: ex.completion_times != null ? ex.completion_times : new Array(ex.repetitions.length),
+          completed: ex.completed != null ? ex.completed : false,
+        });
+        return newExercises;
+      });
+      setExerciseTimers(prevExerciseTimers => {
+        prevExerciseTimers.push(0);
+        return prevExerciseTimers;
+      });
+    });
+  }
+
   const handleInfo = () => {
     return null;
   }
@@ -289,6 +312,7 @@ const ActiveWorkoutPage = ({ route }) => {
     });
     return null;
   }
+
   const exerciseTiles = exercises.map((ex, ind) => {
     if (ex.open) {
       return (
@@ -403,7 +427,8 @@ const ActiveWorkoutPage = ({ route }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={systemStyles.formSpacer} />
           <View style={systemStyles.formSpacer} />
-          { exerciseTiles }
+            { exerciseTiles }
+            <ActionButton text={"Add Exercise"} onPress={handleAddExercise} />
           <View style={systemStyles.bottomSpacer}/>
         </ScrollView>
       </View>

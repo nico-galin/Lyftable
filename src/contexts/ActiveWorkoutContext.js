@@ -1,7 +1,6 @@
 "use strict";
 import React, { useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useAppContext } from './AppContext';
 
 const ActiveWorkoutContext = React.createContext({});
 
@@ -23,25 +22,16 @@ const ActiveWorkoutProvider = ({children}) => {
     }
   }
 
-  const saveActiveWorkoutLocally = async(overrideData = null) => {
-    try {
-      if (activeWorkoutID || overrideData) {
-        await AsyncStorage.setItem(
-          '@LyftableActiveWorkout',
-          JSON.stringify(overrideData != null ? overrideData : activeWorkoutID)
-        );
-      } else {
-        await AsyncStorage.removeItem('@LyftableActiveWorkout');
-      }
-    } catch (e) {
-      console.log("[Error saving active workout locally]", e);
-    }
-  }
-
   const activateWorkout = async(id) => {
-    setActiveWorkoutID(id);
-    await saveActiveWorkoutLocally(id);
-    return null;
+    try {
+      setActiveWorkoutID(id);
+      await AsyncStorage.setItem(
+        '@LyftableActiveWorkout',
+        JSON.stringify(id)
+      );
+    } catch (e) {
+      console.log("[Error activating workout]", e);
+    }
   }
 
   const deactivateWorkout = async() => {
