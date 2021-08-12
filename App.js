@@ -9,7 +9,6 @@ import changeNavigationBarColor, { hideNavigationBar } from "react-native-naviga
 
 const App = () => {
   enableScreens();
-  //hideNavigationBar();
   changeNavigationBarColor(theme.SECONDARY_COLOR, false)
   return (
     <AuthProvider>

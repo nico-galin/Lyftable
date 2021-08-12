@@ -16,8 +16,8 @@ const systemStyles = StyleSheet.create({
     position: "relative",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 30,
-    paddingTop: 200
+    paddingVertical: 30,
+    paddingTop: 150,
   },
   pageSection: {
     marginBottom: 10
@@ -48,6 +48,7 @@ const loaderStyles = StyleSheet.create({
     width: 250,
     height: 250,
     borderRadius: 125,
+    marginTop: 50,
     backgroundColor: "rgba(255, 255, 255, 0.08)",
   },
   innerLoader: {
@@ -61,6 +62,40 @@ const loaderStyles = StyleSheet.create({
   logo: {
     width: 80,
     height: 80
+  },
+  form: {
+    alignItems: "center"
+  },
+  inputLabel: {
+    color: theme.BACKGROUND_COLOR,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  input: {
+    backgroundColor: theme.SECONDARY_COLOR,
+    borderRadius: 12,
+    marginBottom: 10,
+    paddingHorizontal: 13,
+    color: theme.BACKGROUND_COLOR,
+    letterSpacing: 1,
+  },
+  header: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 50,
+    marginBottom: 15,
+  },
+  subtext: {
+    color: "white",
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontWeight: "900",
+  },
+  subTextBtn: {
+    color: theme.BACKGROUND_COLOR,
+    fontWeight: "bold",
+    padding: 0,
+    margin: 0,
   }
 });
 

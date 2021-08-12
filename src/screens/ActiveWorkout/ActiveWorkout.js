@@ -1,6 +1,6 @@
 "use strict";
 import React, { useEffect, useState, useRef } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, TouchableHighlight, StatusBar } from 'react-native';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
 import { styles, swipeListStyles } from './ActiveWorkout.style';
 import Header from '../../components/Header/Header';
@@ -17,6 +17,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useActiveWorkoutContext } from '../../contexts/ActiveWorkoutContext';
 import { Loading } from '../Loading/Loading';
+import changeNavigationBarColor from "react-native-navigation-bar-color";
 
 const ActiveWorkoutPage = ({ route }) => {
   const { userWorkouts, addUserWorkout, replaceUserWorkout, openModal } = useAppContext();
@@ -53,6 +54,8 @@ const ActiveWorkoutPage = ({ route }) => {
   });
 
   useEffect(() => {
+    changeNavigationBarColor(theme.BACKGROUND_COLOR, true);
+    StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
     initializeActiveWorkout();
     const mainInterval = setInterval(() => {
       setMainTimer(mainTimer => mainTimer + 1000);

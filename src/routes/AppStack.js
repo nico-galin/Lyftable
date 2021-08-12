@@ -26,8 +26,6 @@ export const AppStack = () => {
   const { setModalCallback, setOpenModal } = useAppContext();
   const { activeWorkoutID } = useActiveWorkoutContext();
   useEffect(() => {
-    changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
-    StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
     const openModal = (name, callback = () => {}) => {
       switch(name) {
         case 'AddExercise':
@@ -44,6 +42,8 @@ export const AppStack = () => {
     };
     setOpenModal(() => openModal);
   }, [])
+  changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
+  StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
   return (
     <View style={{flex: 1}}>
       <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
@@ -56,7 +56,7 @@ export const AppStack = () => {
               transform: [
                 {
                   translateX: current.progress.interpolate({
-                    inputRange: [0, 1],
+                    inputRange: [0.5, 1],
                     outputRange: [layouts.screen.width, 0],
                   }),
                 },

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import styles from './Login.style';
+import styles from './Signup.style';
 import { useAuth } from '../../contexts/AuthContext';
 import theme from '../../assets/theme.style';
 import { systemStyles, loaderStyles } from '../../assets/styles';
@@ -9,8 +9,9 @@ import ActionButton from '../../components/ActionButton/ActionButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-export const Login = () => {
+export const Signup = () => {
   const [loading, isLoading] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("");
   const auth = useAuth();
@@ -50,12 +51,12 @@ export const Login = () => {
   return (
     <LinearGradient colors={[theme.SECONDARY_COLOR_LIGHT, theme.SECONDARY_COLOR]} style={systemStyles.systemPageContainer}>
       <View style={loaderStyles.form}>
-        <Text style={loaderStyles.header}>Log In</Text>
+        <Text style={loaderStyles.header}>Sign Up</Text>
         <View style={systemStyles.formSpacer}/>
         <View style={systemStyles.formSpacer}/>
         <View style={systemStyles.formSpacer}/>
         <View>
-          <Text style={loaderStyles.subtext}>Log in with one of the following options</Text>
+          <Text style={loaderStyles.subtext}>Sign up with one of the following options</Text>
           <View style={systemStyles.formSpacer}/>
           <View style={systemStyles.row}>
             <ActionButton color={theme.BACKGROUND_COLOR} moreBR elevated icon={
@@ -67,13 +68,14 @@ export const Login = () => {
             }/>
           </View>
           <View style={systemStyles.formSpacer}/>
+          <TextInput style={loaderStyles.input} placeholder={"Name"} autoCompleteType="name" onChange={val => setName(val)}></TextInput>
           <TextInput style={loaderStyles.input} placeholder={"Email"} autoCompleteType="email" onChange={val => setEmail(val)}></TextInput>
           <TextInput style={loaderStyles.input} placeholder={"Password"} autoCompleteType="password" secureTextEntry={true} onChange={val => setPassWord(val)}></TextInput>
           <View style={systemStyles.row}>
-            <ActionButton text={"Log In"} height={"large"} onPress={signInWithEmail} moreBR elevated color={theme.BACKGROUND_COLOR} textColor={theme.SECONDARY_COLOR}/>
+            <ActionButton text={"Create Account"} height={"large"} onPress={signInWithEmail} moreBR elevated color={theme.BACKGROUND_COLOR} textColor={theme.SECONDARY_COLOR}/>
           </View>
           <View style={systemStyles.formSpacer}/>
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}><Text style={loaderStyles.subtext}>Don't have an account? <Text style={loaderStyles.subTextBtn}>Sign Up</Text></Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}><Text style={loaderStyles.subtext}>Already have an account? <Text style={loaderStyles.subTextBtn}>Log In</Text></Text></TouchableOpacity>
         </View>
         {loading ? (
           <ActivityIndicator color={'#000'} animating={true} size="small" />

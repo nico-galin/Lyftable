@@ -10,14 +10,18 @@ export default ({height = 'small',
   color = theme.SECONDARY_COLOR,
   textColor = theme.BACKGROUND_COLOR,
   onPress = () => {},
-  icon = null
+  icon = null,
+  moreBR = false,
+  elevated = false
 }) => {
   return (
     <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} onPress={onPress} style={[
       styles.button,
       {backgroundColor: color},
       height === 'large' ? styles.largeButton : null,
-      width === 'small' ? styles.skinnyButton : styles.wideButton
+      width === 'small' ? styles.skinnyButton : styles.wideButton,
+      moreBR ? styles.moreBR : null,
+      elevated ? styles.elevated : null
     ]}>
       {icon &&
         icon
