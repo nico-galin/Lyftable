@@ -31,7 +31,7 @@ export default () => {
   const createDayTile = (ind) => {
     const curDate = dateList[ind];
     return (
-      <TouchableOpacity key={ind} disabled={curDate.type === 'plain'} style={[styles[`${curDate.type}Day`], curDate.today ? styles.today: null, (curDate.future || curDate.today) && curDate.type != 'plain' ? styles.future : null]}>
+      <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} key={ind} disabled={curDate.type === 'plain'} style={[styles[`${curDate.type}Day`], curDate.today ? styles.today: null, (curDate.future || curDate.today) && curDate.type != 'plain' ? styles.future : null]}>
         <Text style={curDate.sameMonth ? styles.monthDay : styles.day}>{curDate.date}</Text>
         {curDate.type != 'plain' &&
           <View style={styles[`${curDate.type}Circle`]}></View>

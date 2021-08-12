@@ -24,7 +24,7 @@ export default ({
         <Icon name={'search'} size={20} color={theme.PLACEHOLDER_COLOR}/>
       </View>
       {(iconName || buttonContent) ? 
-        <TouchableOpacity onPress={onButtonPress} style={[styles.button, {backgroundColor: buttonColor}]}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} onPress={onButtonPress} style={[styles.button, {backgroundColor: buttonColor}]}>
           {iconName ?
             <FeatherIcon name={iconName} size={22} color={theme.BACKGROUND_COLOR}/>
           :

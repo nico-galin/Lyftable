@@ -31,11 +31,11 @@ export default ({formattedValue = "", initialValue = 0, increment = 1, onChange 
     <View style={styles.container}>
       <Text style={styles.formattedData}>{formattedValue}</Text>
       <View style={styles.wrapper}>
-        <TouchableOpacity style={styles.button} onPress={handleSubtract} onPressIn={continuedSubtract}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.button} onPress={handleSubtract} onPressIn={continuedSubtract}>
           <Icon name={'minus'} size={15} color={theme.SUBTITLE_COLOR}/>
         </TouchableOpacity>
           <View style={styles.separator} />
-        <TouchableOpacity style={styles.button} onPress={handleAdd} onPressIn={continuedAdd}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.button} onPress={handleAdd} onPressIn={continuedAdd}>
           <Icon name={'plus'} size={15} color={theme.SUBTITLE_COLOR}/>
         </TouchableOpacity>
       </View>

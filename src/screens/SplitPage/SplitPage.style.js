@@ -20,7 +20,6 @@ export default StyleSheet.create({
       height: '100%',
       borderTopLeftRadius: 10,
       borderBottomLeftRadius: 10,
-      marginRight: 10,
       backgroundColor: theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
       alignItems: 'center',
       paddingVertical: 15
@@ -36,6 +35,7 @@ export default StyleSheet.create({
     },
     sectionInfo: {
       paddingVertical: 10,
+      paddingLeft: 10,
       width: 0,
       flexGrow: 1,
       flex: 1,

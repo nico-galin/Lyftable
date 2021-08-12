@@ -1,3 +1,5 @@
+"use strict";
+
 import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,13 +15,15 @@ import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
 import { View, StatusBar } from 'react-native';
 import theme from '../assets/theme.style';
 import { useAppContext } from '../contexts/AppContext';
+import { useNavigation } from '@react-navigation/native';
+import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
 
 export const AppStack = () => {
   const [addFriendModalVisible, setAddFriendModalVisible] = useState(false);
   const [addExerciseModalVisible, setAddExerciseModalVisible] = useState(false);
   const Stack = createStackNavigator();
-  const context = useAppContext();
-
+  const { setModalCallback, setOpenModal } = useAppContext();
+  const { activeWorkoutID } = useActiveWorkoutContext();
   useEffect(() => {
     const openModal = (name, callback = () => {}) => {
       switch(name) {
@@ -30,25 +34,24 @@ export const AppStack = () => {
           setAddFriendModalVisible(true);
           break;
         default:
-          console.log("Invalid Modal Name: " + name);
+          console.log("[ERROR] Invalid Modal Name: " + name);
           return;
       }
-      context.setModalCallback(() => callback);
+      setModalCallback(() => callback);
     };
-    context.setOpenModal(() => openModal);
+    setOpenModal(() => openModal);
   }, [])
-
   return (
     <View style={{flex: 1}}>
         <StatusBar
           animated={false}
           barStyle={'dark-content'}
           backgroundColor={theme.BACKGROUND_COLOR}
-          hidden={false} 
+          hidden={false}
         />
         <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
         <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
-        <Stack.Navigator initialRouteName={"Main"} screenOptions={{
+        <Stack.Navigator initialRouteName={activeWorkoutID ? "ActiveWorkout" : "Main"} screenOptions={{
           headerShown: false,
           cardStyleInterpolator: ({ current, layouts }) => {
             return {
@@ -74,6 +77,17 @@ export const AppStack = () => {
 
 const MainNavigator = () => {
   const Tabs = createBottomTabNavigator();
+  const navigator = useNavigation();
+  const context = useAppContext();
+  const [reroutedToActiveWorkout, setReroutedToActiveWorkout] = useState(false);
+  if (context.activeWorkout != null
+    && context.userWorkouts != null
+    && context.userWorkouts[context.activeWorkout] != null
+    && !reroutedToActiveWorkout
+  ) {
+    setReroutedToActiveWorkout(true);
+    navigator.navigate("ActiveWorkout");
+  }
   return (
     <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>} >
       <Tabs.Screen name="Home" component={HomeStack} />

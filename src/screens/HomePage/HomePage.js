@@ -56,7 +56,7 @@ export const HomePage = ({ }) => {
               <View>
                 {Object.entries(splits).map(([id, split], ind) => (
                   <View key={ind}>
-                    <TouchableOpacity style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
+                    <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
                       <View style={styles.description}>
                         <Text style={styles.title}>{split ? split.name : ""}</Text>
                         <Text style={styles.exerciseLength}>{split.exercises.length} Exercises</Text>

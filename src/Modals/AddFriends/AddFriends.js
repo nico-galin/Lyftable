@@ -44,7 +44,7 @@ export const AddFriends = ({isVisible, setVisibility}) => {
         <Image style={styles.profilePhoto} source={{uri: user.profile_photo}} />
         <Text style={styles.userName}>{user.name}</Text>
       </View>
-      <TouchableOpacity style={styles.addFriendButton}>
+      <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.addFriendButton}>
         <MatIcon name={'person-add-alt-1'} size={25} color={theme.BACKGROUND_COLOR}/>
       </TouchableOpacity>
     </View>

@@ -15,7 +15,7 @@ const systemStyles = StyleSheet.create({
     marginBottom: 10
   },
   bottomSpacer: {
-    height: 100,
+    height: 80,
   },
   formSpacer: {
     height: 10,

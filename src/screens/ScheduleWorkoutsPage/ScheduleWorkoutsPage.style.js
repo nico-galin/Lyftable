@@ -5,6 +5,9 @@ export default StyleSheet.create({
     container: {
 
     },
+    yourSplits: {
+      maxHeight: 300
+    },
     daySelectorContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between'
@@ -25,5 +28,12 @@ export default StyleSheet.create({
       fontSize: theme.FONT_SIZE_MEDIUM,
       textAlign: 'center',
       color: theme.BACKGROUND_COLOR
-    }
+    },
+    noSplitsText: {
+      textAlign: 'center',
+      paddingVertical: 15,
+      paddingHorizontal: 5,
+      fontSize: theme.FONT_SIZE_SMALL,
+      color: theme.SUBTITLE_COLOR
+    },
 });

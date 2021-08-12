@@ -68,20 +68,24 @@ export const ScheduleWorkoutsPage = ({ route }) => {
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={"Schedule Workouts"} backButton={true} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
         <InputWrapper label={'Split'} valid={validation.selectedSplit}>
           { Object.keys(selectedSplit).length > 0 ?
             <SplitCard split={selectedSplit} onDelete={() => setSelectedSplit({})}/>
           :
-            <View>
+            <ScrollView style={styles.yourSplits} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
               <SearchBar value={splitSearchText} placeholder={"Search Splits..."} onChangeText={setSplitSearchText}/>
-              {filteredSplits.map(([id, split], ind) => (
-                <View key={ind}>
-                  <SplitCard split={split} onPress={() => setSelectedSplit(split)} onInfo={() => {}}/>
-                  {ind != filteredSplits.length - 1 && <View style={systemStyles.formSpacer}/>}
-                </View>
-              ))}
-            </View>
+              {filteredSplits.length > 0 ?
+                filteredSplits.map(([id, split], ind) => (
+                  <View key={ind}>
+                    <SplitCard split={split} onPress={() => setSelectedSplit(split)} onInfo={() => {}}/>
+                    {ind != filteredSplits.length - 1 && <View style={systemStyles.formSpacer}/>}
+                  </View>
+                ))
+              : 
+                <Text style={styles.noSplitsText}>No Results</Text>
+              }
+            </ScrollView>
           }
         </InputWrapper>
         <InputWrapper label={"Starting Date"}>

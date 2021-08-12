@@ -12,7 +12,7 @@ export default StyleSheet.create({
       borderWidth: 1,
       borderColor: theme.SUBTITLE_COLOR,
       borderRadius: 12,
-      padding: 14
+      padding: 12,
     },
     invalidOutline: {
       borderColor: theme.RED,
@@ -34,6 +34,7 @@ export default StyleSheet.create({
       backgroundColor: theme.BACKGROUND_COLOR,
       color: theme.SUBTITLE_COLOR,
       paddingHorizontal: 10,
+      borderRadius: 5,
       top: -12,
       left: 20,
     },
@@ -42,6 +43,7 @@ export default StyleSheet.create({
       backgroundColor: theme.BACKGROUND_COLOR,
       color: theme.SUBTITLE_COLOR,
       paddingHorizontal: 10,
+      borderRadius: 5,
       top: -12,
       right: 20,
     }

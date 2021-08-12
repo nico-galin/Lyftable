@@ -13,7 +13,7 @@ export default ({height = 'small',
   icon = null
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[
+    <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} onPress={onPress} style={[
       styles.button,
       {backgroundColor: color},
       height === 'large' ? styles.largeButton : null,

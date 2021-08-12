@@ -9,7 +9,7 @@ export default ({onPress, onDelete, data, topData, bottomData, moveable = false,
     <CardWrapper onPress={onPress} ind={ind}>
       <View style={styles.leftContent}>
         {onDelete != null &&
-          <TouchableOpacity style={styles.delete} onPress={onDelete}>
+          <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.delete} onPress={onDelete}>
             <Icon name={'delete'} size={25} color={theme.SUBTITLE_COLOR} />
           </TouchableOpacity>
         }
@@ -30,7 +30,7 @@ export default ({onPress, onDelete, data, topData, bottomData, moveable = false,
 
 const CardWrapper = ({onPress, children, ind}) => {
   return onPress != null ? 
-    <TouchableOpacity style={styles.container} onPress={onPress} key={'Card' + ind}>
+    <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.container} onPress={onPress} key={'Card' + ind}>
       {children}
     </TouchableOpacity>
   :

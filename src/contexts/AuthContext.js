@@ -9,9 +9,9 @@ const AuthContext = createContext({});
 const AuthProvider = ({children}) => {
   const [authData, setAuthData] = useState();
 
-  //the AuthContext start with loading equals true
+  //the AuthContext start with authLoading equals true
   //and stay like this, until the data be load from Async Storage
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     //Every time the App is opened, this provider is rendered
@@ -31,7 +31,7 @@ const AuthProvider = ({children}) => {
     } catch (error) {
     } finally {
       //loading finished
-      setLoading(false);
+      setAuthLoading(false);
     }
   }
 
@@ -102,7 +102,7 @@ const AuthProvider = ({children}) => {
   return (
     //This component will be used to encapsulate the whole App,
     //so all components will have access to the Context
-    <AuthContext.Provider value={{authData, loading, signInWithEmail, signInWithGoogle, signInWithApple, signOut}}>
+    <AuthContext.Provider value={{authData, authLoading, signInWithEmail, signInWithGoogle, signInWithApple, signOut}}>
       {children}
     </AuthContext.Provider>
   );
@@ -120,4 +120,4 @@ function useAuth() {
   return context;
 }
 
-export {AuthContext, AuthProvider, useAuth};
+export { AuthContext, AuthProvider, useAuth };

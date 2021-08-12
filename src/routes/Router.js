@@ -5,11 +5,13 @@ import { AuthStack } from './AuthStack.js';
 import { useAuth } from '../contexts/AuthContext.js';
 import { Loading } from '../screens/Loading/Loading.js';
 import { AppProvider } from '../contexts/AppContext.js';
+import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext.js';
 
 export const Router = () => {
-  const {authData, loading} = useAuth();
+  const { authData, authLoading } = useAuth();
+  const { activeWorkoutLoading } = useActiveWorkoutContext();
 
-  if (loading) {
+  if (authLoading || activeWorkoutLoading) {
     return <Loading />;
   }
   return (

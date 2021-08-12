@@ -8,7 +8,7 @@ import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 
 export default ({
-  title = "Title", subtitle, backButton = false,
+  title = "", subtitle, backButton = false,
   leftButtonText, leftButtonName, leftButtonOnPress, leftButtonSize = 25, leftButtonColor = theme.PRIMARY_COLOR, 
   rightButtonText, rightButtonName, rightButtonOnPress, rightButtonSize = 25, rightButtonColor = theme.PRIMARY_COLOR
 }) => {
@@ -28,17 +28,17 @@ export default ({
   return (
     <View style={styles.container}>
       {backButton && 
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.backBtn} onPress={() => navigation.goBack()}>
           <FeatherIcon name={'chevron-left'} size={25} color={theme.PRIMARY_COLOR}/>
         </TouchableOpacity>
       }
       {leftButtonName && leftButtonOnPress ?
-        <TouchableOpacity style={styles.leftBtn} onPress={leftButtonOnPress}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.leftBtn} onPress={leftButtonOnPress}>
           {leftIcon}
         </TouchableOpacity>
       : null}
       {leftButtonText && leftButtonOnPress ? 
-        <TouchableOpacity style={[styles.leftBtn, {backgroundColor: leftButtonColor}]} onPress={leftButtonOnPress}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={[styles.leftBtn, {backgroundColor: leftButtonColor}]} onPress={leftButtonOnPress}>
           <Text style={styles.otherBtnText}>{leftButtonText}</Text>
         </TouchableOpacity>
       : null}
@@ -47,12 +47,12 @@ export default ({
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text>: null}
       </View>
       {rightButtonName && rightButtonOnPress ?
-        <TouchableOpacity style={styles.rightBtn} onPress={rightButtonOnPress}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.rightBtn} onPress={rightButtonOnPress}>
           {rightIcon}
         </TouchableOpacity>
       : null}
       {rightButtonText && rightButtonOnPress ? 
-        <TouchableOpacity style={[styles.rightBtn, {backgroundColor: rightButtonColor}]} onPress={rightButtonOnPress}>
+        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={[styles.rightBtn, {backgroundColor: rightButtonColor}]} onPress={rightButtonOnPress}>
           <Text style={styles.otherBtnText}>{rightButtonText}</Text>
         </TouchableOpacity>
       : null}

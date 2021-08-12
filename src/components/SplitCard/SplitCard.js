@@ -9,7 +9,7 @@ import theme from '../../assets/theme.style';
 
 export default ({ split, scheduled, onPress, onDelete, onInfo }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.container} onPress={onPress}>
         <View style={styles.dataContainer}>
           <View style={styles.heading}>
             <Text style={styles.name}>{split.name}</Text>
@@ -26,12 +26,12 @@ export default ({ split, scheduled, onPress, onDelete, onInfo }) => {
           </View>
         </View>
         { onInfo &&
-          <TouchableOpacity style={styles.infoBtn} onPress={onInfo}>
+          <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.infoBtn} onPress={onInfo}>
             <FoundationIcon name={'info'} size={25} color={theme.PLACEHOLDER_COLOR}/>
           </TouchableOpacity>
         }
         { onDelete && !onInfo &&
-          <TouchableOpacity style={styles.infoBtn} onPress={onDelete}>
+          <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.infoBtn} onPress={onDelete}>
             <MatComIcon name={'delete'} size={25} color={theme.PLACEHOLDER_COLOR}/>
           </TouchableOpacity>
         }

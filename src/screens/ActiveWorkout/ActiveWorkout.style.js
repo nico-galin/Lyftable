@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     marginVertical: "auto",
   },
   inputWrapperWrapper: {
-    marginBottom: 8
+    marginBottom: 6
   },
   exerciseClosedContainer: {
     display: "flex",

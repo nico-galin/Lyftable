@@ -1,6 +1,7 @@
+"use strict";
 import React, { useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { parseISO, addMinutes, startOfWeek, addWeeks, addDays, isAfter } from 'date-fns';
+import { parseISO, startOfWeek, addWeeks, addDays, isAfter } from 'date-fns';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { firebase as firebaseAuth } from '@react-native-firebase/auth';
 import { getTimeStamp, generateUniqueId, getVerifiedSplits, getVerifiedMovements } from '../services/utilities';
@@ -9,9 +10,11 @@ const AppContext = React.createContext({});
 
 const clearLocalUserData = async() => {
   await AsyncStorage.removeItem('@LyftableUserData');
+  await AsyncStorage.removeItem('@LyftableActiveWorkout');
 }
 
 const AppProvider = ({children}) => {
+  const [userDataLoading, setUserDataLoading] = useState(true);
   const [userSplits, setUserSplits] = useState({});
   const [userWorkouts, setUserWorkouts] = useState({});
   const [userFriends, setUserFriends] = useState({});
@@ -21,10 +24,12 @@ const AppProvider = ({children}) => {
   const [resetModal, setResetModal] = useState(() => {});
   const [verifiedSplits, setVerifiedSplits] = useState({});
   const [verifiedMovements, setVerifiedMovements] = useState({});
-  useEffect(async() => {
+
+  useEffect(() => {
     //Every time the App is opened, this provider is rendered
     //and call de loadStorage function.
     firebaseFunc.functions().useFunctionsEmulator('http://localhost:5001');
+    //clearLocalUserData();
     initializeUserData();
     initializeVerifiedSplits();
     initializeVerifiedMovements();
@@ -96,6 +101,7 @@ const AppProvider = ({children}) => {
       let userObject = await loadUserDataFromLocal();
       if (userObject) {
         // Local data exists
+        userObject = userObject;
         console.log("[Init] Found Local Data");
         syncUserDataToCloud(userObject);
       } else {
@@ -134,7 +140,8 @@ const AppProvider = ({children}) => {
         profile_photo: userObject.profile_photo,
         lastCloudSync: userObject.lastCloudSync,
         lastLocalSync: userObject.lastLocalSync,
-      })
+      });
+      setUserDataLoading(false);
     } catch (e) {
       console.log("[Error initializing user data]", e);
     }
@@ -214,17 +221,17 @@ const AppProvider = ({children}) => {
 
   const addUserWorkout = (workout) => {
     const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
-    workout.id = generateUniqueId();
+    if (!workout.id) workout.id = generateUniqueId();
     workout.completed = false;
     workout.elapsed_time = 0;
-    workout.pauses = 0;
+    workout.breaks = 0;
     workout.start_time = null;
     workout.end_time = null;
     if (!newUserWorkouts) newUserWorkouts = {};
     newUserWorkouts[workout.id] = workout;
     setUserWorkouts(newUserWorkouts);
-    saveUserDataLocally(newUserData);
-    syncUserDataToCloud({ splits: newUserSplits});
+    saveUserDataLocally({ workouts: newUserWorkouts});
+    syncUserDataToCloud({ workouts: newUserWorkouts});
   }
   /**
    * 
@@ -250,36 +257,36 @@ const AppProvider = ({children}) => {
         newWorkout.scheduled = date.toISOString();
         newWorkout.completed = false;
         newWorkout.elapsed_time = 0;
-        newWorkout.pauses = 0;
+        newWorkout.breaks = 0;
         newWorkout.start_time = null;
         newWorkout.end_time = null;
         newUserWorkouts[newWorkout.id] = workout;
       });
     }
     setUserWorkouts(newUserWorkouts);
-    saveUserDataLocally(newUserData);
-    syncUserDataToCloud({ splits: newUserSplits});
+    saveUserDataLocally({ workouts: newUserWorkouts});
+    syncUserDataToCloud({ workouts: newUserWorkouts});
   }
 
-  const replaceUserWorkout = (workout) => {
+  const replaceUserWorkout = (workout, syncToCloud = false) => {
     const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
-    if (!newUserWorkouts) newUserSplits = {};
+    if (!newUserWorkouts) newUserWorkouts = {};
     if (!workout.id) {
       console.log("Trying to replace a split with no id");
       return;
     }
     newUserWorkouts[workout.id] = workout;
     setUserWorkouts(newUserWorkouts);
-    saveUserDataLocally({ splits: newUserSplits});
-    syncUserDataToCloud({ splits: newUserSplits});
+    saveUserDataLocally({ workouts: newUserWorkouts});
+    if (syncToCloud) syncUserDataToCloud({ workouts: newUserWorkouts});
   }
 
   const removeUserWorkout = (id) => {
     const newUserWorkouts = JSON.parse(JSON.stringify(userWorkouts));
     delete newUserWorkouts[id];
     setUserWorkouts(newUserWorkouts);
-    saveUserDataLocally({ splits: newUserSplits});
-    syncUserDataToCloud({ splits: newUserSplits});
+    saveUserDataLocally({ workouts: newUserWorkouts});
+    syncUserDataToCloud({ workouts: newUserWorkouts});
   }
 
   const splitInCollection = (id) => {
@@ -306,6 +313,7 @@ const AppProvider = ({children}) => {
       replaceUserWorkout,
       removeUserWorkout,
       splitInCollection,
+      userDataLoading
     }}>
       {children}
     </AppContext.Provider>

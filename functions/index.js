@@ -45,7 +45,6 @@ exports.getUser = functions.https.onCall((data, context) => {
 exports.syncUserToCloud = functions.https.onCall((data, context) => {
   verifyAuth(context);
   if (!data || !data.user || !data.user.id || !data.user.name) {
-    console.log(data);
     throw new functions.https.HttpsError("malformatted", "New user requires proper format!");
   }
   userCollection.doc(context.auth.uid).set(data.user);
@@ -55,7 +54,6 @@ exports.getSplitFromUser = functions.https.onCall((data, context) => {
   return new Promise((resolve, reject) => {
     verifyAuth(context);
     if (!data || !data.id || !data.userId) {
-      console.log("NO NO NO")
       throw new functions.https.HttpsError("malformatted", "Get split from user requires proper format!");
     }
     userCollection.doc(data.userId).get().then(doc => {
