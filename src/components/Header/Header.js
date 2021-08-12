@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default ({
   title = "", subtitle, backButton = false,
+  maxTitleLength = 14,
   leftButtonText, leftButtonName, leftButtonOnPress, leftButtonSize = 25, leftButtonColor = theme.PRIMARY_COLOR, 
   rightButtonText, rightButtonName, rightButtonOnPress, rightButtonSize = 25, rightButtonColor = theme.PRIMARY_COLOR
 }) => {
@@ -43,7 +44,7 @@ export default ({
         </TouchableOpacity>
       : null}
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{title.length < maxTitleLength ? title : title.substring(0, maxTitleLength) + "..."}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text>: null}
       </View>
       {rightButtonName && rightButtonOnPress ?

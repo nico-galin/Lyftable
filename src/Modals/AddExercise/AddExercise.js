@@ -21,8 +21,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   const [restTime, setRestTime] = useState(60000);
   const [equalReps, setEqualReps] = useState(true);
   const [repetitions, setRepetitions] = useState([10, 10, 10]);
-  const context = useAppContext();
-  const verifiedMovements = context.verifiedMovements;
+  const { verifiedMovements, setResetModal, modalCallback } = useAppContext();
   const reset = () => {
     setMovementSearchText("");
     setSelectedMovement("");
@@ -34,12 +33,12 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
   }
 
   useEffect(() => {
-    context.setResetModal(() => reset);
+    setResetModal(() => reset);
   }, []);
 
   const completeForm = () => {
     setVisibility(false);
-    context.modalCallback({
+    modalCallback({
       movement: verifiedMovements[selectedMovement].name,
       time_limit: timeLimit,
       set_count: setCount,

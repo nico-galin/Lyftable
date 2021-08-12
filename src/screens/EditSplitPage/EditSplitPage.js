@@ -81,17 +81,15 @@ export const EditSplitPage = ({ route }) => {
     newSplit.estimatedTime = estimatedTime;
     if (inCollection) {
       context.replaceUserSplit(newSplit);
-      navigation.navigate("SplitPage", { data: newSplit});
     } else if (existingSplit && _.isEqual(newSplit, split)) {
       context.addUserSplit(split);
-      navigation.navigate("SplitPage", { data: split});
     } else {
       context.addUserSplit(newSplit);
       navigation.dispatch(StackActions.popToTop());
-      navigation.navigate("SplitPage", { data: newSplit});
     }
-
+    navigation.navigate("SplitPage", { data: newSplit});
   }
+
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={existingSplit ? "Edit Split" : "Create a Split"} backButton={true} />

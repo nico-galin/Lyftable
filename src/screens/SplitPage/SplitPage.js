@@ -13,14 +13,14 @@ import CodeBanner from '../../components/CodeBanner/CodeBanner';
 import { useAppContext } from '../../contexts/AppContext';
 
 export const SplitPage = ({ route }) => {
-  const context = useAppContext();
+  const { userSplits, splitInCollection, removeUserSplit} = useAppContext();
   const navigation = useNavigation();
   let [split, setSplit] = useState(route.params.data);
   let [inCollection, setInCollection] = useState(true);
   useEffect(() => {
     const willFocusSubscription = navigation.addListener('focus', () => {
-      setSplit(context.userSplits[split.id]);
-      setInCollection(context.splitInCollection(split.id));
+      setSplit(userSplits[split.id]);
+      setInCollection(splitInCollection(split.id));
     });
     return willFocusSubscription;
   }, []);
@@ -36,7 +36,7 @@ export const SplitPage = ({ route }) => {
   }
 
   const handleDelete = () => {
-    context.removeUserSplit(split.id);
+    removeUserSplit(split.id);
     navigation.goBack();
   }
 

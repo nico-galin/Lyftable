@@ -12,9 +12,8 @@ import { useAppContext } from '../../contexts/AppContext';
 import { msToHM } from '../../services/utilities';
 
 export const HomePage = ({ }) => {
-  let context = useAppContext();
-  let splits = context.userSplits;
-  if (!splits) splits = {};
+  let { userSplits } = useAppContext();
+  if (!userSplits) userSplits = {};
   const navigation = useNavigation();
   const generateSubscriberRow = (subs) => {
     let pfpSubs = subs.filter(sub => sub.profile_photo)
@@ -38,7 +37,7 @@ export const HomePage = ({ }) => {
       </View>
     )
   }
-  const numSplits = Object.keys(splits).length;
+  const numSplits = Object.keys(userSplits).length;
   return (
     <View style={systemStyles.pageContainer}>
       <Header title={'Home'} />
@@ -54,7 +53,7 @@ export const HomePage = ({ }) => {
               <Text style={styles.noSplitsText}>You don't have any splits yet!</Text>
             :
               <View>
-                {Object.entries(splits).map(([id, split], ind) => (
+                {Object.entries(userSplits).map(([id, split], ind) => (
                   <View key={ind}>
                     <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
                       <View style={styles.description}>

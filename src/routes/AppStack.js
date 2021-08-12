@@ -77,17 +77,6 @@ export const AppStack = () => {
 
 const MainNavigator = () => {
   const Tabs = createBottomTabNavigator();
-  const navigator = useNavigation();
-  const context = useAppContext();
-  const [reroutedToActiveWorkout, setReroutedToActiveWorkout] = useState(false);
-  if (context.activeWorkout != null
-    && context.userWorkouts != null
-    && context.userWorkouts[context.activeWorkout] != null
-    && !reroutedToActiveWorkout
-  ) {
-    setReroutedToActiveWorkout(true);
-    navigator.navigate("ActiveWorkout");
-  }
   return (
     <Tabs.Navigator tabBar={props => <CustomTabBar {...props} initialRouteName={"Home"}/>} >
       <Tabs.Screen name="Home" component={HomeStack} />

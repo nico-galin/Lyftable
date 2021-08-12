@@ -97,7 +97,7 @@ const ActiveWorkoutPage = ({ route }) => {
         // There is an active workout currently
         setWorkoutMetadata({
           id: activeWorkout.id,
-          start_time: activeWorkout.start_time,
+          start_time: activeWorkout.start_time != null ? activeWorkout.start_time : new Date().toISOString(),
           scheduled: activeWorkout.scheduled,
           completed: activeWorkout.completed
         });
@@ -114,7 +114,7 @@ const ActiveWorkoutPage = ({ route }) => {
             activateExercise(ind);
           }
         })
-        setMainTimer(timeDifference);
+        setMainTimer(timeDifference ? timeDifference : 0);
       } else {
         const newWorkoutMetadata = {
           id: route.params && route.params.data && route.params.data.id != null ? route.params.data.id : generateUniqueId(),
@@ -298,13 +298,10 @@ const ActiveWorkoutPage = ({ route }) => {
   }
 
   const handleFinish = () => {
-    replaceUserWorkout(generateWorkoutObject(
-      workoutMetadata,
-      splitMetadata,
-      exercises,
-      exerciseTimers,
-      mainTimer,
-      breaks)), true;
+    replaceUserWorkout({
+      ...generateWorkoutObject(workoutMetadata,splitMetadata,exercises,exerciseTimers,mainTimer,breaks),
+      completed: true
+    }), true;
     deactivateWorkout();
     navigation.reset({
       index: 0,
