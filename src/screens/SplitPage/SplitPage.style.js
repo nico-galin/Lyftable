@@ -10,7 +10,8 @@ export default StyleSheet.create({
       alignItems: 'center',
       marginBottom: 10,
       borderRadius: 10,
-      backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR
+      backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR,
+      paddingRight: 8,
     },
     subsectionContainer: {
       marginTop: 10,
@@ -47,7 +48,9 @@ export default StyleSheet.create({
       textAlign: 'center'
     },
     creatorImage: {
-      height: '100%',
+      width: 45,
+      height: 45,
+      borderRadius: 10,
     },
     buttonRow: {
       display: 'flex',

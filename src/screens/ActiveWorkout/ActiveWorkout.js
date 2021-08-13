@@ -43,6 +43,7 @@ const ActiveWorkoutPage = ({ route }) => {
   });
 
   useEffect(() => {
+    // Runs any time the given dependencies change
     stateRef.current = {
       workoutMetadata,
       splitMetadata,
@@ -51,9 +52,10 @@ const ActiveWorkoutPage = ({ route }) => {
       mainTimer,
       breaks
     }
-  });
+  }, [workoutMetadata, splitMetadata, exercises, exerciseTimers, mainTimer, breaks]);
 
   useEffect(() => {
+    // Runs only when the component mounts
     changeNavigationBarColor(theme.BACKGROUND_COLOR, true);
     StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
     initializeActiveWorkout();
@@ -203,7 +205,7 @@ const ActiveWorkoutPage = ({ route }) => {
   }
 
   const deactivateExercise = (ind, finished = false, close = true) => {
-    clearInterval(exerciseIntervals[ind])
+    clearInterval(exerciseIntervals[ind]);
     setExercises(exercises => {
       let newExercises = exercises.map(ex => JSON.parse(JSON.stringify(ex)));
       if (finished) newExercises[ind].completed = true;
@@ -296,14 +298,37 @@ const ActiveWorkoutPage = ({ route }) => {
     });
   }
 
-  const handleInfo = () => {
-    return null;
+  const toggleExerciseTimers = (timersOn) => {
+    if (!timersOn) {
+      exerciseIntervals.forEach(int => clearInterval(int));
+      setExerciseIntervals(exerciseIntervals => new Array(exerciseIntervals.length));
+      setExercises(exercises => {
+        return exercises.map(ex => ({
+          ...JSON.parse(JSON.stringify(ex)),
+          timed: false,
+          active: false,
+        }));
+      });
+    }
   }
 
-  const handleFinish = () => {
+  const handleOpenMenu = () => {
+    openModal("ActiveWorkoutMenu", (res) => {
+      // Callback
+      switch(res.action) {
+        case "cancel":
+          handleFinish(true);
+        case "toggleExerciseTimers":
+          toggleExerciseTimers(res.data);
+      }
+    });
+  }
+
+  const handleFinish = (cancelled = false) => {
     replaceUserWorkout({
       ...generateWorkoutObject(workoutMetadata,splitMetadata,exercises,exerciseTimers,mainTimer,breaks),
-      completed: true
+      completed: true,
+      cancelled,
     }), true;
     deactivateWorkout();
     navigation.reset({
@@ -422,8 +447,8 @@ const ActiveWorkoutPage = ({ route }) => {
         <Header title={splitMetadata.name}
           subtitle = {msToDigital(mainTimer)}
           maxTitleLength= {15}
-          leftButtonName={"dots-horizontal"} leftButtonOnPress={handleInfo} leftButtonColor={theme.SUBTITLE_COLOR}
-          rightButtonText={"Finish"} rightButtonOnPress={handleFinish} rightButtonColor={theme.SECONDARY_COLOR}
+          leftButtonName={"dots-horizontal"} leftButtonOnPress={handleOpenMenu} leftButtonColor={theme.SUBTITLE_COLOR}
+          rightButtonText={"Done"} rightButtonOnPress={handleFinish} rightButtonColor={theme.SECONDARY_COLOR}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={systemStyles.formSpacer} />

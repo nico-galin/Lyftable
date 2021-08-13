@@ -15,14 +15,14 @@ import { useAppContext } from '../../contexts/AppContext';
 export const SplitPage = ({ route }) => {
   const { userSplits, splitInCollection, removeUserSplit} = useAppContext();
   const navigation = useNavigation();
-  let [split, setSplit] = useState(route.params.data);
+  let [split, setSplit] = useState(userSplits[route.params.data.id] ? userSplits[route.params.data.id] : route.params.data);
   let [inCollection, setInCollection] = useState(true);
   useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
+    navigation.addListener("focus", () => {
       setSplit(userSplits[split.id]);
       setInCollection(splitInCollection(split.id));
     });
-    return willFocusSubscription;
+    return () => navigation.removeListener("focus");
   }, []);
   let subscriberList = "";
   const publicSubscribers = split.subscribers.filter(sub => sub.id != null);
@@ -50,11 +50,14 @@ export const SplitPage = ({ route }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.description}>{split.description}</Text>
         <View style={styles.sectionContainer}>
-          <Image style={[styles.sectionDefiner, styles.creatorImage]} source={{uri: split.creator.profile_photo}} />
+          <View style={styles.sectionDefiner}>
+            <MatIcon name={'person'} size={26} color={theme.BACKGROUND_COLOR}/>
+          </View>
           <View style={styles.sectionInfo}>
             <Text style={styles.sectionHeader}>Creator</Text>
             <Text style={styles.sectionSubheader}>{split.creator.name}</Text>
           </View>
+          <Image style={styles.creatorImage} source={{uri: split.creator.profile_photo}} />
         </View>
         <View style={styles.sectionContainer}>
           <View style={styles.sectionDefiner}>

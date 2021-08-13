@@ -12,6 +12,7 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import { filterSplitsByString } from '../../services/utilities';
+import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
 
 export const Start = () => {
   const navigation = useNavigation();
@@ -19,9 +20,8 @@ export const Start = () => {
   const [splitSearch, onSplitSearch] = useState("");
   const workoutsToday = Object.entries(userWorkouts).filter(([id, workout]) => isSameDay(new Date(), parseISO(workout.scheduled)))
   const splitsFiltered = filterSplitsByString(userSplits, splitSearch);
-
   const handleAddSplit = () => {
-
+  
   }
   
   return (
@@ -31,7 +31,7 @@ export const Start = () => {
         <View style={[styles.buttonRow, systemStyles.pageSection]}>
           <ActionButton text={'Schedule Workouts'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} onPress={() => navigation.navigate('ScheduleWorkouts')}/>
           <View style={styles.gap} />
-          <ActionButton text={'Custom Workout'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
+          <ActionButton text={'Custom Workout'} color={theme.PRIMARY_COLOR} textColor={theme.BACKGROUND_COLOR} onPress={() => navigation.navigate("ActiveWorkout", { data: {}})}/>
         </View>
         { workoutsToday.length > 0 &&
           <InputWrapper label={'Scheduled'}>
@@ -47,7 +47,7 @@ export const Start = () => {
           <SearchBar value={splitSearch} onChangeText={onSplitSearch} onBlur={() => onSplitSearch("")} onButtonPress={handleAddSplit} iconName={'plus'}/>
           {splitsFiltered.length > 0 ? splitsFiltered.map(([id, split], ind) => (
             <View key={ind}>
-              <SplitCard split={split} />
+              <SplitCard split={split} onPress={() => navigation.navigate("ActiveWorkout", { data: {split}})} />
               {ind != splitsFiltered.length - 1 && <View style={systemStyles.formSpacer}/>}
             </View>
           )):

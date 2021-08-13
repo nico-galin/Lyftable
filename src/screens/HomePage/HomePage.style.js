@@ -2,6 +2,13 @@ import { StyleSheet } from 'react-native';
 import theme from '../../assets/theme.style';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.BACKGROUND_COLOR,
+  },
+  pageContainerFake: {
+    marginHorizontal: 10
+  },
   noSplitsText: {
     textAlign: 'center',
     paddingVertical: 30,
@@ -15,7 +22,8 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 8,
-    paddingLeft: 10,
+    paddingLeft: 20,
+    paddingRight: 10
   },
   title: {
     fontSize: theme.FONT_SIZE_MEDIUM,
@@ -70,6 +78,7 @@ export default StyleSheet.create({
   },
   border: {
     height: 1,
+    marginLeft: 20,
     backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR
   }
 });

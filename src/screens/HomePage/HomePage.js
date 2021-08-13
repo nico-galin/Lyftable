@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, TouchableHighlight } from 'react-native';
 import Header from '../../components/Header/Header';
 import Calendar from '../../components/Calendar/Calendar';
 import SectionLabel from '../../components/SectionLabel/SectionLabel';
@@ -39,15 +39,17 @@ export const HomePage = ({ }) => {
   }
   const numSplits = Object.keys(userSplits).length;
   return (
-    <View style={systemStyles.pageContainer}>
+    <View style={styles.container}>
       <Header title={'Home'} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={systemStyles.pageSection}>
+        <View style={[systemStyles.pageSection, systemStyles.pageContainer]}>
           <SectionLabel label={'Calendar'}/>
           <Calendar />
         </View>
         <View style={systemStyles.pageSection}>
-          <SectionLabel label={'Split Collection'} buttonLabel={'Add Split'} buttonOnPress={() => navigation.navigate('AddSplit')}/>
+          <View style={styles.pageContainerFake}>
+            <SectionLabel label={'Split Collection'} buttonLabel={'Add Split'} buttonOnPress={() => navigation.navigate('AddSplit')}/>
+          </View>
           <View>
             {numSplits <= 0 ?
               <Text style={styles.noSplitsText}>You don't have any splits yet!</Text>
@@ -55,7 +57,8 @@ export const HomePage = ({ }) => {
               <View>
                 {Object.entries(userSplits).map(([id, split], ind) => (
                   <View key={ind}>
-                    <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
+                    <TouchableHighlight underlayColor={theme.CALENDAR_HIGHLIGHT_COLOR} activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} style={styles.split} onPress={() => navigation.navigate('SplitPage', { data: split, inCollection: true })}>
+                      <>
                       <View style={styles.description}>
                         <Text style={styles.title}>{split ? split.name : ""}</Text>
                         <Text style={styles.exerciseLength}>{split.exercises.length} Exercises</Text>
@@ -65,7 +68,8 @@ export const HomePage = ({ }) => {
                         <Text style={styles.timeEstimate}>{msToHM(split.estimated_time)}</Text>
                         <FeatherIcon name={'chevron-right'} size={20} color={theme.SUBTITLE_COLOR}/>
                       </View>
-                    </TouchableOpacity>
+                      </>
+                    </TouchableHighlight>
                     {ind != numSplits - 1 && <View style={styles.border} />}
                   </View>
                 ))}

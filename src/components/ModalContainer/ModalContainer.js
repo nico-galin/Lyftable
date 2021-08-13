@@ -24,7 +24,7 @@ export default ({isVisible, setVisibility, children, header}) => {
       >
       <View style={styles.contentContainer} >
         <View style={styles.dragBar}/>
-        <Header title={header} />
+        {header ? <Header title={header} /> : null}
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{width: '100%'}}

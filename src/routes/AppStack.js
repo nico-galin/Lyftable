@@ -18,10 +18,12 @@ import { useAppContext } from '../contexts/AppContext';
 import { useNavigation } from '@react-navigation/native';
 import changeNavigationBarColor, { showNavigationBar } from "react-native-navigation-bar-color";
 import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
+import { ActiveWorkoutMenu } from '../modals/ActiveWorkoutMenu/ActiveWorkoutMenu';
 
 export const AppStack = () => {
   const [addFriendModalVisible, setAddFriendModalVisible] = useState(false);
   const [addExerciseModalVisible, setAddExerciseModalVisible] = useState(false);
+  const [activeWorkoutMenuVisible, setActiveWorkoutMenuVisible] = useState(false);
   const Stack = createStackNavigator();
   const { setModalCallback, setOpenModal } = useAppContext();
   const { activeWorkoutID } = useActiveWorkoutContext();
@@ -33,6 +35,9 @@ export const AppStack = () => {
           break;
         case 'AddFriends':
           setAddFriendModalVisible(true);
+          break;
+        case 'ActiveWorkoutMenu':
+          setActiveWorkoutMenuVisible(true);
           break;
         default:
           console.log("[ERROR] Invalid Modal Name: " + name);
@@ -48,6 +53,7 @@ export const AppStack = () => {
     <View style={{flex: 1}}>
       <AddExercise isVisible={addExerciseModalVisible} setVisibility={setAddExerciseModalVisible} />
       <AddFriends isVisible={addFriendModalVisible} setVisibility={setAddFriendModalVisible} />
+      <ActiveWorkoutMenu isVisible={activeWorkoutMenuVisible} setVisibility={setActiveWorkoutMenuVisible} />
       <Stack.Navigator initialRouteName={activeWorkoutID ? "ActiveWorkout" : "Main"} screenOptions={{
         headerShown: false,
         cardStyleInterpolator: ({ current, layouts }) => {

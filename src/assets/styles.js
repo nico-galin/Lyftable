@@ -8,7 +8,7 @@ const systemStyles = StyleSheet.create({
   },
   pageContainer: {
     flex: 1,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     backgroundColor: theme.BACKGROUND_COLOR,
   },
   systemPageContainer: {

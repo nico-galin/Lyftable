@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import styles from './Header.style';
 import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +24,8 @@ export default ({
   }
   if (MatIcon.hasIcon(leftButtonName)) {
     rightIcon = <MatIcon name={rightButtonName} size={rightButtonSize} color={rightButtonColor}/>;
+  } if (IonIcon.hasIcon(rightButtonName)) {
+    rightIcon = <IonIcon name={rightButtonName} size={rightButtonSize} color={rightButtonColor}/>;
   } else {
     rightIcon = <MatComIcon name={rightButtonName} size={rightButtonSize} color={rightButtonColor}/>;
   }
