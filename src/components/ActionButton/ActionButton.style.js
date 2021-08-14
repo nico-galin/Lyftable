@@ -15,8 +15,11 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: theme.FONT_SIZE_SMALL,
   },
-  largeButton: {
+  tallButton: {
     paddingVertical: 10,
+  },
+  shortButton: {
+    paddingVertical: 4,
   },
   skinnyButton: {
     paddingHorizontal: 0,

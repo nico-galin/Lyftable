@@ -1,14 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform, Dimensions, StatusBar } from 'react-native';
 import theme from '../../assets/theme.style';
 
 const styles = StyleSheet.create({
-    label: {
-      fontSize: theme.FONT_SIZE_LARGE,
-      color: theme.BACKGROUND_COLOR,
-      fontWeight: "bold",
-      textAlign: "center",
-      letterSpacing: 0.8
-    },
+  container: {
+    paddingBottom:
+      Platform.OS === 'android'
+        ? Dimensions.get('screen').height -
+          Dimensions.get('window').height -
+          StatusBar.currentHeight
+        : 0,
+  },
 });
 
 export { styles };

@@ -26,13 +26,16 @@ export default StyleSheet.create({
     paddingRight: 10,
   },
   title: {
+    color: theme.PRIMARY_COLOR,
     fontSize: theme.FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
+    marginBottom: 1,
   },
   exerciseLength: {
     color: theme.SUBTITLE_COLOR,
     fontSize: theme.FONT_SIZE_TINY,
     fontWeight: 'bold',
+    alignSelf: 'flex-start',
   },
   subscribers: {
     display: 'flex',

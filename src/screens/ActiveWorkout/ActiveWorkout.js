@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   TouchableHighlight,
-  StatusBar,
 } from 'react-native';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
 import { styles, swipeListStyles } from './ActiveWorkout.style';
@@ -29,7 +28,6 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useActiveWorkoutContext } from '../../contexts/ActiveWorkoutContext';
 import { Loading } from '../Loading/Loading';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const ActiveWorkoutPage = ({ route }) => {
   const { userWorkouts, addUserWorkout, replaceUserWorkout, openModal } =
@@ -83,8 +81,6 @@ const ActiveWorkoutPage = ({ route }) => {
 
   useEffect(() => {
     // Runs only when the component mounts
-    changeNavigationBarColor(theme.BACKGROUND_COLOR, true);
-    StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
     initializeActiveWorkout();
     const mainInterval = setInterval(() => {
       setMainTimer(oldMainTimer => oldMainTimer + 1000);

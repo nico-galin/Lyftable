@@ -11,17 +11,14 @@ import Calendar from '../../components/Calendar/Calendar';
 import SectionLabel from '../../components/SectionLabel/SectionLabel';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import styles from './HomePage.style';
-import { systemStyles } from '../../assets/styles';
+import { systemStyles, dummyStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import { msToHM } from '../../services/utilities';
 
 export const HomePage = ({}) => {
-  let { userSplits } = useAppContext();
-  if (!userSplits) {
-    userSplits = {};
-  }
+  let { userSplits, userDataLoading } = useAppContext();
   const navigation = useNavigation();
   const generateSubscriberRow = subs => {
     let pfpSubs = subs.filter(sub => sub.profile_photo);
@@ -50,7 +47,21 @@ export const HomePage = ({}) => {
       </View>
     );
   };
-  const numSplits = Object.keys(userSplits).length;
+  let splits;
+  let dummySplits = false;
+  if (!userDataLoading) {
+    splits = userSplits;
+  } else {
+    dummySplits = true;
+    splits = {
+      0: { name: 'dummy split name', estimated_time: 1000000, exercises: [] },
+      1: { name: 'dummy split', estimated_time: 1000000, exercises: [] },
+      2: { name: 'dummy split', estimated_time: 1000000, exercises: [] },
+      3: { name: 'dummy split', estimated_time: 1000000, exercises: [] },
+      4: { name: 'dummy split', estimated_time: 1000000, exercises: [] },
+    };
+  }
+  const numSplits = Object.keys(splits).length;
   return (
     <View style={styles.container}>
       <Header title={'Home'} />
@@ -74,12 +85,13 @@ export const HomePage = ({}) => {
               </Text>
             ) : (
               <View>
-                {Object.entries(userSplits).map(([id, split], ind) => (
+                {Object.entries(splits).map(([id, split], ind) => (
                   <View key={ind}>
                     <TouchableHighlight
                       underlayColor={theme.CALENDAR_HIGHLIGHT_COLOR}
                       activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
                       style={styles.split}
+                      disabled={dummySplits}
                       onPress={() =>
                         navigation.navigate('SplitPage', {
                           data: split,
@@ -88,16 +100,35 @@ export const HomePage = ({}) => {
                       }>
                       <>
                         <View style={styles.description}>
-                          <Text style={styles.title}>
-                            {split ? split.name : ''}
+                          <Text
+                            style={
+                              dummySplits
+                                ? [styles.title, systemStyles.dummyText]
+                                : styles.title
+                            }>
+                            {split.name}
                           </Text>
-                          <Text style={styles.exerciseLength}>
+                          <Text
+                            style={
+                              dummySplits
+                                ? [
+                                    styles.exerciseLength,
+                                    systemStyles.dummyText,
+                                  ]
+                                : styles.exerciseLength
+                            }>
                             {split.exercises.length} Exercises
                           </Text>
                         </View>
                         <View style={styles.action}>
-                          {generateSubscriberRow(split.subscribers)}
-                          <Text style={styles.timeEstimate}>
+                          {!dummySplits &&
+                            generateSubscriberRow(split.subscribers)}
+                          <Text
+                            style={
+                              dummySplits
+                                ? [styles.timeEstimate, systemStyles.dummyText]
+                                : styles.timeEstimate
+                            }>
                             {msToHM(split.estimated_time)}
                           </Text>
                           <FeatherIcon

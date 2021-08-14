@@ -12,13 +12,15 @@ import { ActiveWorkout } from '../screens/ActiveWorkout/ActiveWorkout';
 import { AddFriends } from '../modals/AddFriends/AddFriends';
 import { AddExercise } from '../modals/AddExercise/AddExercise';
 import CustomTabBar from '../components/CustomTabBar/CustomTabBar';
-import { View, StatusBar } from 'react-native';
-import theme from '../assets/theme.style';
+import { SafeAreaView, StatusBar } from 'react-native';
+import changeNavigationBarColor, {
+  showNavigationBar,
+} from 'react-native-navigation-bar-color';
 import { useAppContext } from '../contexts/AppContext';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
 import { ActiveWorkoutMenu } from '../modals/ActiveWorkoutMenu/ActiveWorkoutMenu';
 import { systemStyles } from '../assets/styles';
+import theme from '../assets/theme.style';
 
 export const AppStack = () => {
   const [addFriendModalVisible, setAddFriendModalVisible] = useState(false);
@@ -29,6 +31,9 @@ export const AppStack = () => {
   const { setModalCallback, setOpenModal } = useAppContext();
   const { activeWorkoutID } = useActiveWorkoutContext();
   useEffect(() => {
+    showNavigationBar();
+    changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
+    StatusBar.setBarStyle('dark-content');
     const openModal = (name, callback = () => {}) => {
       switch (name) {
         case 'AddExercise':
@@ -48,11 +53,8 @@ export const AppStack = () => {
     };
     setOpenModal(() => openModal);
   }, [setModalCallback, setOpenModal]);
-
-  changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
-  StatusBar.setBackgroundColor(theme.BACKGROUND_COLOR);
   return (
-    <View style={systemStyles.flex}>
+    <SafeAreaView style={[systemStyles.flex, systemStyles.applicationWrapper]}>
       <AddExercise
         isVisible={addExerciseModalVisible}
         setVisibility={setAddExerciseModalVisible}
@@ -87,7 +89,7 @@ export const AppStack = () => {
         <Stack.Screen name={'Main'} component={MainNavigator} />
         <Stack.Screen name={'ActiveWorkout'} component={ActiveWorkout} />
       </Stack.Navigator>
-    </View>
+    </SafeAreaView>
   );
 };
 

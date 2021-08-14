@@ -6,8 +6,8 @@ import theme from '../../assets/theme.style';
 import styles from './ActionButton.style';
 
 export default ({
-  height = 'small',
-  width,
+  height,
+  width = 'large',
   text,
   color = theme.SECONDARY_COLOR,
   textColor = theme.BACKGROUND_COLOR,
@@ -16,6 +16,18 @@ export default ({
   moreBR = false,
   elevated = false,
 }) => {
+  let heightStyle = null;
+  if (height === 'large') {
+    heightStyle = styles.tallButton;
+  } else if (height === 'small') {
+    heightStyle = styles.shortButton;
+  }
+  let widthStyle = null;
+  if (width === 'large') {
+    widthStyle = styles.wideButton;
+  } else if (width === 'small') {
+    widthStyle = styles.skinnyButton;
+  }
   return (
     <TouchableOpacity
       activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
@@ -23,8 +35,8 @@ export default ({
       style={[
         styles.button,
         { backgroundColor: color },
-        height === 'large' ? styles.largeButton : null,
-        width === 'small' ? styles.skinnyButton : styles.wideButton,
+        heightStyle,
+        widthStyle,
         moreBR ? styles.moreBR : null,
         elevated ? styles.elevated : null,
         ,

@@ -13,8 +13,10 @@ import { systemStyles, loaderStyles } from '../../assets/styles';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export const Login = () => {
+  changeNavigationBarColor(theme.SECONDARY_COLOR);
   const [loading, isLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
@@ -22,7 +24,7 @@ export const Login = () => {
   const navigation = useNavigation();
 
   const signInWithEmail = async () => {
-    if (password.trim() !== '' && email.trim() !== '') {
+    if (String(password).trim() !== '' && String(email).trim() !== '') {
       try {
         isLoading(true);
         await auth.signInWithEmail(email, password);
@@ -110,7 +112,16 @@ export const Login = () => {
           />
           <View style={systemStyles.row}>
             <ActionButton
-              text={'Log In'}
+              text={loading ? null : 'Log In'}
+              icon={
+                loading ? (
+                  <ActivityIndicator
+                    color={theme.SECONDARY_COLOR}
+                    animating={true}
+                    size="small"
+                  />
+                ) : null
+              }
               height={'large'}
               onPress={signInWithEmail}
               moreBR
@@ -127,9 +138,6 @@ export const Login = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <ActivityIndicator color={'#000'} animating={true} size="small" />
-        ) : null}
       </View>
     </LinearGradient>
   );

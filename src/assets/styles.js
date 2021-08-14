@@ -1,7 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import theme from './theme.style';
 
 const systemStyles = StyleSheet.create({
+  applicationWrapper: {
+    paddingTop: Platform.OS === 'android' ? 35 : 0,
+    backgroundColor: theme.BACKGROUND_COLOR,
+  },
   pageMarginlessContainer: {
     flex: 1,
     backgroundColor: theme.BACKGROUND_COLOR,
@@ -17,7 +21,7 @@ const systemStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 30,
-    paddingTop: 150,
+    paddingTop: 130,
   },
   pageSection: {
     marginBottom: 10,
@@ -45,6 +49,11 @@ const systemStyles = StyleSheet.create({
   fullWidth: {
     width: '100%',
   },
+  dummyText: {
+    color: 'transparent',
+    borderRadius: 3,
+    backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR,
+  },
 });
 
 const loaderStyles = StyleSheet.create({
@@ -69,6 +78,13 @@ const loaderStyles = StyleSheet.create({
     width: 80,
     height: 80,
   },
+  brandLabel: {
+    fontSize: theme.FONT_SIZE_LARGE,
+    color: theme.BACKGROUND_COLOR,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    letterSpacing: 0.8,
+  },
   form: {
     alignItems: 'center',
   },
@@ -81,6 +97,7 @@ const loaderStyles = StyleSheet.create({
     backgroundColor: theme.SECONDARY_COLOR,
     borderRadius: 12,
     marginBottom: 10,
+    paddingVertical: 7,
     paddingHorizontal: 13,
     color: theme.BACKGROUND_COLOR,
     letterSpacing: 1,
