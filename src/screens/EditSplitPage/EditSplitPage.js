@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {ScrollView, Text, View, TextInput} from 'react-native';
+import { ScrollView, Text, View, TextInput } from 'react-native';
 import styles from './EditSplitPage.style';
 import { systemStyles } from '../../assets/styles';
 import Header from '../../components/Header/Header';
@@ -8,22 +8,35 @@ import InputWrapper from '../../components/InputWrapper/InputWrapper';
 import OptionSlider from '../../components/OptionSlider/OptionSlider';
 import Card from '../../components/Card/Card';
 import Counter from '../../components/Counter/Counter';
-import { formatSetsReps, getSplitTemplate, msToHM, validator } from '../../services/utilities';
+import {
+  formatSetsReps,
+  getSplitTemplate,
+  msToHM,
+  validator,
+} from '../../services/utilities';
 import theme from '../../assets/theme.style';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
-let _ = require("lodash");
+let _ = require('lodash');
 
 export const EditSplitPage = ({ route }) => {
-  const { splitInCollection, openModal, userMetadata, replaceUserSplit, addUserSplit } = useAppContext();
+  const {
+    splitInCollection,
+    openModal,
+    userMetadata,
+    replaceUserSplit,
+    addUserSplit,
+  } = useAppContext();
   const navigation = useNavigation();
   const existingSplit = route && route.params && route.params.data;
   const split = existingSplit ? route.params.data : getSplitTemplate();
   const inCollection = splitInCollection(split.id);
   const [estimatedTime, setEstimatedTime] = useState(split.estimated_time);
-  const [name, setName] = useState(split.name ? split.name : "");
+  const [name, setName] = useState(split.name ? split.name : '');
   const [showOnProfile, setShowOnProfile] = useState(split.public);
-  const [description, setDescription] = useState(split.description ? split.description : "");
+  const [description, setDescription] = useState(
+    split.description ? split.description : '',
+  );
   const [exercises, setExercises] = useState([...split.exercises]);
   const [validation, setValidation] = useState({
     name: [true, null],
@@ -31,33 +44,33 @@ export const EditSplitPage = ({ route }) => {
     exercises: [true, null],
   });
 
-  const handleName = (val) => {
+  const handleName = val => {
     setName(val);
-  }
-  const handleDescription = (val) => {
+  };
+  const handleDescription = val => {
     setDescription(val);
-  }
-  const handleEstTime = (val) => {
+  };
+  const handleEstTime = val => {
     setEstimatedTime(val);
-  }
-  const handleShowOnProfile = (val) => {
-    setShowOnProfile(val === "Yes" ? true : false);
-  }
-  const handleDeleteExercise = (index) => {
+  };
+  const handleShowOnProfile = val => {
+    setShowOnProfile(val === 'Yes' ? true : false);
+  };
+  const handleDeleteExercise = index => {
     let newExercises = [...exercises];
-    newExercises.splice(index, 1)
+    newExercises.splice(index, 1);
     setExercises(newExercises);
-  }
+  };
 
-  const handleAddExercise = (ex) => {
+  const handleAddExercise = ex => {
     let newExercises = [...exercises];
     newExercises.push(ex);
     setExercises(newExercises);
-  }
+  };
 
   const openNewExerciseModal = () => {
-    openModal("AddExercise", handleAddExercise);
-  }
+    openModal('AddExercise', handleAddExercise);
+  };
 
   const handleSubmit = () => {
     const newValidation = {
@@ -66,15 +79,17 @@ export const EditSplitPage = ({ route }) => {
       exercises: validator.validateSplitExercises(exercises),
     };
     setValidation(newValidation);
-    if (!validator.allValid(newValidation)) return;
+    if (!validator.allValid(newValidation)) {
+      return;
+    }
 
     const newSplit = Object.assign({}, split);
     newSplit.public = showOnProfile;
     newSplit.creator = {
       id: userMetadata.id,
       name: userMetadata.name,
-      profile_photo: userMetadata.profile_photo
-    }
+      profile_photo: userMetadata.profile_photo,
+    };
     newSplit.name = name.trim();
     newSplit.description = description.trim();
     newSplit.exercises = exercises;
@@ -87,38 +102,89 @@ export const EditSplitPage = ({ route }) => {
       addUserSplit(newSplit);
       navigation.dispatch(StackActions.popToTop());
     }
-    navigation.navigate("SplitPage", { data: newSplit});
-  }
+    navigation.navigate('SplitPage', { data: newSplit });
+  };
 
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={existingSplit ? "Edit Split" : "Create a Split"} backButton={true} />
+      <Header
+        title={existingSplit ? 'Edit Split' : 'Create a Split'}
+        backButton={true}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <InputWrapper label={'Name'} valid={validation.name}>
-          <TextInput style={systemStyles.textInput} value={name} onChangeText={handleName} />
+          <TextInput
+            style={systemStyles.textInput}
+            value={name}
+            onChangeText={handleName}
+          />
         </InputWrapper>
         <InputWrapper label={'Description'} valid={validation.description}>
-          <TextInput value={description} blurOnSubmit={true} multiline textAlignVertical={'top'} style={[systemStyles.textInput, styles.description]} onChangeText={handleDescription} />
+          <TextInput
+            value={description}
+            blurOnSubmit={true}
+            multiline
+            textAlignVertical={'top'}
+            style={[systemStyles.textInput, styles.description]}
+            onChangeText={handleDescription}
+          />
         </InputWrapper>
         <InputWrapper label={'Exercises'} valid={validation.exercises}>
           {exercises.map((ex, ind) => (
-            <View key={'Exercise' + ind}><Card data={ex.movement} topData={msToHM(ex.rest_time)} bottomData={formatSetsReps(ex.set_count, ex.repetitions)} moveable={true} onDelete={() => handleDeleteExercise(ind)}/></View>
+            <View key={'Exercise' + ind}>
+              <Card
+                data={ex.movement}
+                topData={msToHM(ex.rest_time)}
+                bottomData={formatSetsReps(ex.set_count, ex.repetitions)}
+                moveable={true}
+                onDelete={() => handleDeleteExercise(ind)}
+              />
+            </View>
           ))}
           <View style={styles.addExerciseBtnContainer}>
-            <ActionButton text={'Add Exercise'} color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} textColor={theme.BACKGROUND_COLOR} onPress={openNewExerciseModal}/>
+            <ActionButton
+              text={'Add Exercise'}
+              color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+              textColor={theme.BACKGROUND_COLOR}
+              onPress={openNewExerciseModal}
+            />
           </View>
         </InputWrapper>
-        <InputWrapper label={'Estimated Time'} valid={validation.estimated_time}>
-            <Counter formattedValue={estimatedTime === 0 ? "None" : msToHM(estimatedTime)} initialValue={estimatedTime} min={0} increment={60000 * 5} onChange={handleEstTime}/>
+        <InputWrapper
+          label={'Estimated Time'}
+          valid={validation.estimated_time}>
+          <Counter
+            formattedValue={
+              estimatedTime === 0 ? 'None' : msToHM(estimatedTime)
+            }
+            initialValue={estimatedTime}
+            min={0}
+            increment={60000 * 5}
+            onChange={handleEstTime}
+          />
         </InputWrapper>
-        <InputWrapper label={'Show on Profile?'} valid={validation.show_on_profile}>
-          <OptionSlider options={["No", "Yes"]} defaultIndex={showOnProfile ? 1 : 0} onChange={handleShowOnProfile}/>
-          <Text style={styles.centeredText}>Note: Your actual weights will not be visible</Text>
+        <InputWrapper
+          label={'Show on Profile?'}
+          valid={validation.show_on_profile}>
+          <OptionSlider
+            options={['No', 'Yes']}
+            defaultIndex={showOnProfile ? 1 : 0}
+            onChange={handleShowOnProfile}
+          />
+          <Text style={styles.centeredText}>
+            Note: Your actual weights will not be visible
+          </Text>
         </InputWrapper>
-        <View style={systemStyles.formSpacer}/>
-        <ActionButton onPress={handleSubmit} text={'Done'} height={'large'} color={theme.SECONDARY_COLOR} textColor={theme.BACKGROUND_COLOR} />
-        <View style={systemStyles.bottomSpacer}/>
+        <View style={systemStyles.formSpacer} />
+        <ActionButton
+          onPress={handleSubmit}
+          text={'Done'}
+          height={'large'}
+          color={theme.SECONDARY_COLOR}
+          textColor={theme.BACKGROUND_COLOR}
+        />
+        <View style={systemStyles.bottomSpacer} />
       </ScrollView>
     </View>
-  )
+  );
 };

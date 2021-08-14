@@ -8,10 +8,10 @@ export default StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 7,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     textAlign: 'center',
     fontSize: theme.FONT_SIZE_SMALL,
   },
@@ -25,13 +25,13 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
   },
   moreBR: {
-    borderRadius: 13
+    borderRadius: 13,
   },
   elevated: {
     shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 4,
-  }
+  },
 });

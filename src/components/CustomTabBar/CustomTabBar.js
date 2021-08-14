@@ -12,12 +12,6 @@ export default function CustomTabBar({ state, descriptors, navigation }) {
     <View style={styles.container}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
 
         const isFocused = state.index === index;
 
@@ -47,32 +41,66 @@ export default function CustomTabBar({ state, descriptors, navigation }) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            key={index}
-          >
-            {route.name === "Start" ?
+            key={index}>
+            {route.name === 'Start' ? (
               <LinearGradient
-                colors={isFocused ? [theme.SECONDARY_COLOR, theme.SECONDARY_COLOR_LIGHT] : [theme.SPECIAL_FOREGROUND_COLOR_LIGHT, theme.SPECIAL_FOREGROUND_COLOR_LIGHT]}
+                colors={
+                  isFocused
+                    ? [theme.SECONDARY_COLOR, theme.SECONDARY_COLOR_LIGHT]
+                    : [
+                        theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
+                        theme.SPECIAL_FOREGROUND_COLOR_LIGHT,
+                      ]
+                }
                 style={[styles.startButton, styles.startButtonInactive]}
-                start={{x: 0, y: 0}} end={{x: 1, y: 1}}
-              >
-                <FeatherIcon name={'plus'} size={22} color={theme.BACKGROUND_COLOR}/>
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}>
+                <FeatherIcon
+                  name={'plus'}
+                  size={22}
+                  color={theme.BACKGROUND_COLOR}
+                />
               </LinearGradient>
-            :
+            ) : (
               <View style={styles.buttonStyle}>
-                {route.name === "Home" && 
-                  <FoundationIcon name={'home'} size={25} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-                }
-                {route.name === "Charts" &&
-                  <MaterialIcon name={'bar-chart'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-                }
-                {route.name === "Friends" &&
-                  <MaterialIcon name={'people'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-                }
-                {route.name === "Account" &&
-                  <MaterialIcon name={'person'} size={27} color={isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR}/>
-                }
+                {route.name === 'Home' && (
+                  <FoundationIcon
+                    name={'home'}
+                    size={25}
+                    color={
+                      isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR
+                    }
+                  />
+                )}
+                {route.name === 'Charts' && (
+                  <MaterialIcon
+                    name={'bar-chart'}
+                    size={27}
+                    color={
+                      isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR
+                    }
+                  />
+                )}
+                {route.name === 'Friends' && (
+                  <MaterialIcon
+                    name={'people'}
+                    size={27}
+                    color={
+                      isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR
+                    }
+                  />
+                )}
+                {route.name === 'Account' && (
+                  <MaterialIcon
+                    name={'person'}
+                    size={27}
+                    color={
+                      isFocused ? theme.SECONDARY_COLOR : theme.SUBTITLE_COLOR
+                    }
+                  />
+                )}
               </View>
-            }
+            )}
           </TouchableWithoutFeedback>
         );
       })}

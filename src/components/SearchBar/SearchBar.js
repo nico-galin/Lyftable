@@ -7,7 +7,7 @@ import { systemStyles } from '../../assets/styles';
 import theme from '../../assets/theme.style';
 
 export default ({
-  value='', 
+  value = '',
   placeholder = 'Search...',
   onChangeText = () => {},
   onBlur = () => {},
@@ -15,23 +15,38 @@ export default ({
   buttonContent = '',
   buttonColor = theme.SECONDARY_COLOR,
   buttonTextColor = theme.BACKGROUND_COLOR,
-  iconName
+  iconName,
 }) => {
   return (
     <View style={styles.wrapper}>
       <View style={[styles.container, systemStyles.pageSection]}>
-        <TextInput value={value} style={styles.textInput} placeholder={placeholder} onChangeText={onChangeText} onBlur={onBlur}/>
-        <Icon name={'search'} size={20} color={theme.PLACEHOLDER_COLOR}/>
+        <TextInput
+          value={value}
+          style={styles.textInput}
+          placeholder={placeholder}
+          onChangeText={onChangeText}
+          onBlur={onBlur}
+        />
+        <Icon name={'search'} size={20} color={theme.PLACEHOLDER_COLOR} />
       </View>
-      {(iconName || buttonContent) ? 
-        <TouchableOpacity activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY} onPress={onButtonPress} style={[styles.button, {backgroundColor: buttonColor}]}>
-          {iconName ?
-            <FeatherIcon name={iconName} size={22} color={theme.BACKGROUND_COLOR}/>
-          :
-            <Text style={[styles.buttonText, {color: buttonTextColor}]}>{buttonContent}</Text>
-          }
+      {iconName || buttonContent ? (
+        <TouchableOpacity
+          activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
+          onPress={onButtonPress}
+          style={[styles.button, { backgroundColor: buttonColor }]}>
+          {iconName ? (
+            <FeatherIcon
+              name={iconName}
+              size={22}
+              color={theme.BACKGROUND_COLOR}
+            />
+          ) : (
+            <Text style={[styles.buttonText, { color: buttonTextColor }]}>
+              {buttonContent}
+            </Text>
+          )}
         </TouchableOpacity>
-      : null}
+      ) : null}
     </View>
   );
 };

@@ -5,19 +5,19 @@ import { enableScreens } from 'react-native-screens';
 import { ActiveWorkoutProvider } from './src/contexts/ActiveWorkoutContext.js';
 import { StatusBar } from 'react-native';
 import theme from './src/assets/theme.style.js';
-import changeNavigationBarColor, { hideNavigationBar } from "react-native-navigation-bar-color";
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const App = () => {
   enableScreens();
-  changeNavigationBarColor(theme.SECONDARY_COLOR, false)
+  changeNavigationBarColor(theme.SECONDARY_COLOR, false);
   return (
     <AuthProvider>
-        <StatusBar
-          animated={true}
-          barStyle={'dark-content'}
-          backgroundColor={theme.SECONDARY_COLOR_LIGHT}
-          translucent={false}
-        />
+      <StatusBar
+        animated={true}
+        barStyle={'dark-content'}
+        backgroundColor={theme.SECONDARY_COLOR_LIGHT}
+        translucent={false}
+      />
       <ActiveWorkoutProvider>
         <Router />
       </ActiveWorkoutProvider>

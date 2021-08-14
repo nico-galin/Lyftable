@@ -1,5 +1,6 @@
 module.exports = {
-  bracketSpacing: false,
+  extends: ["airbnb-base", "prettier"],
+  bracketSpacing: true,
   jsxBracketSameLine: true,
   singleQuote: true,
   trailingComma: 'all',

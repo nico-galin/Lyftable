@@ -7,14 +7,14 @@ export default StyleSheet.create({
     backgroundColor: theme.BACKGROUND_COLOR,
   },
   pageContainerFake: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   noSplitsText: {
     textAlign: 'center',
     paddingVertical: 30,
     paddingHorizontal: 5,
     fontSize: theme.FONT_SIZE_SMALL,
-    color: theme.PRIMARY_COLOR
+    color: theme.PRIMARY_COLOR,
   },
   split: {
     display: 'flex',
@@ -23,26 +23,26 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingLeft: 20,
-    paddingRight: 10
+    paddingRight: 10,
   },
   title: {
     fontSize: theme.FONT_SIZE_MEDIUM,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   exerciseLength: {
     color: theme.SUBTITLE_COLOR,
     fontSize: theme.FONT_SIZE_TINY,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   subscribers: {
     display: 'flex',
     flexDirection: 'row',
-    marginRight: 20
+    marginRight: 20,
   },
   subscriber: {
     width: 24,
     height: 24,
-    borderRadius: 12
+    borderRadius: 12,
   },
   extraSubscribers: {
     width: 24,
@@ -50,12 +50,12 @@ export default StyleSheet.create({
     borderRadius: 12,
     backgroundColor: theme.PLACEHOLDER_COLOR,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   extraSubscribersText: {
     fontSize: theme.FONT_SIZE_TINY,
     fontWeight: 'bold',
-    color: theme.BACKGROUND_COLOR
+    color: theme.BACKGROUND_COLOR,
   },
   subscriberWrapper: {
     width: 28,
@@ -64,12 +64,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 14,
-    backgroundColor: theme.BACKGROUND_COLOR
+    backgroundColor: theme.BACKGROUND_COLOR,
   },
   action: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   timeEstimate: {
     color: theme.SUBTITLE_COLOR,
@@ -79,6 +79,6 @@ export default StyleSheet.create({
   border: {
     height: 1,
     marginLeft: 20,
-    backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR
-  }
+    backgroundColor: theme.CALENDAR_HIGHLIGHT_COLOR,
+  },
 });

@@ -3,7 +3,7 @@ import theme from '../../assets/theme.style';
 
 const styles = StyleSheet.create({
   header: {
-    width: "100%",
+    width: '100%',
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,15 +17,15 @@ const styles = StyleSheet.create({
     left: 0,
     marginBottom: 8,
     justifyContent: 'center',
-    marginVertical: "auto",
+    marginVertical: 'auto',
   },
   inputWrapperWrapper: {
-    marginBottom: 6
+    marginBottom: 6,
   },
   exerciseClosedContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     flex: 1,
     padding: 14,
     marginBottom: 14,
@@ -37,16 +37,16 @@ const styles = StyleSheet.create({
   },
   exerciseFinished: {
     backgroundColor: theme.SECONDARY_COLOR_FADED,
-    borderColor: "transparent",
+    borderColor: 'transparent',
   },
   exerciseRightContent: {
-    flexDirection: "row",
-    alignItems: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   exercisePlayBtn: {
-    height: "100%",
+    height: '100%',
     paddingLeft: 14,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   exerciseFinishedText: {
     color: theme.PRIMARY_COLOR,
@@ -55,38 +55,38 @@ const styles = StyleSheet.create({
     color: theme.SUBTITLE_COLOR,
   },
   exerciseTime: {
-    fontSize: theme.FONT_SIZE_SMALL
+    fontSize: theme.FONT_SIZE_SMALL,
   },
   exerciseName: {
-    fontWeight: "bold",
-    fontSize: theme.FONT_SIZE_SMALL
+    fontWeight: 'bold',
+    fontSize: theme.FONT_SIZE_SMALL,
   },
   exerciseProgress: {
-    fontSize: theme.FONT_SIZE_SMALL
+    fontSize: theme.FONT_SIZE_SMALL,
   },
   exTableHeading: {
     color: theme.SUBTITLE_COLOR,
     marginBottom: 5,
-    fontWeight: "bold",
-    textAlign: "center",
-    alignSelf: "stretch",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'stretch',
   },
   exTableValue: {
     color: theme.PRIMARY_COLOR,
-    textAlign: "center",
-    alignSelf: "stretch",
+    textAlign: 'center',
+    alignSelf: 'stretch',
     paddingVertical: 10,
   },
   exTableInput: {
     color: theme.PRIMARY_COLOR,
-    textAlign: "center",
-    justifyContent: "center",
-    alignSelf: "stretch",
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
   },
   exRow: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
   },
   exSetColumn: {
     flex: 0.8,
@@ -104,15 +104,15 @@ const styles = StyleSheet.create({
   exProgressColumn: {
     flex: 1,
     paddingRight: 12,
-    justifyContent: "center",
-    alignItems: "flex-end",
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   setContainer: {
     backgroundColor: theme.FOREGROUND_COLOR,
     borderRadius: 12,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   setContainerDone: {
     backgroundColor: theme.SECONDARY_COLOR_FADED,
@@ -125,32 +125,32 @@ const styles = StyleSheet.create({
     padding: 0,
     marginHorizontal: 10,
     borderRadius: 8,
-    textAlign: "center"
+    textAlign: 'center',
   },
 });
 
 const swipeListStyles = StyleSheet.create({
   rowBack: {
     flex: 1,
-    display: "flex",
+    display: 'flex',
     marginBottom: 11,
     marginHorizontal: 1,
     borderWidth: 1,
-    borderColor: "transparent"
+    borderColor: 'transparent',
   },
   delete: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     borderRadius: 12,
     paddingHorizontal: 10,
     backgroundColor: theme.RED,
   },
   delText: {
-    fontWeight: "bold",
-    color: "white"
-  }
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });
 
 export { styles, swipeListStyles };

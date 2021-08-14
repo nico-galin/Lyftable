@@ -15,7 +15,13 @@ export default ({ checked = false, active = false }) => {
   }
   return (
     <View style={checkboxStyles}>
-      {checked ? <MatComIcon name={'check-bold'} size={13} color={theme.FOREGROUND_COLOR}/> : null}
+      {checked ? (
+        <MatComIcon
+          name={'check-bold'}
+          size={13}
+          color={theme.FOREGROUND_COLOR}
+        />
+      ) : null}
     </View>
-  )
+  );
 };

@@ -22,7 +22,8 @@ const signInWithApple = async () => {
 const signInWithGoogle = async () => {
   try {
     GoogleSignin.configure({
-      webClientId: '452551347631-16citeoeq2getju0cqdjngmk5dfiruvs.apps.googleusercontent.com',
+      webClientId:
+        '452551347631-16citeoeq2getju0cqdjngmk5dfiruvs.apps.googleusercontent.com',
     });
 
     // Get the users ID token
@@ -36,17 +37,17 @@ const signInWithGoogle = async () => {
 
     const currentUser = await GoogleSignin.getCurrentUser();
     return {
-      method: "google",
+      method: 'google',
       user: currentUser,
-    }
+    };
   } catch (e) {
     console.log(e.message);
     throw new Error(e.message);
   }
 };
-  
+
 export const authService = {
   signInWithEmail,
   signInWithGoogle,
-  signInWithApple
+  signInWithApple,
 };

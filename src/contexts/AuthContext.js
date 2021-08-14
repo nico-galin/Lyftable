@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext, useEffect} from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { authService } from '../services/authService';
 
@@ -6,7 +6,7 @@ import { authService } from '../services/authService';
 //and a empty object
 const AuthContext = createContext({});
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState();
 
   //the AuthContext start with authLoading equals true
@@ -55,17 +55,17 @@ const AuthProvider = ({children}) => {
 
   const signInWithGoogle = async () => {
     try {
-    //call the service passing credential (email and password).
-    //In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signInWithGoogle();
+      //call the service passing credential (email and password).
+      //In a real App this data will be provided by the user from some InputText components.
+      const _authData = await authService.signInWithGoogle();
 
-    //Set the data in the context, so the App can be notified
-    //and send the user to the AuthStack
-    setAuthData(_authData);
+      //Set the data in the context, so the App can be notified
+      //and send the user to the AuthStack
+      setAuthData(_authData);
 
-    //Persist the data in the Async Storage
-    //to be recovered in the next user session.
-    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+      //Persist the data in the Async Storage
+      //to be recovered in the next user session.
+      AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     } catch (e) {
       throw new Error(e.message);
     }
@@ -73,17 +73,17 @@ const AuthProvider = ({children}) => {
 
   const signInWithApple = async () => {
     try {
-    //call the service passing credential (email and password).
-    //In a real App this data will be provided by the user from some InputText components.
-    const _authData = await authService.signInWithApple();
+      //call the service passing credential (email and password).
+      //In a real App this data will be provided by the user from some InputText components.
+      const _authData = await authService.signInWithApple();
 
-    //Set the data in the context, so the App can be notified
-    //and send the user to the AuthStack
-    setAuthData(_authData);
+      //Set the data in the context, so the App can be notified
+      //and send the user to the AuthStack
+      setAuthData(_authData);
 
-    //Persist the data in the Async Storage
-    //to be recovered in the next user session.
-    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+      //Persist the data in the Async Storage
+      //to be recovered in the next user session.
+      AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
     } catch (e) {
       throw new Error(e.message);
     }
@@ -102,7 +102,15 @@ const AuthProvider = ({children}) => {
   return (
     //This component will be used to encapsulate the whole App,
     //so all components will have access to the Context
-    <AuthContext.Provider value={{authData, authLoading, signInWithEmail, signInWithGoogle, signInWithApple, signOut}}>
+    <AuthContext.Provider
+      value={{
+        authData,
+        authLoading,
+        signInWithEmail,
+        signInWithGoogle,
+        signInWithApple,
+        signOut,
+      }}>
       {children}
     </AuthContext.Provider>
   );
