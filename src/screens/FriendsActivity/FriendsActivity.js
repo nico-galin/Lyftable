@@ -7,16 +7,20 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './FriendsActivity.style';
 
 export const FriendsActivity = ({ route }) => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const context = useAppContext();
   const navigation = useNavigation();
-  const handleSearch = (val) => {
+  const handleSearch = val => {
     setSearchText(val);
-  }
+  };
 
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={'Friend Activity'} rightButtonName={"menu-open"} rightButtonOnPress={() => navigation.navigate("FriendsList")} />
+      <Header
+        title={'Friend Activity'}
+        rightButtonName={'menu-open'}
+        rightButtonOnPress={() => navigation.navigate('FriendsList')}
+      />
       <Text style={styles.noActivity}>No Recent Activity Found</Text>
     </View>
   );

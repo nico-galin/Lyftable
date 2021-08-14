@@ -18,6 +18,30 @@ const clearLocalUserData = async () => {
   await AsyncStorage.removeItem('@LyftableActiveWorkout');
 };
 
+const loadUserDataFromLocal = async () => {
+  try {
+    const userObject = await AsyncStorage.getItem('@LyftableUserData');
+    return JSON.parse(userObject);
+  } catch (e) {
+    console.log('[Error retrieving user data]', e);
+  }
+};
+
+const getUserFromServer = id => {
+  return new Promise((resolve, reject) => {
+    firebaseFunc
+      .functions()
+      .httpsCallable('getUser')({ id: id })
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(e => {
+        console.log('[Error fetching user from server]', e);
+        resolve(null);
+      });
+  });
+};
+
 const AppProvider = ({ children }) => {
   const [userDataLoading, setUserDataLoading] = useState(true);
   const [userSplits, setUserSplits] = useState({});
@@ -39,30 +63,6 @@ const AppProvider = ({ children }) => {
     initializeVerifiedSplits();
     initializeVerifiedMovements();
   }, []);
-
-  async function loadUserDataFromLocal() {
-    try {
-      const userObject = await AsyncStorage.getItem('@LyftableUserData');
-      return JSON.parse(userObject);
-    } catch (e) {
-      console.log('[Error retrieving user data]', e);
-    }
-  }
-
-  const getUserFromServer = id => {
-    return new Promise((resolve, reject) => {
-      firebaseFunc
-        .functions()
-        .httpsCallable('getUser')({ id: id })
-        .then(res => {
-          resolve(res.data);
-        })
-        .catch(e => {
-          console.log('[Error fetching user from server]', e);
-          resolve(null);
-        });
-    });
-  };
 
   const initializeVerifiedSplits = async () => {
     try {

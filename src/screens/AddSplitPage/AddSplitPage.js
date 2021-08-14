@@ -14,48 +14,69 @@ import { useNavigation } from '@react-navigation/native';
 import { filterSplitsByString } from '../../services/utilities';
 
 export const AddSplitPage = ({ route }) => {
-  const [splitSearchText, setSplitSearchText] = useState("");
-  const [splitCode, setSplitCode] = useState("");
+  const [splitSearchText, setSplitSearchText] = useState('');
+  const [splitCode, setSplitCode] = useState('');
   const { verifiedSplits } = useAppContext();
   const navigation = useNavigation();
-  const handleSubmitSplitCode = () => {
-
-  }
+  const handleSubmitSplitCode = () => {};
   const filteredSplits = filterSplitsByString(verifiedSplits, splitSearchText);
   return (
     <View style={systemStyles.pageContainer}>
-      <Header title={"Add Split"} backButton={true}/>
+      <Header title={'Add Split'} backButton={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <InputWrapper label={"Verified Splits"}>
-          {Object.keys(verifiedSplits).length > 0 ?
+        <InputWrapper label={'Verified Splits'}>
+          {Object.keys(verifiedSplits).length > 0 ? (
             <View>
-              <SearchBar value={splitSearchText} placeholder={"Search Verified Splits..."} onChangeText={setSplitSearchText}/>
-              {filteredSplits.length > 0 ? filteredSplits.slice(0, 3).map(([id, split], ind) => (
-                <View key={ind}><SplitCard split={split} /></View>
-              )): 
+              <SearchBar
+                value={splitSearchText}
+                placeholder={'Search Verified Splits...'}
+                onChangeText={setSplitSearchText}
+              />
+              {filteredSplits.length > 0 ? (
+                filteredSplits.slice(0, 3).map(([id, split], ind) => (
+                  <View key={ind}>
+                    <SplitCard split={split} />
+                  </View>
+                ))
+              ) : (
                 <Text style={styles.centeredText}>No Results</Text>
-              }
+              )}
             </View>
-          :
+          ) : (
             <Text style={styles.centeredText}>None Available</Text>
-          }
+          )}
         </InputWrapper>
-        <InputWrapper label={"Split Code"}>
-          <SearchBar value={splitCode}
+        <InputWrapper label={'Split Code'}>
+          <SearchBar
+            value={splitCode}
             placeholder={'Enter Split Code...'}
             onChangeText={setSplitCode}
             onButtonPress={handleSubmitSplitCode}
             buttonContent={'Go'}
-            buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}/>
-          <ActionButton text={'Scan Split QR Code'} color={theme.SECONDARY_COLOR} icon={
-            <AntIcon name={'qrcode'} size={25} color={theme.BACKGROUND_COLOR}/>
-          }/>
+            buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+          />
+          <ActionButton
+            text={'Scan Split QR Code'}
+            color={theme.SECONDARY_COLOR}
+            icon={
+              <AntIcon
+                name={'qrcode'}
+                size={25}
+                color={theme.BACKGROUND_COLOR}
+              />
+            }
+          />
         </InputWrapper>
-        <InputWrapper label={"Custom Split"}>
-            <ActionButton text={"Create Custom Split"} height={"large"} color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT} onPress={() => navigation.navigate("EditSplit")}/>
+        <InputWrapper label={'Custom Split'}>
+          <ActionButton
+            text={'Create Custom Split'}
+            height={'large'}
+            color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+            onPress={() => navigation.navigate('EditSplit')}
+          />
         </InputWrapper>
-        <View style={systemStyles.bottomSpacer}/>
+        <View style={systemStyles.bottomSpacer} />
       </ScrollView>
     </View>
-  )
+  );
 };
