@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { isSameDay, parseISO } from 'date-fns';
 import styles from './Start.style';
@@ -12,7 +12,6 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import { filterSplitsByString } from '../../services/utilities';
-import { useActiveWorkoutContext } from '../contexts/ActiveWorkoutContext';
 
 export const Start = () => {
   const navigation = useNavigation();
@@ -51,7 +50,7 @@ export const Start = () => {
                   split={workout.split}
                   scheduled={workout.scheduled}
                 />
-                {ind != workoutsToday.length - 1 && (
+                {ind !== workoutsToday.length - 1 && (
                   <View style={systemStyles.formSpacer} />
                 )}
               </View>
@@ -75,7 +74,7 @@ export const Start = () => {
                     navigation.navigate('ActiveWorkout', { data: { split } })
                   }
                 />
-                {ind != splitsFiltered.length - 1 && (
+                {ind !== splitsFiltered.length - 1 && (
                   <View style={systemStyles.formSpacer} />
                 )}
               </View>

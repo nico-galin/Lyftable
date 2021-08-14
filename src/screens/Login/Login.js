@@ -22,7 +22,7 @@ export const Login = () => {
   const navigation = useNavigation();
 
   const signInWithEmail = async () => {
-    if (password.trim() != '' && email.trim() != '') {
+    if (password.trim() !== '' && email.trim() !== '') {
       try {
         isLoading(true);
         await auth.signInWithEmail(email, password);
@@ -76,7 +76,6 @@ export const Login = () => {
                   name={'ios-logo-apple'}
                   size={25}
                   color={theme.PRIMARY_COLOR}
-                  style={{ padding: 0, margin: 0 }}
                 />
               }
             />
