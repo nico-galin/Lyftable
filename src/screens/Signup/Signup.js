@@ -18,7 +18,9 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export const Signup = () => {
   changeNavigationBarColor(theme.SECONDARY_COLOR);
-  const [loading, isLoading] = useState(false);
+  const [eLoading, setELoading] = useState(false);
+  const [gLoading, setGLoading] = useState(false);
+  const [aLoading, setALoading] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -34,10 +36,10 @@ export const Signup = () => {
       String(lastName).trim() !== ''
     ) {
       try {
-        isLoading(true);
+        setELoading(true);
         await auth.signInWithEmail(email, password);
       } catch (e) {
-        isLoading(false);
+        setELoading(false);
       }
     } else {
       // Mark field invalid
@@ -46,19 +48,19 @@ export const Signup = () => {
 
   const signInWithGoogle = async () => {
     try {
-      isLoading(true);
+      setGLoading(true);
       await auth.signInWithGoogle();
     } catch (e) {
-      isLoading(false);
+      setGLoading(false);
     }
   };
 
   const signInWithApple = async () => {
     try {
-      isLoading(true);
+      setALoading(true);
       await auth.signInWithApple();
     } catch (e) {
-      isLoading(false);
+      setALoading(false);
     }
   };
 
@@ -82,12 +84,19 @@ export const Signup = () => {
               moreBR
               elevated
               icon={
-                <IonIcon
-                  name={'ios-logo-apple'}
-                  size={25}
-                  color={theme.PRIMARY_COLOR}
-                  style={{ padding: 0, margin: 0 }}
-                />
+                aLoading ? (
+                  <ActivityIndicator
+                    color={theme.SECONDARY_COLOR}
+                    animating={true}
+                    size="small"
+                  />
+                ) : (
+                  <IonIcon
+                    name={'ios-logo-apple'}
+                    size={25}
+                    color={theme.PRIMARY_COLOR}
+                  />
+                )
               }
             />
             <View style={systemStyles.buttonSpacer} />
@@ -97,11 +106,19 @@ export const Signup = () => {
               moreBR
               elevated
               icon={
-                <IonIcon
-                  name={'ios-logo-google'}
-                  size={20}
-                  color={theme.PRIMARY_COLOR}
-                />
+                gLoading ? (
+                  <ActivityIndicator
+                    color={theme.SECONDARY_COLOR}
+                    animating={true}
+                    size="small"
+                  />
+                ) : (
+                  <IonIcon
+                    name={'ios-logo-google'}
+                    size={20}
+                    color={theme.PRIMARY_COLOR}
+                  />
+                )
               }
             />
           </View>
@@ -133,9 +150,9 @@ export const Signup = () => {
           />
           <View style={systemStyles.row}>
             <ActionButton
-              text={loading ? null : 'Create Account'}
+              text={eLoading ? null : 'Create Account'}
               icon={
-                loading ? (
+                eLoading ? (
                   <ActivityIndicator
                     color={theme.SECONDARY_COLOR}
                     animating={true}
@@ -159,9 +176,6 @@ export const Signup = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <ActivityIndicator color={'#FFF'} animating={true} size="small" />
-        ) : null}
       </View>
     </LinearGradient>
   );

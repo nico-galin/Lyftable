@@ -17,7 +17,9 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export const Login = () => {
   changeNavigationBarColor(theme.SECONDARY_COLOR);
-  const [loading, isLoading] = useState(false);
+  const [eLoading, setELoading] = useState(false);
+  const [gLoading, setGLoading] = useState(false);
+  const [aLoading, setALoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassWord] = useState('');
   const auth = useAuth();
@@ -26,10 +28,10 @@ export const Login = () => {
   const signInWithEmail = async () => {
     if (String(password).trim() !== '' && String(email).trim() !== '') {
       try {
-        isLoading(true);
+        setELoading(true);
         await auth.signInWithEmail(email, password);
       } catch (e) {
-        isLoading(false);
+        setELoading(false);
       }
     } else {
       // Mark field invalid
@@ -38,19 +40,19 @@ export const Login = () => {
 
   const signInWithGoogle = async () => {
     try {
-      isLoading(true);
+      setGLoading(true);
       await auth.signInWithGoogle();
     } catch (e) {
-      isLoading(false);
+      setGLoading(false);
     }
   };
 
   const signInWithApple = async () => {
     try {
-      isLoading(true);
+      setALoading(true);
       await auth.signInWithApple();
     } catch (e) {
-      isLoading(false);
+      setALoading(false);
     }
   };
 
@@ -74,11 +76,19 @@ export const Login = () => {
               moreBR
               elevated
               icon={
-                <IonIcon
-                  name={'ios-logo-apple'}
-                  size={25}
-                  color={theme.PRIMARY_COLOR}
-                />
+                aLoading ? (
+                  <ActivityIndicator
+                    color={theme.SECONDARY_COLOR}
+                    animating={true}
+                    size="small"
+                  />
+                ) : (
+                  <IonIcon
+                    name={'ios-logo-apple'}
+                    size={25}
+                    color={theme.PRIMARY_COLOR}
+                  />
+                )
               }
             />
             <View style={systemStyles.buttonSpacer} />
@@ -88,11 +98,19 @@ export const Login = () => {
               moreBR
               elevated
               icon={
-                <IonIcon
-                  name={'ios-logo-google'}
-                  size={20}
-                  color={theme.PRIMARY_COLOR}
-                />
+                gLoading ? (
+                  <ActivityIndicator
+                    color={theme.SECONDARY_COLOR}
+                    animating={true}
+                    size="small"
+                  />
+                ) : (
+                  <IonIcon
+                    name={'ios-logo-google'}
+                    size={20}
+                    color={theme.PRIMARY_COLOR}
+                  />
+                )
               }
             />
           </View>
@@ -112,9 +130,9 @@ export const Login = () => {
           />
           <View style={systemStyles.row}>
             <ActionButton
-              text={loading ? null : 'Log In'}
+              text={eLoading ? null : 'Log In'}
               icon={
-                loading ? (
+                eLoading ? (
                   <ActivityIndicator
                     color={theme.SECONDARY_COLOR}
                     animating={true}
