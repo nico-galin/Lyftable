@@ -34,6 +34,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
     setRestTime(60000);
     setEqualReps(true);
     setRepetitions([10, 10, 10]);
+    setValidation({ exercise: [true, null] });
   };
 
   useEffect(() => {

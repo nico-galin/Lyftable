@@ -21,8 +21,16 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 5,
   },
+  leftButton: {
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+  },
+  rightButton: {
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+  },
   separator: {
-    width: 1.5,
+    width: 1,
     backgroundColor: theme.SUBTITLE_COLOR,
   },
   formattedData: {},

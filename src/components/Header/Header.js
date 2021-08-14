@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default ({
   title = '',
+  modal = false,
   subtitle,
   maxTitleLength,
   maxSubtitleLength,
@@ -72,7 +73,10 @@ export default ({
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        modal ? styles.container : [styles.container, styles.extraPadding]
+      }>
       {backButton && (
         <TouchableOpacity
           activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}

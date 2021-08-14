@@ -9,14 +9,10 @@ import {
   generateUniqueId,
   getVerifiedSplits,
   getVerifiedMovements,
+  clearLocalUserData,
 } from '../services/utilities';
 
 const AppContext = React.createContext({});
-
-const clearLocalUserData = async () => {
-  await AsyncStorage.removeItem('@LyftableUserData');
-  await AsyncStorage.removeItem('@LyftableActiveWorkout');
-};
 
 const loadUserDataFromLocal = async () => {
   try {

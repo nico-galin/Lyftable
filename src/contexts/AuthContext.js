@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { authService } from '../services/authService';
+import { clearLocalUserData } from '../services/utilities';
 
 //Create the Auth Context with the data type specified
 //and a empty object
@@ -93,7 +94,7 @@ const AuthProvider = ({ children }) => {
     //Remove data from context, so the App can be notified
     //and send the user to the AuthStack
     setAuthData(undefined);
-
+    clearLocalUserData();
     //Remove the data from Async Storage
     //to NOT be recoverede in next session.
     await AsyncStorage.removeItem('@AuthData');

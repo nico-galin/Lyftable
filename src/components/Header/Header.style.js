@@ -7,9 +7,11 @@ export default StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 8,
     paddingBottom: 8,
     paddingHorizontal: 30,
+  },
+  extraPadding: {
+    paddingTop: 8,
   },
   title: {
     fontSize: theme.FONT_SIZE_HEADER,

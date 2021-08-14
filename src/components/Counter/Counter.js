@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../assets/theme.style';
 import styles from './Counter.style';
@@ -34,21 +34,21 @@ export default ({
     <View style={styles.container}>
       <Text style={styles.formattedData}>{formattedValue}</Text>
       <View style={styles.wrapper}>
-        <TouchableOpacity
-          activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
-          style={styles.button}
+        <TouchableHighlight
+          underlayColor={theme.CALENDAR_HIGHLIGHT_COLOR}
+          style={[styles.button, styles.leftButton]}
           onPress={handleSubtract}
           onPressIn={continuedSubtract}>
           <Icon name={'minus'} size={15} color={theme.SUBTITLE_COLOR} />
-        </TouchableOpacity>
+        </TouchableHighlight>
         <View style={styles.separator} />
-        <TouchableOpacity
-          activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
-          style={styles.button}
+        <TouchableHighlight
+          underlayColor={theme.CALENDAR_HIGHLIGHT_COLOR}
+          style={[styles.button, styles.rightButton]}
           onPress={handleAdd}
           onPressIn={continuedAdd}>
           <Icon name={'plus'} size={15} color={theme.SUBTITLE_COLOR} />
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
     </View>
   );

@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 import { firebase as firebaseFunc } from '@react-native-firebase/functions';
 import { Buffer } from 'buffer';
 import { v4 as uuid } from 'uuid';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const msToDigital = ms => {
   const seconds = Math.floor((ms / 1000) % 60)
@@ -225,6 +226,11 @@ const generateSplitShareCode = (id, userId) => {
   ).toString('base64');
 };
 
+const clearLocalUserData = async () => {
+  await AsyncStorage.removeItem('@LyftableUserData');
+  await AsyncStorage.removeItem('@LyftableActiveWorkout');
+};
+
 export {
   msToDigital,
   msToHM,
@@ -241,5 +247,6 @@ export {
   getVerifiedSplits,
   getVerifiedMovements,
   generateSplitShareCode,
+  clearLocalUserData,
   validator,
 };
