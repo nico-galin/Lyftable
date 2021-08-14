@@ -54,7 +54,7 @@ export const ActiveWorkoutMenu = ({ isVisible, setVisibility }) => {
         color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
         textColor={theme.BACKGROUND_COLOR}
       />
-      <View style={systemStyles.bottomSpacer} />
+      <View style={systemStyles.formSpacer} />
     </ModalContainer>
   );
 };

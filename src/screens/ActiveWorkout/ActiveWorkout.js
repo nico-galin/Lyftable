@@ -39,6 +39,7 @@ const ActiveWorkoutPage = ({ route }) => {
   const [splitMetadata, setSplitMetadata] = useState({});
   const [exercises, setExercises] = useState([]);
   const [mainTimer, setMainTimer] = useState(0);
+  const [exercisesTimed, setExercisesTimed] = useState(true);
   const [exerciseTimers, setExerciseTimers] = useState(
     exercises.map(ex => {
       if (ex.elapsed_time) {
@@ -425,10 +426,12 @@ const ActiveWorkoutPage = ({ route }) => {
       setExercises(oldExercises => {
         return oldExercises.map(ex => ({
           ...JSON.parse(JSON.stringify(ex)),
-          timed: false,
           active: false,
         }));
       });
+      setExercisesTimed(false);
+    } else {
+      setExercisesTimed(true);
     }
   };
 
@@ -476,7 +479,9 @@ const ActiveWorkoutPage = ({ route }) => {
           <InputWrapper
             style={styles.inputWrapper}
             label={ex.movement}
-            secondaryLabel={msToDigital(exerciseTimers[ind])}
+            secondaryLabel={
+              exercisesTimed ? msToDigital(exerciseTimers[ind]) : null
+            }
             onPress={ex.active ? null : () => toggleExercise(ind)}>
             <View style={styles.exRow}>
               <Text style={[styles.exSetColumn, styles.exTableHeading]}>
@@ -515,53 +520,42 @@ const ActiveWorkoutPage = ({ route }) => {
                       ? ex.previous_weights[data.index]
                       : 'None'}
                   </Text>
-                  {ex.completion_times[data.index] != null || !ex.active ? (
-                    <Text style={[styles.exLbsColumn, styles.exTableValue]}>
-                      {ex.weights[data.index]}
-                    </Text>
-                  ) : (
-                    <View style={[styles.exRepsColumn, styles.exTableInput]}>
-                      <TextInput
-                        blurOnSubmit
-                        selectTextOnFocus
-                        keyboardType={'decimal-pad'}
-                        style={styles.input}
-                        value={String(
-                          ex.weights[data.index] != null
-                            ? ex.weights[data.index]
-                            : '',
-                        )}
-                        onChangeText={val =>
-                          handleChangeWeight(ind, data.index, val)
-                        }
-                      />
-                    </View>
-                  )}
-                  {ex.completion_times[data.index] != null || !ex.active ? (
-                    <Text style={[styles.exRepsColumn, styles.exTableValue]}>
-                      {ex.repetitions[data.index]}
-                    </Text>
-                  ) : (
-                    <View style={[styles.exRepsColumn, styles.exTableInput]}>
-                      <TextInput
-                        blurOnSubmit
-                        selectTextOnFocus
-                        keyboardType={'number-pad'}
-                        style={styles.input}
-                        value={String(
-                          ex.repetitions[data.index] != null
-                            ? ex.repetitions[data.index]
-                            : '',
-                        )}
-                        onChangeText={val =>
-                          handleChangeReps(ind, data.index, val)
-                        }
-                      />
-                    </View>
-                  )}
+                  <View style={[styles.exLbsColumn, styles.exTableInput]}>
+                    <TextInput
+                      blurOnSubmit
+                      selectTextOnFocus
+                      keyboardType={'decimal-pad'}
+                      style={styles.input}
+                      value={String(
+                        ex.weights[data.index] != null
+                          ? ex.weights[data.index]
+                          : '',
+                      )}
+                      onChangeText={val =>
+                        handleChangeWeight(ind, data.index, val)
+                      }
+                    />
+                  </View>
+                  <View style={[styles.exRepsColumn, styles.exTableInput]}>
+                    <TextInput
+                      blurOnSubmit
+                      selectTextOnFocus
+                      keyboardType={'number-pad'}
+                      style={styles.input}
+                      value={String(
+                        ex.repetitions[data.index] != null
+                          ? ex.repetitions[data.index]
+                          : '',
+                      )}
+                      onChangeText={val =>
+                        handleChangeReps(ind, data.index, val)
+                      }
+                    />
+                  </View>
+
                   <TouchableOpacity
                     activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
-                    disabled={!ex.active}
+                    disabled={exercisesTimed && !ex.active}
                     style={styles.exProgressColumn}
                     onPress={() => handleToggleSplit(ind, data.index)}>
                     <Checkbox
@@ -622,13 +616,19 @@ const ActiveWorkoutPage = ({ route }) => {
                   textColor={theme.BACKGROUND_COLOR}
                   onPress={() => handleAddSet(ind)}
                 />
-                <View style={systemStyles.buttonSpacer} />
-                <ActionButton
-                  text={exerciseTimers[ind] > 0 ? 'Keep Going' : 'Start'}
-                  color={theme.SECONDARY_COLOR}
-                  textColor={theme.BACKGROUND_COLOR}
-                  onPress={() => activateExercise(ind)}
-                />
+                {exercisesTimed && (
+                  <>
+                    <View style={systemStyles.buttonSpacer} />
+                    <ActionButton
+                      text={
+                        exerciseTimers[ind] > 0 ? 'Continue' : 'Start Exercise'
+                      }
+                      color={theme.SECONDARY_COLOR}
+                      textColor={theme.BACKGROUND_COLOR}
+                      onPress={() => activateExercise(ind)}
+                    />
+                  </>
+                )}
               </View>
             )}
           </InputWrapper>
