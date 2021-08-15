@@ -34,6 +34,9 @@ export const AppStack = () => {
     showNavigationBar();
     changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
     StatusBar.setBarStyle('dark-content');
+  }, []);
+
+  useEffect(() => {
     const openModal = (name, callback = () => {}) => {
       switch (name) {
         case 'AddExercise':

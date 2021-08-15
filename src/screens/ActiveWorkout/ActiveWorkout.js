@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   TextInput,
   TouchableHighlight,
+  StatusBar,
 } from 'react-native';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
 import { styles, swipeListStyles } from './ActiveWorkout.style';
@@ -34,6 +35,9 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useActiveWorkoutContext } from '../../contexts/ActiveWorkoutContext';
 import { Loading } from '../Loading/Loading';
+import changeNavigationBarColor, {
+  showNavigationBar,
+} from 'react-native-navigation-bar-color';
 
 class Repetition extends React.Component {
   render() {
@@ -147,6 +151,9 @@ const ActiveWorkoutPage = ({ route }) => {
 
   useEffect(() => {
     // Runs only when the component mounts
+    showNavigationBar();
+    changeNavigationBarColor(theme.BACKGROUND_COLOR, true);
+    StatusBar.setBarStyle('dark-content');
     initializeActiveWorkout();
     const mainInterval = setInterval(() => {
       setMainTimer(oldMainTimer => oldMainTimer + 1000);

@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import {
-  ScrollView,
+  StatusBar,
   View,
   Text,
   Image,
@@ -17,6 +17,9 @@ import theme from '../../assets/theme.style';
 import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import { msToHM } from '../../services/utilities';
+import changeNavigationBarColor, {
+  showNavigationBar,
+} from 'react-native-navigation-bar-color';
 
 const dummySplitData = {
   0: { name: 'dummy split name', estimated_time: 1000000, exercises: [] },
@@ -117,6 +120,11 @@ const Split = ({
 export const HomePage = ({}) => {
   let { userSplits, userDataLoading } = useAppContext();
   const navigation = useNavigation();
+  useEffect(() => {
+    showNavigationBar();
+    changeNavigationBarColor(theme.FOREGROUND_COLOR, true);
+    StatusBar.setBarStyle('dark-content');
+  }, []);
   let splits;
   if (!userDataLoading) {
     splits = userSplits;
