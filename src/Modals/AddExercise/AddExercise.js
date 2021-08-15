@@ -39,7 +39,7 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
 
   useEffect(() => {
     setResetModal(() => reset);
-  }, [setResetModal]);
+  }, [modalCallback]);
 
   const completeForm = () => {
     const newValidation = {
@@ -206,7 +206,6 @@ export const AddExercise = ({ isVisible, setVisibility }) => {
           textColor={theme.BACKGROUND_COLOR}
         />
       </View>
-      <View style={systemStyles.bottomSpacer} />
     </ModalContainer>
   );
 };

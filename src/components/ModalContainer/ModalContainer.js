@@ -9,8 +9,8 @@ import { systemStyles } from '../../assets/styles';
 export default ({ isVisible, setVisibility, children, header }) => {
   const context = useAppContext();
   const closeModal = () => {
-    setVisibility(false);
     context.resetModal();
+    setVisibility(false);
   };
   return (
     <Modal
@@ -33,6 +33,7 @@ export default ({ isVisible, setVisibility, children, header }) => {
           <TouchableWithoutFeedback>
             <View>{children}</View>
           </TouchableWithoutFeedback>
+          <View style={systemStyles.formSpacer} />
         </ScrollView>
       </View>
     </Modal>

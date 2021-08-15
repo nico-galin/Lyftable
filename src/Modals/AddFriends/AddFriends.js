@@ -13,14 +13,16 @@ import { useAppContext } from '../../contexts/AppContext';
 export const AddFriends = ({ isVisible, setVisibility }) => {
   const [friendCodeText, setFriendCodeText] = useState('');
   const [userSearchText, setUserSearchText] = useState('');
-  const { setResetModal } = useAppContext();
+  const { setResetModal, modalCallback } = useAppContext();
+
+  const reset = () => {
+    setFriendCodeText('');
+    setUserSearchText('');
+  };
 
   useEffect(() => {
-    setResetModal(() => () => {
-      setFriendCodeText('');
-      setUserSearchText('');
-    });
-  }, []);
+    setResetModal(() => reset);
+  }, [modalCallback]);
 
   const handleSubmitFriendCode = () => {};
   const handleSubmitUserSearch = () => {};
