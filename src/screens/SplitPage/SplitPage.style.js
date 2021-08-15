@@ -17,10 +17,10 @@ export default StyleSheet.create({
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     backgroundColor: theme.BACKGROUND_COLOR,
-    borderWidth: 2,
+    borderWidth: 2.5,
     borderColor: theme.CALENDAR_HIGHLIGHT_COLOR,
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 12,
   },
   sectionHeader: {
     color: theme.SUBTITLE_COLOR,

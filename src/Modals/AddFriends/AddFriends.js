@@ -74,6 +74,7 @@ export const AddFriends = ({ isVisible, setVisibility }) => {
           onButtonPress={handleSubmitFriendCode}
           buttonContent={'Go'}
           buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+          hideSearchIcon
         />
         <ActionButton
           text={'Scan Friend QR Code'}
@@ -92,6 +93,7 @@ export const AddFriends = ({ isVisible, setVisibility }) => {
           onButtonPress={handleSubmitUserSearch}
           buttonContent={'Go'}
           buttonColor={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+          disableS
         />
         {suggestedUsers.map((user, ind) => (
           <View key={ind}>

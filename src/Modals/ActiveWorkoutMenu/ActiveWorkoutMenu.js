@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { systemStyles } from '../../assets/styles';
+import MatComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import InputWrapper from '../../components/InputWrapper/InputWrapper';
 import ModalContainer from '../../components/ModalContainer/ModalContainer';
 import theme from '../../assets/theme.style';
@@ -31,6 +32,12 @@ export const ActiveWorkoutMenu = ({ isVisible, setVisibility }) => {
     reset();
   };
 
+  const pause = () => {
+    setVisibility(false);
+    modalCallback({ action: 'pause' });
+    reset();
+  };
+
   const rename = name => {
     setVisibility(false);
     modalCallback({ action: 'cancel' });
@@ -47,13 +54,14 @@ export const ActiveWorkoutMenu = ({ isVisible, setVisibility }) => {
         />
       </InputWrapper>
       <View style={systemStyles.formSpacer} />
-      <ActionButton
-        onPress={cancel}
-        text={'Cancel Workout'}
-        height={'large'}
-        color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
-        textColor={theme.BACKGROUND_COLOR}
-      />
+      <View style={systemStyles.row}>
+        <ActionButton
+          onPress={cancel}
+          text={'Cancel Workout'}
+          color={theme.RED}
+          textColor={theme.BACKGROUND_COLOR}
+        />
+      </View>
     </ModalContainer>
   );
 };

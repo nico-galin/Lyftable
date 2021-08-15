@@ -519,6 +519,8 @@ const ActiveWorkoutPage = ({ route }) => {
         case 'cancel':
           handleFinish(true);
           break;
+        case 'pause':
+          break;
         case 'toggleExerciseTimers':
           toggleExerciseTimers(res.data);
       }
@@ -707,31 +709,35 @@ const ActiveWorkoutPage = ({ route }) => {
               </Text>
             </View>
             <View style={styles.exerciseRightContent}>
-              <Text
-                style={[
-                  styles.exerciseTime,
-                  ex.completed
-                    ? styles.exerciseFinishedText
-                    : styles.exerciseUnfinishedText,
-                ]}>
-                {msToDigital(exerciseTimers[ind])} /{' '}
-                {msToDigital(ex.time_limit)}
-              </Text>
+              {exercisesTimed && (
+                <Text
+                  style={[
+                    styles.exerciseTime,
+                    ex.completed
+                      ? styles.exerciseFinishedText
+                      : styles.exerciseUnfinishedText,
+                  ]}>
+                  {msToDigital(exerciseTimers[ind])} /{' '}
+                  {msToDigital(ex.time_limit)}
+                </Text>
+              )}
               {ex.completed ? (
                 <View style={styles.exercisePlayBtn}>
                   <Checkbox checked={true} />
                 </View>
               ) : (
-                <TouchableOpacity
-                  activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
-                  style={styles.exercisePlayBtn}
-                  onPress={() => activateExercise(ind)}>
-                  <IonIcon
-                    name={'md-play'}
-                    size={23}
-                    color={theme.SECONDARY_COLOR}
-                  />
-                </TouchableOpacity>
+                exercisesTimed && (
+                  <TouchableOpacity
+                    activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
+                    style={styles.exercisePlayBtn}
+                    onPress={() => activateExercise(ind)}>
+                    <IonIcon
+                      name={'md-play'}
+                      size={23}
+                      color={theme.SECONDARY_COLOR}
+                    />
+                  </TouchableOpacity>
+                )
               )}
             </View>
           </>
@@ -764,7 +770,7 @@ const ActiveWorkoutPage = ({ route }) => {
         }
       />
     ),
-    [exercises, exerciseTimers],
+    [exercises, exerciseTimers, exercisesTimed],
   );
 
   return (

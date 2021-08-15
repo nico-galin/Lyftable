@@ -16,6 +16,7 @@ export default ({
   buttonColor = theme.SECONDARY_COLOR,
   buttonTextColor = theme.BACKGROUND_COLOR,
   iconName,
+  hideSearchIcon = false,
 }) => {
   return (
     <View style={styles.wrapper}>
@@ -27,7 +28,9 @@ export default ({
           onChangeText={onChangeText}
           onBlur={onBlur}
         />
-        <Icon name={'search'} size={20} color={theme.PLACEHOLDER_COLOR} />
+        {!hideSearchIcon && (
+          <Icon name={'search'} size={20} color={theme.PLACEHOLDER_COLOR} />
+        )}
       </View>
       {iconName || buttonContent ? (
         <TouchableOpacity
