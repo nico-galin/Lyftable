@@ -1,7 +1,13 @@
 'use strict';
-import React, { useEffect, useState, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import {
-  ScrollView,
+  FlatList,
   View,
   Text,
   TouchableOpacity,
@@ -28,6 +34,65 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useActiveWorkoutContext } from '../../contexts/ActiveWorkoutContext';
 import { Loading } from '../Loading/Loading';
+
+class Repetition extends React.Component {
+  render() {
+    const {
+      index,
+      previous_weight,
+      weight,
+      onChangeWeight = () => {},
+      repetitions,
+      onChangeRepetitions = () => {},
+      completed,
+      onChangeCompleted = () => {},
+      disabled,
+    } = this.props;
+    return (
+      <View
+        key={index}
+        style={[
+          styles.setContainer,
+          styles.exRow,
+          completed ? styles.setContainerDone : null,
+        ]}>
+        <Text style={[styles.exSetColumn, styles.exTableValue]}>
+          {index + 1}
+        </Text>
+        <Text style={[styles.exPrevColumn, styles.exTableValue]}>
+          {previous_weight != null ? previous_weight : 'None'}
+        </Text>
+        <View style={[styles.exLbsColumn, styles.exTableInput]}>
+          <TextInput
+            blurOnSubmit
+            selectTextOnFocus
+            keyboardType={'decimal-pad'}
+            style={styles.input}
+            value={String(weight != null ? weight : '')}
+            onChangeText={onChangeWeight}
+          />
+        </View>
+        <View style={[styles.exRepsColumn, styles.exTableInput]}>
+          <TextInput
+            blurOnSubmit
+            selectTextOnFocus
+            keyboardType={'number-pad'}
+            style={styles.input}
+            value={String(repetitions != null ? repetitions : '')}
+            onChangeText={onChangeRepetitions}
+          />
+        </View>
+        <TouchableOpacity
+          activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
+          disabled={disabled}
+          style={styles.exProgressColumn}
+          onPress={onChangeCompleted}>
+          <Checkbox checked={completed} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
 
 const ActiveWorkoutPage = ({ route }) => {
   const { userWorkouts, addUserWorkout, replaceUserWorkout, openModal } =
@@ -294,20 +359,25 @@ const ActiveWorkoutPage = ({ route }) => {
     });
   };
 
-  const deactivateExercise = (ind, finished = false, close = true) => {
-    clearInterval(exerciseIntervals[ind]);
-    setExercises(oldExercises => {
-      let newExercises = oldExercises.map(ex => JSON.parse(JSON.stringify(ex)));
-      if (finished) {
-        newExercises[ind].completed = true;
-      }
-      newExercises[ind].active = false;
-      if (close) {
-        newExercises[ind].open = false;
-      }
-      return newExercises;
-    });
-  };
+  const deactivateExercise = useCallback(
+    (ind, finished = false, close = true) => {
+      clearInterval(exerciseIntervals[ind]);
+      setExercises(oldExercises => {
+        let newExercises = oldExercises.map(ex =>
+          JSON.parse(JSON.stringify(ex)),
+        );
+        if (finished) {
+          newExercises[ind].completed = true;
+        }
+        newExercises[ind].active = false;
+        if (close) {
+          newExercises[ind].open = false;
+        }
+        return newExercises;
+      });
+    },
+    [exerciseIntervals],
+  );
 
   const toggleExercise = ind => {
     setExercises(oldExercises => {
@@ -472,7 +542,112 @@ const ActiveWorkoutPage = ({ route }) => {
     return null;
   };
 
-  const exerciseTiles = exercises.map((ex, ind) => {
+  const renderExerciseContent = useCallback(
+    (ex, ind) => (
+      <>
+        <View style={styles.exRow}>
+          <Text style={[styles.exSetColumn, styles.exTableHeading]}>Set</Text>
+          <Text style={[styles.exPrevColumn, styles.exTableHeading]}>
+            Previous
+          </Text>
+          <Text style={[styles.exLbsColumn, styles.exTableHeading]}>lbs</Text>
+          <Text style={[styles.exRepsColumn, styles.exTableHeading]}>Reps</Text>
+          <View style={styles.exProgressColumn} />
+        </View>
+        <SwipeListView
+          nestedScrollEnabled={true}
+          useFlatList={true}
+          data={ex.repetitions.map((_, i) => ({ key: i }))}
+          renderItem={(data, rowMap) => (
+            <Repetition
+              index={data.index}
+              previous_weight={ex.previous_weights[data.index]}
+              weight={ex.weights[data.index]}
+              onChangeWeight={val => handleChangeWeight(ind, data.index, val)}
+              repetitions={ex.repetitions[data.index]}
+              onChangeRepetitions={val =>
+                handleChangeReps(ind, data.index, val)
+              }
+              completed={ex.completion_times[data.index] != null}
+              onChangeCompleted={() => handleToggleSplit(ind, data.index)}
+              disabled={exercisesTimed && !ex.active}
+            />
+          )}
+          renderHiddenItem={(data, rowMap) =>
+            ex.completion_times[data.index] != null ? null : (
+              <View style={swipeListStyles.rowBack}>
+                <View style={swipeListStyles.delete}>
+                  <Text style={swipeListStyles.delText}>Delete</Text>
+                </View>
+              </View>
+            )
+          }
+          useAnimatedList
+          disableRightSwipe
+          tension={0}
+          rightActivationValue={-75}
+          stopRightSwipe={-80}
+          onRightAction={key => handleRemoveSet(ind, key)}
+        />
+        {ex.active ? (
+          <View style={systemStyles.row}>
+            <ActionButton
+              text={'Add Set'}
+              color={theme.SUBTITLE_COLOR}
+              textColor={theme.BACKGROUND_COLOR}
+              onPress={() => handleAddSet(ind)}
+            />
+            <View style={systemStyles.buttonSpacer} />
+            <ActionButton
+              color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
+              onPress={() => deactivateExercise(ind, false, false)}
+              icon={
+                <MatComIcon
+                  name={'pause'}
+                  size={18}
+                  color={theme.BACKGROUND_COLOR}
+                />
+              }
+            />
+            <View style={systemStyles.buttonSpacer} />
+            <ActionButton
+              text={'Finish Exercise'}
+              color={theme.SECONDARY_COLOR}
+              textColor={theme.BACKGROUND_COLOR}
+              onPress={() => handleFinishExercise(ind)}
+            />
+          </View>
+        ) : (
+          <View style={systemStyles.row}>
+            <ActionButton
+              text={'Add Set'}
+              color={theme.SUBTITLE_COLOR}
+              textColor={theme.BACKGROUND_COLOR}
+              onPress={() => handleAddSet(ind)}
+            />
+            {exercisesTimed && (
+              <>
+                <View style={systemStyles.buttonSpacer} />
+                <ActionButton
+                  text={exerciseTimers[ind] > 0 ? 'Continue' : 'Start Exercise'}
+                  color={theme.SECONDARY_COLOR}
+                  textColor={theme.BACKGROUND_COLOR}
+                  onPress={() => activateExercise(ind)}
+                />
+              </>
+            )}
+          </View>
+        )}
+      </>
+    ),
+    [exercises],
+  );
+
+  const renderExercise = ({ ex, ind }) => {
+    const completedSets =
+      ex.weights != null
+        ? ex.completion_times.filter(w => w != null).length
+        : 0;
     if (ex.open) {
       return (
         <View key={ind} style={styles.inputWrapperWrapper}>
@@ -483,162 +658,11 @@ const ActiveWorkoutPage = ({ route }) => {
               exercisesTimed ? msToDigital(exerciseTimers[ind]) : null
             }
             onPress={ex.active ? null : () => toggleExercise(ind)}>
-            <View style={styles.exRow}>
-              <Text style={[styles.exSetColumn, styles.exTableHeading]}>
-                Set
-              </Text>
-              <Text style={[styles.exPrevColumn, styles.exTableHeading]}>
-                Previous
-              </Text>
-              <Text style={[styles.exLbsColumn, styles.exTableHeading]}>
-                lbs
-              </Text>
-              <Text style={[styles.exRepsColumn, styles.exTableHeading]}>
-                Reps
-              </Text>
-              <View style={styles.exProgressColumn} />
-            </View>
-            <SwipeListView
-              nestedScrollEnabled={true}
-              useFlatList={true}
-              data={ex.repetitions.map((_, i) => ({ key: i }))}
-              renderItem={(data, rowMap) => (
-                <View
-                  key={data.index}
-                  style={[
-                    styles.setContainer,
-                    styles.exRow,
-                    ex.completion_times[data.index] != null
-                      ? styles.setContainerDone
-                      : null,
-                  ]}>
-                  <Text style={[styles.exSetColumn, styles.exTableValue]}>
-                    {data.index + 1}
-                  </Text>
-                  <Text style={[styles.exPrevColumn, styles.exTableValue]}>
-                    {ex.previous_weights[data.index] != null
-                      ? ex.previous_weights[data.index]
-                      : 'None'}
-                  </Text>
-                  <View style={[styles.exLbsColumn, styles.exTableInput]}>
-                    <TextInput
-                      blurOnSubmit
-                      selectTextOnFocus
-                      keyboardType={'decimal-pad'}
-                      style={styles.input}
-                      value={String(
-                        ex.weights[data.index] != null
-                          ? ex.weights[data.index]
-                          : '',
-                      )}
-                      onChangeText={val =>
-                        handleChangeWeight(ind, data.index, val)
-                      }
-                    />
-                  </View>
-                  <View style={[styles.exRepsColumn, styles.exTableInput]}>
-                    <TextInput
-                      blurOnSubmit
-                      selectTextOnFocus
-                      keyboardType={'number-pad'}
-                      style={styles.input}
-                      value={String(
-                        ex.repetitions[data.index] != null
-                          ? ex.repetitions[data.index]
-                          : '',
-                      )}
-                      onChangeText={val =>
-                        handleChangeReps(ind, data.index, val)
-                      }
-                    />
-                  </View>
-
-                  <TouchableOpacity
-                    activeOpacity={theme.TOUCHABLE_ACTIVE_OPACITY}
-                    disabled={exercisesTimed && !ex.active}
-                    style={styles.exProgressColumn}
-                    onPress={() => handleToggleSplit(ind, data.index)}>
-                    <Checkbox
-                      checked={ex.completion_times[data.index] != null}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-              renderHiddenItem={(data, rowMap) =>
-                ex.completion_times[data.index] != null ? null : (
-                  <View style={swipeListStyles.rowBack}>
-                    <View style={swipeListStyles.delete}>
-                      <Text style={swipeListStyles.delText}>Delete</Text>
-                    </View>
-                  </View>
-                )
-              }
-              useAnimatedList
-              disableRightSwipe
-              tension={0}
-              rightActivationValue={-75}
-              stopRightSwipe={-80}
-              onRightAction={key => handleRemoveSet(ind, key)}
-            />
-            {ex.active ? (
-              <View style={systemStyles.row}>
-                <ActionButton
-                  text={'Add Set'}
-                  color={theme.SUBTITLE_COLOR}
-                  textColor={theme.BACKGROUND_COLOR}
-                  onPress={() => handleAddSet(ind)}
-                />
-                <View style={systemStyles.buttonSpacer} />
-                <ActionButton
-                  color={theme.SPECIAL_FOREGROUND_COLOR_LIGHT}
-                  onPress={() => deactivateExercise(ind, false, false)}
-                  icon={
-                    <MatComIcon
-                      name={'pause'}
-                      size={18}
-                      color={theme.BACKGROUND_COLOR}
-                    />
-                  }
-                />
-                <View style={systemStyles.buttonSpacer} />
-                <ActionButton
-                  text={'Finish Exercise'}
-                  color={theme.SECONDARY_COLOR}
-                  textColor={theme.BACKGROUND_COLOR}
-                  onPress={() => handleFinishExercise(ind)}
-                />
-              </View>
-            ) : (
-              <View style={systemStyles.row}>
-                <ActionButton
-                  text={'Add Set'}
-                  color={theme.SUBTITLE_COLOR}
-                  textColor={theme.BACKGROUND_COLOR}
-                  onPress={() => handleAddSet(ind)}
-                />
-                {exercisesTimed && (
-                  <>
-                    <View style={systemStyles.buttonSpacer} />
-                    <ActionButton
-                      text={
-                        exerciseTimers[ind] > 0 ? 'Continue' : 'Start Exercise'
-                      }
-                      color={theme.SECONDARY_COLOR}
-                      textColor={theme.BACKGROUND_COLOR}
-                      onPress={() => activateExercise(ind)}
-                    />
-                  </>
-                )}
-              </View>
-            )}
+            {renderExerciseContent(ex, ind)}
           </InputWrapper>
         </View>
       );
     } else {
-      const completedSets =
-        ex.weights != null
-          ? ex.completion_times.filter(w => w != null).length
-          : 0;
       return (
         <TouchableHighlight
           activeOpacity={0}
@@ -707,7 +731,34 @@ const ActiveWorkoutPage = ({ route }) => {
         </TouchableHighlight>
       );
     }
-  });
+  };
+
+  const renderExerciseList = useMemo(
+    () => (
+      <FlatList
+        data={[]}
+        renderItem={() => null}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          <>
+            <View style={systemStyles.formSpacer} />
+            <View style={systemStyles.formSpacer} />
+            <FlatList
+              data={exercises.map((ex, ind) => ({ ...ex, key: ind }))}
+              renderItem={({ item, index }) =>
+                renderExercise({ ex: item, ind: index })
+              }
+              keyExtractor={item => item.key}
+              showsVerticalScrollIndicator={false}
+            />
+            <ActionButton text={'Add Exercise'} onPress={handleAddExercise} />
+            <View style={systemStyles.bottomSpacer} />
+          </>
+        }
+      />
+    ),
+    [exercises, exerciseTimers],
+  );
 
   return (
     <View style={systemStyles.pageMarginlessContainer}>
@@ -723,13 +774,7 @@ const ActiveWorkoutPage = ({ route }) => {
           rightButtonOnPress={handleFinish}
           rightButtonColor={theme.SECONDARY_COLOR}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={systemStyles.formSpacer} />
-          <View style={systemStyles.formSpacer} />
-          {exerciseTiles}
-          <ActionButton text={'Add Exercise'} onPress={handleAddExercise} />
-          <View style={systemStyles.bottomSpacer} />
-        </ScrollView>
+        {renderExerciseList}
       </View>
     </View>
   );
